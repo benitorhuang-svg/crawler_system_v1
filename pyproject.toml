@@ -1,0 +1,16 @@
+[project]
+name = "crawler-jobs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "celery>=5.5.3",
+    "ruff>=0.12.5",
+    "structlog>=25.4.0",
+    "python-dotenv",
+    "requests>=2.32.4",
+    "pymysql>=1.1.0",
+    "tenacity>=8.2.3",
+    "pydantic>=2.0.0",
+]
