@@ -4,7 +4,7 @@ services:
   crawler_104:  # 定義一個服務，名稱為 crawler_twse
     image: benitorhuang/crawler_jobs:0.0.1  # 使用的映像檔名稱與標籤（版本）
     hostname: "${CELERY_WORKER_HOSTNAME:-jobs_104}"  # 設定 hostname，可從 .env 讀取，預設為 "jobs"
-    command: uv run celery -A crawler.worker worker --loglevel=info --hostname=%h -Q jobs_104  
+    command: celery -A crawler.worker worker --loglevel=info --hostname=%h -Q jobs_104  
     # 啟動容器後執行的命令，這裡是啟動 Celery worker，指定 app 為 crawler.worker，設定日誌等級為 info，
     # 使用主機名稱當作 worker 名稱（%h），並將此 worker 加入名為 "twse" 的任務佇列 (queue)
 

@@ -1,8 +1,10 @@
 import requests
 import sys
 from requests.exceptions import HTTPError, JSONDecodeError
+import structlog
 from crawler.worker import app
 
+logger = structlog.get_logger(__name__)
 
 # 註冊 task, 有註冊的 task 才可以變成任務發送給 rabbitmq
 @app.task()
@@ -20,12 +22,12 @@ def get_job_api_data(url):
         response.raise_for_status()
         data = response.json()
     except (HTTPError, JSONDecodeError) as err:
-        print(f"發生錯誤: {err}")
+        logger.error("發生錯誤", error=err)
         return {}
     
     job_data = data.get('data', {})
     if not job_data or job_data.get('custSwitch', {}) == "off":
-        print("職缺內容不存在或已關閉")
+        logger.info("職缺內容不存在或已關閉")
         return {}
 
     extracted_info = {
@@ -49,11 +51,11 @@ def get_job_api_data(url):
         'contact_phone': job_data.get('contact', {}).get('email', '未提供')
     }
 
-    print(extracted_info)
+    logger.info("提取的職缺資訊", extracted_info=extracted_info)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("用法: python get_job.py <職缺 URL>")
+        logger.info("用法: python get_job.py <職缺 URL>")
         sys.exit(1)
 
     job_url = sys.argv[1]

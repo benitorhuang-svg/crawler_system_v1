@@ -1,4 +1,4 @@
-import logging
+import structlog
 import sys
 import os
 from typing import List, Dict, Any, Optional
@@ -15,7 +15,7 @@ from crawler.database.connection import get_engine
 from crawler.database.models import CategorySource, Url, Job, SourcePlatform, JobStatus, CrawlStatus, JobPydantic
 
 # Configure logging
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger(__name__)
 
 def sync_source_categories(platform: SourcePlatform, flattened_data: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
@@ -34,7 +34,7 @@ def sync_source_categories(platform: SourcePlatform, flattened_data: List[Dict[s
         stmt = stmt.on_duplicate_key_update(**update_dict)
         session.execute(stmt)
         session.commit()
-        logger.info(f"[{platform.value}] Synced 0 categories (out of {len(flattened_data)} total).")
+        logger.info("Synced categories", platform=platform.value, total_categories=len(flattened_data))
         return {"total": len(flattened_data), "affected": 0}
 
 def get_categories_by_platform(platform: SourcePlatform) -> List[CategorySource]:
@@ -150,11 +150,11 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
             final_stmt = stmt.on_duplicate_key_update(**update_cols)
             session.execute(final_stmt)
             session.commit()
-            logger.info("Upserted or updated jobs.")
+            logger.info("Upserted or updated jobs")
 
         except Exception as e:
             session.rollback()
-            logger.error(f"Failed to upsert jobs: {e}", exc_info=True)
+            logger.error("Failed to upsert jobs", error=e, exc_info=True)
             raise
 
 def mark_urls_as_crawled(processed_urls: Dict[CrawlStatus, List[str]]) -> None:

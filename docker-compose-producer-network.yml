@@ -4,26 +4,12 @@ services:
   producer_104_jobs:  # 定義一個服務，名稱為 crawler_twse
     image: benitorhuang/crawler_jobs:0.0.1  # 使用的映像檔名稱與標籤（版本）
     hostname: "crawler_104"  # 設定 hostname = twse
-    command: /bin/bash -c "source /app/.venv/bin/activate && python -m crawler.project_104.producer_104_jobs"
+    command: python -m crawler.project_104.producer_104_jobs
     # restart: always  # 若容器停止或崩潰，自動重新啟動
     environment:
       - TZ=Asia/Taipei  # 設定時區為台北（UTC+8）
     networks:
       - my_network  # 將此服務連接到 my_network 網路
-
-  db_initializer:
-    image: benitorhuang/crawler_jobs:0.0.1
-    command: /bin/bash -c "source /app/.venv/bin/activate && python crawler/database/init_db.py"
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-    depends_on:
-      - mysql
-    networks:
-      - my_network
 
 networks:
   my_network:
