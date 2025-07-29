@@ -15,6 +15,7 @@ logger = structlog.get_logger(__name__)
 
 logger.info("Producer configuration loaded.", producer_batch_size=PRODUCER_BATCH_SIZE)
 
+
 def dispatch_job_urls():
     """
     從資料庫讀取待處理或失敗的職缺 URL，更新其狀態，然後分發給 Celery worker。
@@ -26,8 +27,8 @@ def dispatch_job_urls():
         statuses_to_fetch = [CrawlStatus.PENDING, CrawlStatus.FAILED]
         urls_to_process = get_urls_by_crawl_status(
             platform=SourcePlatform.PLATFORM_104,
-            statuses=statuses_to_fetch, # 傳入狀態列表
-            limit=PRODUCER_BATCH_SIZE
+            statuses=statuses_to_fetch,  # 傳入狀態列表
+            limit=PRODUCER_BATCH_SIZE,
         )
 
         if not urls_to_process:
@@ -42,9 +43,11 @@ def dispatch_job_urls():
 
         # 3. 使用 group 高效地批次分發任務，並指定佇列
         task_group = group(fetch_url_data_104.s(url) for url in urls_to_process)
-        task_group.apply_async(queue='jobs_104')
+        task_group.apply_async(queue="jobs_104")
 
-        logger.info("已成功分發一批職缺 URL 任務", count=len(urls_to_process), queue='jobs_104')
+        logger.info(
+            "已成功分發一批職缺 URL 任務", count=len(urls_to_process), queue="jobs_104"
+        )
 
     except SQLAlchemyError as e:
         logger.error("資料庫操作失敗", error=str(e))

@@ -27,6 +27,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False)
 
 # --- 核心功能 ---
 
+
 @contextmanager
 def get_session():
     """
@@ -57,10 +58,14 @@ def get_engine():
         try:
             _engine = _connect_with_retry()
         except RetryError as e:
-            logger.critical("資料庫連接在多次重試後失敗，應用程式無法啟動。", error=e, exc_info=True)
+            logger.critical(
+                "資料庫連接在多次重試後失敗，應用程式無法啟動。", error=e, exc_info=True
+            )
             raise RuntimeError("資料庫連接失敗，請檢查資料庫服務是否正常。") from e
         except Exception as e:
-            logger.critical("創建資料庫引擎時發生未預期的錯誤。", error=e, exc_info=True)
+            logger.critical(
+                "創建資料庫引擎時發生未預期的錯誤。", error=e, exc_info=True
+            )
             raise RuntimeError("創建資料庫引擎時發生致命錯誤。") from e
     return _engine
 
@@ -88,7 +93,7 @@ def _connect_with_retry():
         db_url,
         pool_recycle=3600,  # 每小時回收一次連接，防止連接被 MySQL 伺服器中斷
         echo=False,
-        connect_args={'connect_timeout': 10},
+        connect_args={"connect_timeout": 10},
         isolation_level="READ COMMITTED",
     )
 

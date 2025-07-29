@@ -7,7 +7,7 @@ logger = structlog.get_logger(__name__)
 
 # 讀取專案根目錄下的 local.ini
 config = configparser.ConfigParser()
-config_path = os.path.join(os.path.dirname(__file__), '..', '..', 'local.ini')
+config_path = os.path.join(os.path.dirname(__file__), "..", "..", "local.ini")
 
 try:
     config.read(config_path)
@@ -18,24 +18,30 @@ except Exception as e:
 # 根據 APP_ENV 選擇區塊
 app_env = os.environ.get("APP_ENV", "DOCKER").upper()
 if app_env not in config:
-    logger.warning(f"環境變數 APP_ENV={app_env} 無效或未找到對應區塊，預設使用 [DOCKER] 設定。")
+    logger.warning(
+        f"環境變數 APP_ENV={app_env} 無效或未找到對應區塊，預設使用 [DOCKER] 設定。"
+    )
     app_env = "DOCKER"
 
 config_section = config[app_env]
 
 # 104 平台相關設定
-JOB_CAT_URL_104 = config_section.get("JOB_CAT_URL_104", "https://static.104.com.tw/category-tool/json/JobCat.json")
-JOB_API_BASE_URL_104 = config_section.get("JOB_API_BASE_URL_104", "https://www.104.com.tw/job/ajax/content/")
+JOB_CAT_URL_104 = config_section.get(
+    "JOB_CAT_URL_104", "https://static.104.com.tw/category-tool/json/JobCat.json"
+)
+JOB_API_BASE_URL_104 = config_section.get(
+    "JOB_API_BASE_URL_104", "https://www.104.com.tw/job/ajax/content/"
+)
 WEB_NAME_104 = config_section.get("WEB_NAME_104", "104_人力銀行")
 
 HEADERS_104 = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
-    'Referer': 'https://www.104.com.tw/jobs/search',
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "Referer": "https://www.104.com.tw/jobs/search",
 }
 
 HEADERS_104_JOB_API = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    'Referer': 'https://www.104.com.tw/job/'
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Referer": "https://www.104.com.tw/job/",
 }
 
 HEADERS_104_URL_CRAWLER = {
@@ -43,7 +49,13 @@ HEADERS_104_URL_CRAWLER = {
     "Referer": "https://www.104.com.tw/",
 }
 
-URL_CRAWLER_BASE_URL_104 = config_section.get("URL_CRAWLER_BASE_URL_104", "https://www.104.com.tw/jobs/search/api/jobs")
+URL_CRAWLER_BASE_URL_104 = config_section.get(
+    "URL_CRAWLER_BASE_URL_104", "https://www.104.com.tw/jobs/search/api/jobs"
+)
 URL_CRAWLER_PAGE_SIZE_104 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_104", "20"))
-URL_CRAWLER_ORDER_BY_104 = int(config_section.get("URL_CRAWLER_ORDER_BY_104", "16")) # 16 (最近更新)
-URL_PRODUCER_CATEGORY_LIMIT = int(config_section.get("URL_PRODUCER_CATEGORY_LIMIT", "1")) # Default to 1 for local testing. Set to 0 for no limit.
+URL_CRAWLER_ORDER_BY_104 = int(
+    config_section.get("URL_CRAWLER_ORDER_BY_104", "16")
+)  # 16 (最近更新)
+URL_PRODUCER_CATEGORY_LIMIT = int(
+    config_section.get("URL_PRODUCER_CATEGORY_LIMIT", "1")
+)  # Default to 1 for local testing. Set to 0 for no limit.

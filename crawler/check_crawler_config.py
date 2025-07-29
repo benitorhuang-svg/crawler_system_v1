@@ -8,12 +8,12 @@ from .config import (
 
 configure_logging()
 
-logger = structlog.get_logger(__name__) # Corrected: add __name__
+logger = structlog.get_logger(__name__)  # Corrected: add __name__
 
 logger.info(
-    "RabbitMQ configuration check.", # Improved log message
+    "RabbitMQ configuration check.",  # Improved log message
     rabbitmq_host=RABBITMQ_HOST,
     rabbitmq_port=RABBITMQ_PORT,
-    worker_account="***masked***", # Masked sensitive info
-    worker_password="***masked***", # Masked sensitive info
+    worker_account="***masked***",  # Masked sensitive info
+    worker_password="***masked***",  # Masked sensitive info
 )

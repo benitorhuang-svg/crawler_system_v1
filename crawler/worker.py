@@ -34,10 +34,14 @@ app = Celery(
 )
 
 # Set the broker URL using app.conf
-app.conf.broker_url = f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/"
+app.conf.broker_url = (
+    f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/"
+)
 
 app.conf.task_routes = {
-    'crawler.project_104.task_104_jobs.fetch_104_data': {'queue': 'jobs_104'},
-    'crawler.project_104.task_urls_104.crawl_and_store_category_urls': {'queue': 'urls_104'},
-    # 如果有其他任務，可以在這裡添加更多路由
+    "crawler.project_104.task_jobs_104.fetch_url_data_104": {"queue": "jobs_104"},
+    "crawler.project_104.task_urls_104.crawl_and_store_category_urls": {
+        "queue": "urls_104"
+    },
+    "crawler.project_104.task_category_104.fetch_url_data_104": {"queue": "category_104"},
 }
