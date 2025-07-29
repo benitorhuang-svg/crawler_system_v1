@@ -1,6 +1,8 @@
 import json
 import requests
 import structlog
+import time
+import random
 from crawler.worker import app
 from crawler.database.models import SourcePlatform, JobPydantic, JobStatus
 from crawler.database.repository import upsert_jobs, mark_urls_as_crawled
@@ -8,9 +10,23 @@ from crawler.database.repository import upsert_jobs, mark_urls_as_crawled
 from typing import Optional
 import re
 from datetime import datetime
-from crawler.database.models import SalaryType, CrawlStatus
+from crawler.database.models import SalaryType, CrawlStatus, JobType
+from crawler.config import URL_CRAWLER_SLEEP_MIN_SECONDS, URL_CRAWLER_SLEEP_MAX_SECONDS # Import sleep settings
 
+from crawler.logging_config import configure_logging
+from crawler.project_104.config_104 import HEADERS_104_JOB_API, JOB_API_BASE_URL_104 # Changed import path
+
+configure_logging()
 logger = structlog.get_logger(__name__)
+
+# 104 API 的 jobType 到我們內部 JobType Enum 的映射
+JOB_TYPE_MAPPING = {
+    1: JobType.FULL_TIME,
+    2: JobType.PART_TIME,
+    3: JobType.INTERNSHIP,
+    4: JobType.CONTRACT, # 派遣
+    5: JobType.TEMPORARY, # 兼職/計時
+}
 
 def parse_salary(salary_text: str) -> (Optional[int], Optional[int], Optional[SalaryType]):
     salary_min, salary_max, salary_type = None, None, None
@@ -21,7 +37,7 @@ def parse_salary(salary_text: str) -> (Optional[int], Optional[int], Optional[Sa
     if match_monthly:
         salary_type = SalaryType.MONTHLY
         salary_min = int(match_monthly.group(1))
-        if match_monthly.group(2) if len(match_monthly.groups()) > 1 else None:
+        if len(match_monthly.groups()) > 1 and match_monthly.group(2):
             salary_max = int(match_monthly.group(2))
         return salary_min, salary_max, salary_type
 
@@ -30,7 +46,7 @@ def parse_salary(salary_text: str) -> (Optional[int], Optional[int], Optional[Sa
     if match_yearly:
         salary_type = SalaryType.YEARLY
         salary_min = int(match_yearly.group(1)) * 10000
-        if match_yearly.group(2) if len(match_yearly.groups()) > 1 else None:
+        if len(match_yearly.groups()) > 1 and match_yearly.group(2):
             salary_max = int(match_yearly.group(2)) * 10000
         return salary_min, salary_max, salary_type
 
@@ -62,44 +78,37 @@ def parse_salary(salary_text: str) -> (Optional[int], Optional[int], Optional[Sa
 
     return salary_min, salary_max, salary_type
 
-# 註冊 task, 有註冊的 task 才可以變成任務發送給 rabbitmq
 @app.task()
 def fetch_url_data_104(url: str) -> Optional[JobPydantic]:
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-        'Referer': 'https://www.104.com.tw/job/'
-    }
-
     try:
-        # 從 URL 中提取 job_id
         job_id = url.split('/')[-1].split('?')[0]
         if not job_id:
-            logger.error(f"無法從 URL 中提取 job_id: {url}")
+            logger.error("Failed to extract job_id from URL.", url=url)
             return None
-            
-        # 組合 API URL
-        api_url = f'https://www.104.com.tw/job/ajax/content/{job_id}'
-        
-        logger.info(f"正在抓取職缺 ID: {job_id}，來源 URL: {api_url}")
-        
-        # 發送 HTTP 請求
-        response = requests.get(api_url, headers=headers, timeout=10)
-        response.raise_for_status()  # 如果狀態碼不是 2xx，則拋出異常
-        
+
+        api_url = f'{JOB_API_BASE_URL_104}{job_id}'
+
+        logger.info("Fetching job data.", job_id=job_id, source_url=api_url)
+
+        # Add random delay before making API request
+        sleep_time = random.uniform(URL_CRAWLER_SLEEP_MIN_SECONDS, URL_CRAWLER_SLEEP_MAX_SECONDS)
+        logger.debug("Sleeping before API request.", duration=sleep_time)
+        time.sleep(sleep_time)
+
+        response = requests.get(api_url, headers=HEADERS_104_JOB_API, timeout=10)
+        response.raise_for_status()
         data = response.json()
 
     except requests.exceptions.RequestException as e:
-        logger.error(f"請求 API 時發生網路錯誤: {e}")
+        logger.error("Network error when requesting API.", url=api_url, error=e, exc_info=True)
         return None
     except json.JSONDecodeError:
-        logger.error(f"解析 JSON 時失敗。URL: {api_url}")
+        logger.error("Failed to parse JSON response.", url=api_url, exc_info=True)
         return None
 
-    # --- 資料解析 ---
-    # 根據您提供的 JSON 結構進行解析
     job_data = data.get('data')
     if not job_data or job_data.get('switch') == "off":
-        logger.warning(f"職缺內容不存在或已關閉。Job ID: {job_id}")
+        logger.warning("Job content does not exist or is closed.", job_id=job_id)
         return None
 
     try:
@@ -107,80 +116,73 @@ def fetch_url_data_104(url: str) -> Optional[JobPydantic]:
         job_detail = job_data.get('jobDetail', {})
         condition = job_data.get('condition', {})
 
-        # 組合 location_text
         job_addr_region = job_detail.get('addressRegion', '')
         job_address_detail = job_detail.get('addressDetail', '')
-        # 確保只有在兩個欄位都存在時才組合，避免產生不完整的地址
         location_text = (job_addr_region + job_address_detail).strip()
         if not location_text:
             location_text = None
 
-        # 解析 posted_at
         posted_at = None
         appear_date_str = header.get('appearDate')
         if appear_date_str:
             try:
                 posted_at = datetime.strptime(appear_date_str, '%Y/%m/%d')
             except ValueError:
-                logger.warning("無法解析 posted_at 日期格式", appear_date=appear_date_str)
+                logger.warning("Could not parse posted_at date format.", appear_date=appear_date_str, job_id=job_id)
 
-        # 解析薪資資訊
         salary_min, salary_max, salary_type = parse_salary(job_detail.get('salary', ''))
+
+        # 處理 job_type 轉換
+        raw_job_type = job_detail.get('jobType')
+        job_type = JOB_TYPE_MAPPING.get(raw_job_type) if raw_job_type else None
 
         job_pydantic_data = JobPydantic(
             source_platform=SourcePlatform.PLATFORM_104,
             source_job_id=job_id,
             url=url,
-            status=JobStatus.ACTIVE, # 預設為啟用狀態
+            status=JobStatus.ACTIVE,
             title=header.get('jobName'),
             description=job_detail.get('jobDescription'),
-            job_type=job_detail.get('jobType'),
+            job_type=job_type, # 使用轉換後的值
             location_text=location_text,
-            posted_at=posted_at, # 需要日期格式轉換
+            posted_at=posted_at,
             salary_text=job_detail.get('salary'),
-            salary_min=salary_min, # 需要從 salary_text 解析
-            salary_max=salary_max, # 需要從 salary_text 解析
-            salary_type=salary_type, # 需要從 salary_text 解析
+            salary_min=salary_min,
+            salary_max=salary_max,
+            salary_type=salary_type,
             experience_required_text=condition.get('workExp'),
             education_required_text=condition.get('edu'),
             company_source_id=header.get('custNo'),
             company_name=header.get('custName'),
             company_url=header.get('custUrl'),
         )
-        
+
         upsert_jobs([job_pydantic_data])
-        logger.info(f"成功解析職缺: {job_pydantic_data.title}")
-        mark_urls_as_crawled({CrawlStatus.COMPLETED: [url]})
+        logger.info("Successfully parsed and upserted job.", job_title=job_pydantic_data.title, job_id=job_id)
+        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]}) # 使用 SUCCESS 狀態
         return job_pydantic_data.model_dump()
 
     except (AttributeError, KeyError) as e:
-        logger.error(f"解析資料時遺失關鍵欄位: {e}。Job ID: {job_id}", exc_info=True)
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
-        # 印出收到的資料，方便除錯
-        # logger.debug(json.dumps(job_data, indent=2, ensure_ascii=False))
-        return {}
-    except Exception as e: # 捕獲其他未預期的錯誤
-        logger.error(f"處理職缺資料時發生未預期錯誤: {e}", exc_info=True)
+        logger.error("Missing key fields when parsing data.", error=e, job_id=job_id, exc_info=True)
         mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
         return {}
-
+    except Exception as e:
+        logger.error("Unexpected error when processing job data.", error=e, job_id=job_id, exc_info=True)
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        return {}
 
 # if __name__ == "__main__":
-#     # 啟動本地測試 task_jobs_104
-#     # APP_ENV=DEV python -m crawler.project_104.task_jobs_104
-
 #     from crawler.database.connection import initialize_database
 #     from crawler.database.repository import get_unprocessed_urls
-    
+
 #     initialize_database()
-#     logger.info("在本地測試 task_jobs_104，從資料庫獲取 10 個 URL...")
-    
-#     # 從資料庫獲取 10 個未處理的 URL
-#     urls_to_test = get_unprocessed_urls(SourcePlatform.PLATFORM_104, 10)
-    
+#     logger.info("Local testing task_jobs_104. Fetching unprocessed URLs from database.")
+
+#     urls_to_test = get_unprocessed_urls(SourcePlatform.PLATFORM_104, 5)
+
 #     if urls_to_test:
 #         for url_obj in urls_to_test:
-#             logger.info("處理測試 URL", url=url_obj.source_url)
-#             fetch_url_data_104(url_obj.source_url) # 直接呼叫函數，不使用 delay
+#             logger.info("Dispatching test URL task.", url=url_obj.source_url)
+#             fetch_url_data_104.delay(url_obj.source_url)
 #     else:
-#         logger.info("資料庫中沒有未處理的 URL 可供測試。請先執行 task_urls_104 填充資料。")
+#         logger.info("No unprocessed URLs available for testing. Please run task_urls_104 first to populate data.")

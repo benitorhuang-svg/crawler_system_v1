@@ -2,8 +2,12 @@ import requests
 import sys
 from requests.exceptions import HTTPError, JSONDecodeError
 import structlog
-from crawler.worker import app
 
+from crawler.worker import app
+from crawler.logging_config import configure_logging # Import configure_logging
+from crawler.config import JOB_API_BASE_URL_104 # Import the base URL from config
+
+configure_logging() # Call configure_logging at the beginning
 logger = structlog.get_logger(__name__)
 
 # 註冊 task, 有註冊的 task 才可以變成任務發送給 rabbitmq
@@ -15,19 +19,20 @@ def get_job_api_data(url):
     }
 
     job_id = url.split('/')[-1].split('?')[0]
-    url_api = f'https://www.104.com.tw/job/ajax/content/{job_id}'
-    
+    # Use the configured base URL
+    url_api = f'{JOB_API_BASE_URL_104}{job_id}'
+
     try:
         response = requests.get(url_api, headers=headers)
         response.raise_for_status()
         data = response.json()
     except (HTTPError, JSONDecodeError) as err:
-        logger.error("發生錯誤", error=err)
+        logger.error("Failed to fetch job API data", url=url_api, error=err) # Improved log message
         return {}
-    
+
     job_data = data.get('data', {})
     if not job_data or job_data.get('custSwitch', {}) == "off":
-        logger.info("職缺內容不存在或已關閉")
+        logger.info("Job content does not exist or is closed", job_id=job_id) # Improved log message
         return {}
 
     extracted_info = {
@@ -51,12 +56,14 @@ def get_job_api_data(url):
         'contact_phone': job_data.get('contact', {}).get('email', '未提供')
     }
 
-    logger.info("提取的職缺資訊", extracted_info=extracted_info)
+    logger.info("Extracted job information", job_id=job_id, extracted_info=extracted_info) # Improved log message
+    return extracted_info # Return the extracted info
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        logger.info("用法: python get_job.py <職缺 URL>")
+        logger.info("Usage: python local_fetch_104_url_data.py <job_url>") # Updated usage message
         sys.exit(1)
 
     job_url = sys.argv[1]
-    get_job_api_data(job_url)
+    logger.info("Dispatching job API data task", job_url=job_url)
+    get_job_api_data.delay(job_url)

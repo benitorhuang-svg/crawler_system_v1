@@ -1,6 +1,4 @@
-# 匯入 SQLAlchemy 所需模組
-# 匯入 pandas 並建立一個 DataFrame，模擬要寫入的資料
-import pandas as pd  # 用來處理資料表（DataFrame）
+import pandas as pd
 import structlog
 from sqlalchemy import (
     Column,
@@ -10,16 +8,13 @@ from sqlalchemy import (
     String,
     Table,
 )
-from sqlalchemy.dialects.mysql import (
-    insert,
-)  # 專用於 MySQL 的 insert 語法，可支援 on_duplicate_key_update
+from sqlalchemy.dialects.mysql import insert
 
 from crawler.logging_config import configure_logging
-from crawler.database.connection import get_engine
+from crawler.database.connection import get_session, initialize_database # Import get_session and initialize_database
 
 configure_logging()
-
-engine = get_engine()
+logger = structlog.get_logger(__name__)
 
 # 定義資料表結構，對應到 MySQL 中的 test_duplicate 表
 metadata = MetaData()
@@ -30,9 +25,8 @@ stock_price_table = Table(
     Column("date", Date, primary_key=True),
     Column("price", Float),
 )
-# ✅ 自動建立資料表（如果不存在才建立）
-metadata.create_all(engine)
 
+# 建立 DataFrame，模擬要寫入的資料
 df = pd.DataFrame(
     [
         # 模擬 5 筆重複資料
@@ -44,25 +38,34 @@ df = pd.DataFrame(
     ]
 )
 
-# 遍歷 DataFrame 的每一列資料
-for _, row in df.iterrows():
-    # 使用 SQLAlchemy 的 insert 語句建立插入語法
-    insert_stmt = insert(stock_price_table).values(**row.to_dict())
+if __name__ == "__main__":
+    # 確保資料庫表在測試前被建立
+    initialize_database()
 
-    # 加上 on_duplicate_key_update 的邏輯：
-    # 若主鍵重複（id 已存在），就更新 name 與 score 欄位為新值
-    update_stmt = insert_stmt.on_duplicate_key_update(
-        **{
-            col.name: insert_stmt.inserted[col.name]
-            for col in stock_price_table.columns
-            if col.name != "id"
-        }
-    )
+    logger.info("Starting test for duplicate data upload with UPSERT.")
 
-    # 執行 SQL 語句，寫入資料庫
-    with engine.begin() as connection:
-        connection.execute(update_stmt)
+    try:
+        with get_session() as session:
+            # 使用 bulk insert with on_duplicate_key_update
+            # 將 DataFrame 轉換為字典列表，以便 insert 語句處理
+            insert_stmt = insert(stock_price_table).values(df.to_dict(orient="records"))
 
-# 從資料庫讀取資料並列印
-read_df = pd.read_sql("SELECT * FROM test_duplicate", con=engine)
-structlog.get_logger(__name__).info(f"Data read from database:\n{read_df}")
+            # 定義在主鍵重複時要更新的欄位。這裡只更新 'price' 欄位。
+            on_duplicate_update_dict = {
+                "price": insert_stmt.inserted.price
+            }
+
+            final_stmt = insert_stmt.on_duplicate_key_update(**on_duplicate_update_dict)
+            session.execute(final_stmt)
+            # session.commit() 由 get_session 上下文管理器自動處理
+
+        logger.info("Data upserted successfully.", rows_processed=len(df))
+
+        # 從資料庫讀取資料並列印
+        with get_session() as session:
+            # pd.read_sql 可以直接使用 session 的 connection
+            read_df = pd.read_sql("SELECT * FROM test_duplicate", con=session.connection())
+            logger.info("Data read from database.", dataframe_content=read_df.to_dict(orient='records'))
+
+    except Exception as e:
+        logger.error("An error occurred during duplicate data test.", error=e, exc_info=True)

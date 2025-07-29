@@ -1,40 +1,43 @@
 from celery import Celery
 import structlog
-import os
-from dotenv import load_dotenv
 
 from crawler.logging_config import configure_logging
+from crawler.config import (
+    RABBITMQ_HOST,
+    RABBITMQ_PORT,
+    WORKER_ACCOUNT,
+    WORKER_PASSWORD,
+)
 
 configure_logging()
-logger = structlog.get_logger()
-
-load_dotenv()
-
-RABBITMQ_HOST = os.environ.get("RABBITMQ_HOST")
-RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT")
-WORKER_ACCOUNT = os.environ.get("WORKER_ACCOUNT")
-WORKER_PASSWORD = os.environ.get("WORKER_PASSWORD")
+logger = structlog.get_logger(__name__)
 
 logger.info(
     "RabbitMQ configuration",
     rabbitmq_host=RABBITMQ_HOST,
     rabbitmq_port=RABBITMQ_PORT,
-    worker_account=WORKER_ACCOUNT,
-    worker_password=WORKER_PASSWORD,
+    worker_account="***masked***",
+    worker_password="***masked***",
 )
+
 app = Celery(
     "task",
-    # 只包含 tasks.py 裡面的程式, 才會成功執行
     include=[
         "crawler.project_104.task_category_104",
         "crawler.project_104.task_jobs_104",
-        "crawler.project_104.task_urls_104", # 新增這一行，包含新的任務模組
+        "crawler.project_104.task_urls_104",
     ],
-    # 連線到 rabbitmq
-    broker=f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/",
-    task_routes={
-        'crawler.project_104.task_104_jobs.fetch_104_data': {'queue': 'jobs_104'},
-        'crawler.project_104.task_urls_104.crawl_and_store_category_urls': {'queue': 'urls_104'}, # 為新的任務新增路由
-        # 如果有其他任務，可以在這裡添加更多路由
-    }
+    # Configure broker connection settings for robustness
+    broker_connection_retry_on_startup=True,
+    broker_connection_max_retries=10,
+    broker_connection_timeout=30,
 )
+
+# Set the broker URL using app.conf
+app.conf.broker_url = f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/"
+
+app.conf.task_routes = {
+    'crawler.project_104.task_104_jobs.fetch_104_data': {'queue': 'jobs_104'},
+    'crawler.project_104.task_urls_104.crawl_and_store_category_urls': {'queue': 'urls_104'},
+    # 如果有其他任務，可以在這裡添加更多路由
+}

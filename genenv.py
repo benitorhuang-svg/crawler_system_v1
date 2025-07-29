@@ -1,27 +1,52 @@
-# 匯入標準函式庫
+import os
+from configparser import ConfigParser
+import structlog
+import sys
 
-import os           # 處理檔案與環境變數
-from configparser import ConfigParser  # 讀取 .ini 設定檔的工具
+from crawler.logging_config import configure_logging
 
-# 建立 ConfigParser 實例，讀取 ini 設定檔
-local_config = ConfigParser()
-local_config.read("local.ini")  # 讀取 local.ini 檔案
+configure_logging()
+logger = structlog.get_logger(__name__)
 
-# 根據優先順序決定使用哪個 section：
-# 優先順序：1. 環境變數 ENV 指定的 section > 2. 主機名稱對應的 section > 3. 預設 DEFAULT section
-if os.environ.get("ENV", ""):
-    # 若有設 ENV 環境變數，使用對應 section
-    section = local_config[os.environ.get("ENV", "")]
-else:
-    # 都沒有的話，使用 DEFAULT 區段
-    section = local_config["DEFAULT"]
+def generate_env_file():
+    config_path = "local.ini"
 
-# 將選到的 section 裡的設定轉為 .env 格式的內容
-# 例如 key=value，每行一筆
-env_content = ""
-for sec in section:
-    env_content += "{}={}\n".format(sec.upper(), section[sec])  # Key 轉大寫
+    if not os.path.exists(config_path):
+        logger.critical("local.ini not found. Please ensure it exists in the project root.", path=config_path)
+        sys.exit(1)
 
-# 將組好的內容寫入 .env 檔案中
-with open(".env", "w", encoding="utf8") as env:
-    env.write(env_content)
+    local_config = ConfigParser()
+    try:
+        local_config.read(config_path)
+    except Exception as e:
+        logger.critical("Failed to read local.ini configuration file.", path=config_path, error=e, exc_info=True)
+        sys.exit(1)
+
+    # Determine which section to use based on APP_ENV environment variable
+    app_env = os.environ.get("APP_ENV", "").upper()
+
+    selected_section_name = "DEFAULT" # Default fallback
+    if app_env and app_env in local_config:
+        selected_section_name = app_env
+    elif "DEFAULT" not in local_config:
+        logger.critical("Neither APP_ENV specified section nor 'DEFAULT' section found in local.ini.", app_env=app_env)
+        sys.exit(1)
+
+    section = local_config[selected_section_name]
+    logger.info("Using configuration section.", section_name=selected_section_name)
+
+    env_content = ""
+    for key, value in section.items():
+        env_content += f"{key.upper()}={value}\n"
+
+    env_file_path = ".env"
+    try:
+        with open(env_file_path, "w", encoding="utf8") as env_file:
+            env_file.write(env_content)
+        logger.info(".env file generated successfully.", path=env_file_path, section_used=selected_section_name)
+    except Exception as e:
+        logger.critical("Failed to write .env file.", path=env_file_path, error=e, exc_info=True)
+        sys.exit(1)
+
+if __name__ == "__main__":
+    generate_env_file()

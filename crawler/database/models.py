@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Enum
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from datetime import datetime, timezone # Import timezone
 import enum
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field # Import Field
 
 Base = declarative_base()
 
@@ -21,9 +21,11 @@ class JobStatus(str, enum.Enum):
 
 class CrawlStatus(str, enum.Enum):
     """職缺詳情頁的抓取狀態。"""
-    PENDING = "pending"
-    COMPLETED = "completed"
-    FAILED = "failed"
+    PENDING = "PENDING"
+    QUEUED = "QUEUED"
+    PROCESSING = "PROCESSING"
+    SUCCESS = "SUCCESS"
+    FAILED = "FAILED"
 
 class SalaryType(str, enum.Enum):
     """標準化的薪資給付週期。"""
@@ -56,9 +58,9 @@ class Url(Base):
     source_url = Column(String(512), primary_key=True)
     source = Column(Enum(SourcePlatform), nullable=False, index=True)
     status = Column(Enum(JobStatus), nullable=False, index=True, default=JobStatus.ACTIVE)
-    details_crawl_status = Column(Enum(CrawlStatus), nullable=False, index=True, default=CrawlStatus.PENDING)
-    crawled_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    details_crawl_status = Column(String(20), nullable=False, index=True, default=CrawlStatus.PENDING.value)
+    crawled_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False) # Use timezone-aware datetime
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False) # Use timezone-aware datetime and onupdate
     details_crawled_at = Column(DateTime)
 
 class Job(Base):
@@ -70,20 +72,20 @@ class Job(Base):
     status = Column(Enum(JobStatus), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(Text)
-    job_type = Column(Integer)
+    job_type = Column(Enum(JobType)) # Changed to Enum(JobType)
     location_text = Column(String(255))
     posted_at = Column(DateTime)
     salary_text = Column(String(255))
     salary_min = Column(Integer)
     salary_max = Column(Integer)
-    salary_type = Column(String(255))
+    salary_type = Column(Enum(SalaryType)) # Changed to Enum(SalaryType)
     experience_required_text = Column(String(255))
     education_required_text = Column(String(255))
     company_source_id = Column(String(255))
     company_name = Column(String(255))
     company_url = Column(String(512))
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False) # Use timezone-aware datetime
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False) # Use timezone-aware datetime and onupdate
 
 # Pydantic Models
 class CategorySourcePydantic(BaseModel):
@@ -101,8 +103,8 @@ class UrlPydantic(BaseModel):
     source: SourcePlatform
     status: JobStatus = JobStatus.ACTIVE
     details_crawl_status: CrawlStatus = CrawlStatus.PENDING
-    crawled_at: datetime = datetime.utcnow()
-    updated_at: datetime = datetime.utcnow()
+    crawled_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)) # Use default_factory
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)) # Use default_factory
     details_crawled_at: Optional[datetime] = None
 
     class Config:
@@ -116,20 +118,20 @@ class JobPydantic(BaseModel):
     status: JobStatus
     title: str
     description: Optional[str] = None
-    job_type: Optional[int] = None
+    job_type: Optional[JobType] = None # Changed to Optional[JobType]
     location_text: Optional[str] = None
     posted_at: Optional[datetime] = None
     salary_text: Optional[str] = None
     salary_min: Optional[int] = None
     salary_max: Optional[int] = None
-    salary_type: Optional[str] = None
+    salary_type: Optional[SalaryType] = None # Changed to Optional[SalaryType]
     experience_required_text: Optional[str] = None
     education_required_text: Optional[str] = None
     company_source_id: Optional[str] = None
     company_name: Optional[str] = None
     company_url: Optional[str] = None
-    created_at: datetime = datetime.utcnow()
-    updated_at: datetime = datetime.utcnow()
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)) # Use default_factory
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc)) # Use default_factory
 
     class Config:
         from_attributes = True

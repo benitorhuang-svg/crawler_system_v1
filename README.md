@@ -51,10 +51,13 @@
 ### Worker 啟動預設執行 celery 的 queue 的工人
     uv run celery -A crawler.worker worker --loglevel=info
     uv run celery -A crawler.worker worker -Q crawler_category_104 --loglevel=info
-
-
 ### Producer 發送任務
     uv run python crawler/project_104/producer_104_jobs.py
+
+<!-- 任務流程：producer 負責生成並分發任務，而 worker 負責接收並執行這些任務 -->
+    APP_ENV=DEV python -m crawler.worker
+    APP_ENV=DEV python -m crawler.project_104.producer_category_104
+
 
 
 
@@ -86,9 +89,10 @@ docker compose -f docker-compose-producer-network.yml up -d
 
 
 ####   worker/producer  <啟動 / 關閉>
-    APP_ENV=DEV python -m crawler.project_104.task_category_104
-    APP_ENV=DEV python -m crawler.project_104.task_urls_104
-    APP_ENV=DEV python -m crawler.project_104.task_jobs_104
+    APP_ENV=DEV celery -A crawler.worker worker --loglevel=info
+    APP_ENV=DEV python -m crawler.project_104.producer_category_104
+    APP_ENV=DEV python -m crawler.project_104.producer_urls_104
+    APP_ENV=DEV python -m crawler.project_104.producer_jobs_104
 
 
     docker compose -f docker-compose-worker-network.yml up -d

@@ -1,46 +1,71 @@
 import pandas as pd
 import requests
+import structlog
+from datetime import datetime
 
 from ..worker import app
-from crawler.database.connection import get_engine
+from crawler.database.connection import get_session
+from crawler.logging_config import configure_logging
+from crawler.finmind.config import ( # Changed import path
+    FINMIND_API_BASE_URL,
+    FINMIND_START_DATE,
+    FINMIND_END_DATE,
+)
 
+configure_logging()
+logger = structlog.get_logger(__name__)
 
 def upload_data_to_mysql(df: pd.DataFrame):
-    engine = get_engine()
+    if df.empty:
+        logger.info("DataFrame is empty, skipping upload to MySQL.")
+        return
 
-    # 建立連線（可用於 Pandas、原生 SQL 操作）
-    connect = engine.connect()
+    try:
+        with get_session() as session:
+            df.to_sql(
+                "TaiwanStockPrice",
+                con=session.connection(),
+                if_exists="append",
+                index=False,
+            )
+            logger.info("Data uploaded to MySQL successfully.", table="TaiwanStockPrice", rows_uploaded=len(df))
+    except Exception as e:
+        logger.error("Failed to upload data to MySQL.", error=e, exc_info=True)
+        raise
 
-    df.to_sql(
-        "TaiwanStockPrice",
-        con=connect,
-        if_exists="append",
-        index=False,
-    )
-
-
-# 註冊 task, 有註冊的 task 才可以變成任務發送給 rabbitmq
 @app.task()
-def crawler_finmind(stock_id):
-    url = "https://api.finmindtrade.com/api/v4/data"
+def crawler_finmind(stock_id: str):
+    logger.info("Starting FinMind data crawl.", stock_id=stock_id)
+
     parameter = {
         "dataset": "TaiwanStockPrice",
         "data_id": stock_id,
-        "start_date": "2024-01-01",
-        "end_date": "2025-06-17",
+        "start_date": FINMIND_START_DATE,
+        "end_date": FINMIND_END_DATE,
     }
-    resp = requests.get(url, params=parameter)
-    data = resp.json()
-    if resp.status_code == 200:
-        df = pd.DataFrame(data["data"])
-        print(df)
-        # print("upload db")
-        upload_data_to_mysql(df)
-    else:
-        print(data["msg"])
 
+    try:
+        resp = requests.get(FINMIND_API_BASE_URL, params=parameter, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+
+        if resp.status_code == 200:
+            df = pd.DataFrame(data.get("data", []))
+            logger.info("FinMind API data fetched.", stock_id=stock_id, rows_fetched=len(df))
+            upload_data_to_mysql(df)
+        else:
+            logger.error("FinMind API returned an error.", status_code=resp.status_code, message=data.get("msg"), stock_id=stock_id)
+    except requests.exceptions.RequestException as e:
+        logger.error("Network or API request error.", error=e, stock_id=stock_id, exc_info=True)
+    except Exception as e:
+        logger.error("An unexpected error occurred during FinMind crawl.", error=e, stock_id=stock_id, exc_info=True)
 
 if __name__ == "__main__":
-    # This block is for testing purposes only, to simulate the task execution.
-    # In a real Celery setup, this task would be invoked by a worker.
-    crawler_finmind("2330")  # Using TSMC's stock ID as an example
+    import sys
+    if len(sys.argv) < 2:
+        logger.info("Usage: python -m crawler.database.test_upload_data_to_mysql <stock_id>")
+        sys.exit(1)
+
+    stock_id_for_test = sys.argv[1]
+    logger.info("Dispatching crawler_finmind task for local testing.", stock_id=stock_id_for_test)
+    crawler_finmind.delay(stock_id_for_test)

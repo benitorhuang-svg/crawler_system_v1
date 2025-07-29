@@ -1,25 +1,19 @@
-
-
-
 import structlog
 
 from .logging_config import configure_logging
 from .config import (
     RABBITMQ_HOST,
     RABBITMQ_PORT,
-    WORKER_ACCOUNT,
-    WORKER_PASSWORD,
 )
 
 configure_logging()
 
-logger = structlog.get_logger()
-
+logger = structlog.get_logger(__name__) # Corrected: add __name__
 
 logger.info(
-    "RabbitMQ configuration",
+    "RabbitMQ configuration check.", # Improved log message
     rabbitmq_host=RABBITMQ_HOST,
     rabbitmq_port=RABBITMQ_PORT,
-    worker_account=WORKER_ACCOUNT,
-    worker_password=WORKER_PASSWORD,
+    worker_account="***masked***", # Masked sensitive info
+    worker_password="***masked***", # Masked sensitive info
 )
