@@ -5,7 +5,7 @@ def configure_logging():
     # Configure standard logging to output to console
     logging.basicConfig(
         format="%(message)s",
-        level=logging.INFO,
+        level=logging.DEBUG,
     )
 
     # Configure structlog

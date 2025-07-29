@@ -26,16 +26,15 @@ app = Celery(
     "task",
     # 只包含 tasks.py 裡面的程式, 才會成功執行
     include=[
-        "crawler.project_104.task_104_jobs",
-
+        "crawler.project_104.task_category_104",
+        "crawler.project_104.task_jobs_104",
+        "crawler.project_104.task_urls_104", # 新增這一行，包含新的任務模組
     ],
     # 連線到 rabbitmq
     broker=f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/",
     task_routes={
         'crawler.project_104.task_104_jobs.fetch_104_data': {'queue': 'jobs_104'},
+        'crawler.project_104.task_urls_104.crawl_and_store_category_urls': {'queue': 'urls_104'}, # 為新的任務新增路由
         # 如果有其他任務，可以在這裡添加更多路由
     }
 )
-
-# Initialize database tables when the worker starts
-initialize_database()

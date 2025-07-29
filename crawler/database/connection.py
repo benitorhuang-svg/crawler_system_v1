@@ -7,6 +7,8 @@ import configparser
 from tenacity import retry, stop_after_attempt, wait_exponential, before_log, RetryError
 
 from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
+from contextlib import contextmanager
 
 # Add the parent directory to the Python path to allow importing 'crawler'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -48,6 +50,22 @@ settings = type('Settings', (object,), {'db': DBSettings()})()
 _engine = None
 metadata = Base.metadata # Use metadata from the Base in models.py
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=None) # bind will be set in get_session
+
+@contextmanager
+def get_session():
+    engine = get_engine() # Ensure engine is initialized
+    SessionLocal.configure(bind=engine) # Configure session with the engine
+    session = SessionLocal()
+    try:
+        yield session
+        session.commit() # 自動提交
+    except Exception:
+        session.rollback() # 發生錯誤時回滾
+        raise
+    finally:
+        session.close()
+
 def get_engine() -> create_engine:
     """
     獲取 SQLAlchemy 引擎實例，帶有強大的連接重試機制和正確的字元集配置。
@@ -64,7 +82,25 @@ def get_engine() -> create_engine:
             def _connect_with_retry() -> create_engine:
                 logger.info("正在嘗試創建 MySQL 引擎")
                 db = settings.db
-                # [關鍵修正] 在連接字串中明確指定 charset=utf8mb4
+                
+                # Connect without specifying a database to create it if it doesn't exist
+                temp_addr = f"mysql+pymysql://{db.user}:{db.password}@{db.host}:{db.port}/?charset=utf8mb4"
+                temp_engine = create_engine(temp_addr)
+                
+                try:
+                    logger.debug(f"嘗試連接到 MySQL 伺服器以建立資料庫 '{db.database}'...")
+                    with temp_engine.connect() as conn:
+                        logger.debug(f"已連接到 MySQL 伺服器。執行 CREATE DATABASE IF NOT EXISTS {db.database}...")
+                        conn.execute(text(f"CREATE DATABASE IF NOT EXISTS {db.database} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"))
+                        conn.commit()
+                    logger.info(f"資料庫 '{db.database}' 已確認存在或已創建。")
+                except Exception as e:
+                    logger.error(f"無法創建或確認資料庫 '{db.database}': {e}", exc_info=True)
+                    raise
+                finally:
+                    temp_engine.dispose() # Close the temporary connection pool
+                
+                # Now connect to the specific database
                 addr = f"mysql+pymysql://{db.user}:{db.password}@{db.host}:{db.port}/{db.database}?charset=utf8mb4"
                 
                 engine = create_engine(

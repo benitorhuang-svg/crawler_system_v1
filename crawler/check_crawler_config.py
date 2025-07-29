@@ -4,16 +4,16 @@
 import structlog
 
 from .logging_config import configure_logging
-
-configure_logging()
-logger = structlog.get_logger()
-
 from .config import (
     RABBITMQ_HOST,
     RABBITMQ_PORT,
     WORKER_ACCOUNT,
     WORKER_PASSWORD,
 )
+
+configure_logging()
+
+logger = structlog.get_logger()
 
 
 logger.info(

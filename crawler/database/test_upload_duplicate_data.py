@@ -1,6 +1,7 @@
 # 匯入 SQLAlchemy 所需模組
 # 匯入 pandas 並建立一個 DataFrame，模擬要寫入的資料
-import pandas as pd
+import pandas as pd  # 用來處理資料表（DataFrame）
+import structlog
 from sqlalchemy import (
     Column,
     Date,
@@ -8,21 +9,17 @@ from sqlalchemy import (
     MetaData,
     String,
     Table,
-    create_engine,
 )
 from sqlalchemy.dialects.mysql import (
     insert,
 )  # 專用於 MySQL 的 insert 語法，可支援 on_duplicate_key_update
 
-from crawler.config import MYSQL_ACCOUNT, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT
+from crawler.logging_config import configure_logging
+from crawler.database.connection import get_engine
 
-# 建立連接到 MySQL 的資料庫引擎（記得把帳號密碼換成你自己的）
-engine = create_engine(
-    f"mysql+pymysql://{MYSQL_ACCOUNT}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/tibame"
-)
+configure_logging()
 
-# 開啟連線
-conn = engine.connect()
+engine = get_engine()
 
 # 定義資料表結構，對應到 MySQL 中的 test_duplicate 表
 metadata = MetaData()
@@ -63,5 +60,9 @@ for _, row in df.iterrows():
     )
 
     # 執行 SQL 語句，寫入資料庫
-    with engine.begin() as conn:
-        conn.execute(update_stmt)
+    with engine.begin() as connection:
+        connection.execute(update_stmt)
+
+# 從資料庫讀取資料並列印
+read_df = pd.read_sql("SELECT * FROM test_duplicate", con=engine)
+structlog.get_logger(__name__).info(f"Data read from database:\n{read_df}")

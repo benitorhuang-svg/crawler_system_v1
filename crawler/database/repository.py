@@ -1,30 +1,36 @@
 import structlog
-import sys
-import os
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select, update
+from sqlalchemy import select, update, func
 from sqlalchemy.dialects.mysql import insert
 
-# Add the parent directory to the Python path to allow importing 'crawler'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
 from crawler.database.connection import get_engine
-from crawler.database.models import CategorySource, Url, Job, SourcePlatform, JobStatus, CrawlStatus, JobPydantic
+from crawler.database.models import (
+    CategorySource,
+    Url,
+    Job,
+    SourcePlatform,
+    JobStatus,
+    CrawlStatus,
+    JobPydantic,
+)
 
 # Configure logging
 logger = structlog.get_logger(__name__)
 
-def sync_source_categories(platform: SourcePlatform, flattened_data: List[Dict[str, Any]]) -> Dict[str, Any]:
+
+def sync_source_categories(
+    platform: SourcePlatform, flattened_data: List[Dict[str, Any]]
+) -> Dict[str, Any]:
     """
     將抓取到的職務分類數據同步到資料庫。
     執行 UPSERT 操作，如果分類已存在則更新，否則插入。
     """
     if not flattened_data:
         return {"total": 0, "affected": 0}
-    
+
     with Session(get_engine()) as session:
         stmt = insert(CategorySource).values(flattened_data)
         update_dict = {
@@ -34,28 +40,29 @@ def sync_source_categories(platform: SourcePlatform, flattened_data: List[Dict[s
         stmt = stmt.on_duplicate_key_update(**update_dict)
         session.execute(stmt)
         session.commit()
-        logger.info("Synced categories", platform=platform.value, total_categories=len(flattened_data))
+        logger.info(
+            "Synced categories",
+            platform=platform.value,
+            total_categories=len(flattened_data),
+        )
         return {"total": len(flattened_data), "affected": 0}
 
-def get_categories_by_platform(platform: SourcePlatform) -> List[CategorySource]:
-    """
-    從資料庫獲取指定平台的所有職務分類。
-    """
-    with Session(get_engine()) as session:
-        statement = select(CategorySource).where(CategorySource.source_platform == platform)
-        return list(session.exec(statement).all())
 
-def get_source_categories(platform: SourcePlatform, source_ids: Optional[List[str]] = None) -> List[CategorySource]:
+def get_source_categories(
+    platform: SourcePlatform, source_ids: Optional[List[str]] = None
+) -> List[CategorySource]:
     """
     從資料庫獲取指定平台和可選的 source_ids 的職務分類。
     """
     with Session(get_engine()) as session:
         stmt = select(CategorySource).where(CategorySource.source_platform == platform)
         if source_ids:
-            from sqlalchemy import text
-            ids_str = ','.join(f"'{sid}'" for sid in source_ids if isinstance(sid, str))
-            stmt = stmt.where(text(f"source_category_id IN ({ids_str})"))
-        return list(session.exec(stmt).all())
+            stmt = stmt.where(CategorySource.source_category_id.in_(source_ids))
+        return list(session.scalars(stmt).all())
+
+
+
+
 
 def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
     """
@@ -65,17 +72,17 @@ def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
     if not urls:
         return
 
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     url_models_to_upsert = [
         {
-            "source_url": u,
+            "source_url": url,
             "source": platform,
             "status": JobStatus.ACTIVE,
             "details_crawl_status": CrawlStatus.PENDING,
             "crawled_at": now,
             "updated_at": now,
         }
-        for u in urls
+        for url in urls
     ]
 
     with Session(get_engine()) as session:
@@ -89,17 +96,19 @@ def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
         session.execute(stmt)
         session.commit()
 
+
 def get_unprocessed_urls(platform: SourcePlatform, limit: int) -> List[Url]:
     """
     從資料庫獲取指定平台未處理的 URL 列表。
     """
     with Session(get_engine()) as session:
-        return list(session.exec(
-            select(Url).where(
-                Url.source == platform,
-                Url.details_crawl_status == CrawlStatus.PENDING
-            ).limit(limit)
-        ).all())
+        statement = (
+            select(Url)
+            .where(Url.source == platform, Url.details_crawl_status == CrawlStatus.PENDING)
+            .limit(limit)
+        )
+        return list(session.scalars(statement).all())
+
 
 def upsert_jobs(jobs: List[JobPydantic]) -> None:
     """
@@ -108,71 +117,51 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
     """
     if not jobs:
         return
-        
+
+    now = datetime.now(timezone.utc)
+    job_dicts_to_upsert = [
+        {
+            **d,
+            "updated_at": now,
+            "created_at": d.get("created_at") or now,
+        }
+        for job in jobs
+        for d in [job.model_dump(exclude_none=False)]
+    ]
+
     with Session(get_engine()) as session:
         try:
-            now = datetime.utcnow()
-            job_dicts_to_upsert = []
-            for job in jobs:
-                job_dict = job.model_dump(exclude_none=False)
-                job_dict['updated_at'] = now
-                if 'created_at' not in job_dict or job_dict['created_at'] is None:
-                    job_dict['created_at'] = now
-                job_dicts_to_upsert.append(job_dict)
-
-            if not job_dicts_to_upsert:
-                return
-
             stmt = insert(Job).values(job_dicts_to_upsert)
-            
+
             update_cols = {
-                "source_platform": stmt.inserted.source_platform,
-                "source_job_id": stmt.inserted.source_job_id,
-                "url": stmt.inserted.url,
-                "status": stmt.inserted.status,
-                "title": stmt.inserted.title,
-                "description": stmt.inserted.description,
-                "job_type": stmt.inserted.job_type,
-                "location_text": stmt.inserted.location_text,
-                "posted_at": stmt.inserted.posted_at,
-                "salary_text": stmt.inserted.salary_text,
-                "salary_min": stmt.inserted.salary_min,
-                "salary_max": stmt.inserted.salary_max,
-                "salary_type": stmt.inserted.salary_type,
-                "experience_required_text": stmt.inserted.experience_required_text,
-                "education_required_text": stmt.inserted.education_required_text,
-                "company_source_id": stmt.inserted.company_source_id,
-                "company_name": stmt.inserted.company_name,
-                "company_url": stmt.inserted.company_url,
-                "updated_at": stmt.inserted.updated_at,
+                c.name: getattr(stmt.inserted, c.name)
+                for c in Job.__table__.columns
+                if not c.primary_key
             }
-            
+
             final_stmt = stmt.on_duplicate_key_update(**update_cols)
             session.execute(final_stmt)
             session.commit()
-            logger.info("Upserted or updated jobs")
+            logger.info("Upserted or updated jobs", count=len(job_dicts_to_upsert))
 
         except Exception as e:
             session.rollback()
             logger.error("Failed to upsert jobs", error=e, exc_info=True)
             raise
 
+
 def mark_urls_as_crawled(processed_urls: Dict[CrawlStatus, List[str]]) -> None:
     """
     根據處理狀態標記 URL 為已爬取。
     """
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     with Session(get_engine()) as session:
         for status, urls in processed_urls.items():
             if urls:
-                from sqlalchemy import text
-                if isinstance(urls, list) and urls:
-                    urls_str = ','.join(f"'{u}'" for u in urls if isinstance(u, str))
-                    stmt = update(Url).where(text(f"source_url IN ({urls_str})"))
-                elif isinstance(urls, str):
-                    stmt = update(Url).where(text(f"source_url = '{urls}'"))
-                else:
-                    continue
-                stmt = stmt.values(details_crawl_status=status, details_crawled_at=now)
+                stmt = (
+                    update(Url)
+                    .where(Url.source_url.in_(urls))
+                    .values(details_crawl_status=status, details_crawled_at=now)
+                )
                 session.execute(stmt)
         session.commit()

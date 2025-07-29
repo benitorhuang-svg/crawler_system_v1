@@ -78,11 +78,19 @@ docker compose -f docker-compose-producer-network.yml up -d
 #### 建立 network
     docker network create my_network
 
-# mysql
+# 建立 mysql service / 啟動 / 關閉 / 上傳資料
     docker compose -f mysql.yml up -d
     docker compose -f mysql.yml down
+    APP_ENV=DEV python -m crawler.database.test_upload_data_to_mysql
+    APP_ENV=DEV python -m crawler.database.test_upload_duplicate_data
+
 
 ####   worker/producer  <啟動 / 關閉>
+    APP_ENV=DEV python -m crawler.project_104.task_category_104
+    APP_ENV=DEV python -m crawler.project_104.task_urls_104
+    APP_ENV=DEV python -m crawler.project_104.task_jobs_104
+
+
     docker compose -f docker-compose-worker-network.yml up -d
     docker compose -f docker-compose-worker-network.yml down
     docker compose -f docker-compose-producer-network.yml up -d

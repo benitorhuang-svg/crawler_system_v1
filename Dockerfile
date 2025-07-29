@@ -16,6 +16,7 @@ WORKDIR /app
 
 # Copy only the installed packages from the builder stage
 COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy the application code
 COPY . .
