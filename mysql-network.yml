@@ -1,31 +1,33 @@
 version: '3.8'
 
 services:
-  mysql:
+  crawler_jobs_mysql:
     image: mysql:8.0
-    container_name: crawler_jobs_mysql
-    restart: always
+    # 設定 mysql 使用原生認證的密碼 hash
+    command: mysqld --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_ACCOUNT: ${MYSQL_ACCOUNT}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+
+    restart: always
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - my_network
 
-  phpmyadmin:
+
+
+  crawler_jobs_phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: crawler_jobs_phpmyadmin
+    links: 
+          - crawler_jobs_mysql:db
     restart: always
     ports:
       - "8080:80"
-    environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    depends_on:
-      - mysql
     networks:
       - my_network
 

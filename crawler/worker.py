@@ -36,3 +36,6 @@ app = Celery(
         # 如果有其他任務，可以在這裡添加更多路由
     }
 )
+
+# Initialize database tables when the worker starts
+initialize_database()

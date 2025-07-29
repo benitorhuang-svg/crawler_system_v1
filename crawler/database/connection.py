@@ -1,6 +1,8 @@
 import structlog
 import os
 import sys
+import logging
+import configparser
 
 from tenacity import retry, stop_after_attempt, wait_exponential, before_log, RetryError
 
@@ -17,11 +19,29 @@ logger = structlog.get_logger(__name__)
 # Placeholder for settings.db based on environment variables
 class DBSettings:
     def __init__(self):
-        self.user = os.environ.get("MYSQL_USER", "root")
-        self.password = os.environ.get("MYSQL_PASSWORD", "test")
-        self.host = os.environ.get("MYSQL_HOST", "localhost")
-        self.port = int(os.environ.get("MYSQL_PORT", 3306))
-        self.database = os.environ.get("MYSQL_DATABASE", "crawler_db")
+        config = configparser.ConfigParser()
+        config_path = os.path.join(os.path.dirname(__file__), '..', '..', 'local.ini')
+        
+        try:
+            config.read(config_path)
+        except Exception as e:
+            logger.critical(f"無法讀取 local.ini 設定檔: {e}", exc_info=True)
+            raise RuntimeError("無法讀取資料庫設定檔。") from e
+
+        # Determine which section to use based on APP_ENV environment variable
+        # Default to 'DEV' if APP_ENV is not set or invalid
+        app_env = os.environ.get("APP_ENV", "DOCKER").upper()
+        if app_env not in config:
+            logger.warning(f"環境變數 APP_ENV={app_env} 無效或未找到對應區塊，預設使用 [DOCKER] 設定。")
+            app_env = "DOCKER"
+
+        db_section = config[app_env]
+
+        self.user = db_section.get("MYSQL_ACCOUNT")
+        self.password = db_section.get("MYSQL_PASSWORD")
+        self.host = db_section.get("MYSQL_HOST")
+        self.port = int(db_section.get("MYSQL_PORT"))
+        self.database = db_section.get("MYSQL_DATABASE", "crawler_db") # Provide a default if not found in section.
 
 settings = type('Settings', (object,), {'db': DBSettings()})()
 
@@ -38,7 +58,7 @@ def get_engine() -> create_engine:
             @retry(
                 stop=stop_after_attempt(10),
                 wait=wait_exponential(multiplier=1, min=2, max=30),
-                before=before_log(logger, "info"),
+                before=before_log(logger, logging.INFO),
                 reraise=True
             )
             def _connect_with_retry() -> create_engine:
