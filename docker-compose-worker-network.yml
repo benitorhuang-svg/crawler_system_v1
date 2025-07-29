@@ -2,8 +2,7 @@
 
 services:
   crawler_104:  # 定義一個服務，名稱為 crawler_twse
-    build: .  # Build the image from the local Dockerfile
-    # image: benitorhuang/crawler_jobs:0.0.1 
+    image: benitorhuang/crawler_jobs:0.0.2 
 
     hostname: "crawler_104_category"
     command: celery -A crawler.worker worker --loglevel=info --hostname=%h -Q jobs_104  

@@ -40,11 +40,11 @@ def dispatch_job_urls():
         update_urls_status(urls_to_process, CrawlStatus.QUEUED)
         logger.info("已更新 URL 狀態為 QUEUED", count=len(urls_to_process))
 
-        # 3. 使用 group 高效地批次分發任務
+        # 3. 使用 group 高效地批次分發任務，並指定佇列
         task_group = group(fetch_url_data_104.s(url) for url in urls_to_process)
-        task_group.apply_async()
+        task_group.apply_async(queue='jobs_104')
 
-        logger.info("已成功分發一批職缺 URL 任務", count=len(urls_to_process))
+        logger.info("已成功分發一批職缺 URL 任務", count=len(urls_to_process), queue='jobs_104')
 
     except SQLAlchemyError as e:
         logger.error("資料庫操作失敗", error=str(e))
