@@ -7,31 +7,40 @@ from pydantic import BaseModel
 
 Base = declarative_base()
 
-class SourcePlatform(enum.Enum):
-    PLATFORM_104 = "104"
-    PLATFORM_1111 = "1111"
-    PLATFORM_CAKEHR = "cakehr"
+class SourcePlatform(str, enum.Enum):
+    """資料來源平台。用於在資料庫中標識數據的來源。"""
+    PLATFORM_104 = "platform_104"
+    PLATFORM_1111 = "platform_1111"
+    PLATFORM_CAKERESUME = "platform_cakeresume"
+    PLATFORM_YES123 = "platform_yes123"
 
-class JobStatus(enum.Enum):
+class JobStatus(str, enum.Enum):
+    """職缺或 URL 的活躍狀態。"""
     ACTIVE = "active"
     INACTIVE = "inactive"
 
-class CrawlStatus(enum.Enum):
+class CrawlStatus(str, enum.Enum):
+    """職缺詳情頁的抓取狀態。"""
     PENDING = "pending"
-    CRAWLED = "crawled"
+    COMPLETED = "completed"
     FAILED = "failed"
 
-class JobType(enum.Enum):
-    FULL_TIME = "full_time"
-    PART_TIME = "part_time"
-    CONTRACT = "contract"
-    INTERNSHIP = "internship"
+class SalaryType(str, enum.Enum):
+    """標準化的薪資給付週期。"""
+    MONTHLY = "MONTHLY"
+    HOURLY = "HOURLY"
+    YEARLY = "YEARLY"
+    DAILY = "DAILY"
+    BY_CASE = "BY_CASE"
+    NEGOTIABLE = "NEGOTIABLE"
 
-class SalaryType(enum.Enum):
-    MONTHLY = "monthly"
-    YEARLY = "yearly"
-    HOURLY = "hourly"
-    DAILY = "daily"
+class JobType(str, enum.Enum):
+    """標準化的工作類型。"""
+    FULL_TIME = "FULL_TIME"
+    PART_TIME = "PART_TIME"
+    CONTRACT = "CONTRACT"
+    INTERNSHIP = "INTERNSHIP"
+    TEMPORARY = "TEMPORARY"
 
 # SQLAlchemy Models
 class CategorySource(Base):
@@ -61,13 +70,13 @@ class Job(Base):
     status = Column(Enum(JobStatus), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(Text)
-    job_type = Column(Enum(JobType))
+    job_type = Column(Integer)
     location_text = Column(String(255))
     posted_at = Column(DateTime)
     salary_text = Column(String(255))
     salary_min = Column(Integer)
     salary_max = Column(Integer)
-    salary_type = Column(Enum(SalaryType))
+    salary_type = Column(String(255))
     experience_required_text = Column(String(255))
     education_required_text = Column(String(255))
     company_source_id = Column(String(255))
@@ -107,13 +116,13 @@ class JobPydantic(BaseModel):
     status: JobStatus
     title: str
     description: Optional[str] = None
-    job_type: Optional[JobType] = None
+    job_type: Optional[int] = None
     location_text: Optional[str] = None
     posted_at: Optional[datetime] = None
     salary_text: Optional[str] = None
     salary_min: Optional[int] = None
     salary_max: Optional[int] = None
-    salary_type: Optional[SalaryType] = None
+    salary_type: Optional[str] = None
     experience_required_text: Optional[str] = None
     education_required_text: Optional[str] = None
     company_source_id: Optional[str] = None

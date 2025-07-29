@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select, update, func
+from sqlalchemy import select, update
 from sqlalchemy.dialects.mysql import insert
 
 from crawler.database.connection import get_engine
@@ -59,10 +59,6 @@ def get_source_categories(
         if source_ids:
             stmt = stmt.where(CategorySource.source_category_id.in_(source_ids))
         return list(session.scalars(stmt).all())
-
-
-
-
 
 def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
     """
@@ -121,12 +117,12 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
     now = datetime.now(timezone.utc)
     job_dicts_to_upsert = [
         {
-            **d,
+            **dump_job,
             "updated_at": now,
-            "created_at": d.get("created_at") or now,
+            "created_at": dump_job.get("created_at") or now,
         }
         for job in jobs
-        for d in [job.model_dump(exclude_none=False)]
+        for dump_job in [job.model_dump(exclude_none=False)]
     ]
 
     with Session(get_engine()) as session:
@@ -134,9 +130,9 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
             stmt = insert(Job).values(job_dicts_to_upsert)
 
             update_cols = {
-                c.name: getattr(stmt.inserted, c.name)
-                for c in Job.__table__.columns
-                if not c.primary_key
+                column.name: getattr(stmt.inserted, column.name)
+                for column in Job.__table__.columns
+                if not column.primary_key
             }
 
             final_stmt = stmt.on_duplicate_key_update(**update_cols)

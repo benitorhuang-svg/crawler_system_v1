@@ -59,8 +59,8 @@ def fetch_url_data_104(url_JobCat):
             for d in flattened_data if d.get("parent_source_id")
         }
         db_categories_set = {
-            (c.source_category_id, c.source_category_name, c.parent_source_id)
-            for c in existing_categories
+            (category.source_category_id, category.source_category_name, category.parent_source_id)
+            for category in existing_categories
         }
 
         categories_to_sync_set = api_categories_set - db_categories_set
@@ -89,15 +89,7 @@ def fetch_url_data_104(url_JobCat):
 
 
 if __name__ == "__main__":
-    """
-    Provides a command-line interface for local testing of the task.
-
-    This allows for direct execution of the category fetching and syncing logic
-    without needing a full Celery worker setup. It's useful for debugging
-    the data processing and database interaction.
-
-    Usage:
-        APP_ENV=DEV python -m crawler.project_104.task_category_104
-    """
-    sample_url = "https://static.104.com.tw/category-tool/json/JobCat.json"
-    fetch_url_data_104(sample_url)
+    # 啟動本地測試 task_category_104
+    # APP_ENV=DEV python -m crawler.project_104.task_category_104
+    JobCat_url_104 = "https://static.104.com.tw/category-tool/json/JobCat.json"
+    fetch_url_data_104(JobCat_url_104)
