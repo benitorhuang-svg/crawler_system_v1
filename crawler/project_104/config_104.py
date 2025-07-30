@@ -56,6 +56,3 @@ URL_CRAWLER_PAGE_SIZE_104 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_104", 
 URL_CRAWLER_ORDER_BY_104 = int(
     config_section.get("URL_CRAWLER_ORDER_BY_104", "16")
 )  # 16 (最近更新)
-URL_PRODUCER_CATEGORY_LIMIT = int(
-    config_section.get("URL_PRODUCER_CATEGORY_LIMIT", "1")
-)  # Default to 1 for local testing. Set to 0 for no limit.

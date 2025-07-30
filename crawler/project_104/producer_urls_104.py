@@ -4,25 +4,22 @@ from crawler.database.models import SourcePlatform
 import structlog
 
 from crawler.logging_config import configure_logging
-from crawler.project_104.config_104 import (
-    URL_PRODUCER_CATEGORY_LIMIT,
-)  # Changed import path
 
 configure_logging()
 logger = structlog.get_logger(__name__)
 
-
-def dispatch_urls_for_all_categories() -> None:
+def dispatch_urls_for_all_categories(limit: int = 0) -> None:
     """
     分發所有 104 職務類別的 URL 抓取任務。
 
     從資料庫中獲取所有 104 平台的類別，並為每個類別分發一個 Celery 任務，
     由 `crawl_and_store_category_urls` 任務負責實際的 URL 抓取。
 
+    :param limit: 限制分發的類別數量。0 表示無限制。
     :return: 無。
     :rtype: None
     """
-    logger.info("Starting URL task distribution for all 104 categories.")
+    logger.info("Starting URL task distribution for all 104 categories.", limit=limit)
 
     all_104_categories = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
 
@@ -38,11 +35,11 @@ def dispatch_urls_for_all_categories() -> None:
             )
 
             categories_to_dispatch = root_categories
-            if URL_PRODUCER_CATEGORY_LIMIT > 0:
-                categories_to_dispatch = root_categories[:URL_PRODUCER_CATEGORY_LIMIT]
+            if limit > 0:
+                categories_to_dispatch = root_categories[:limit]
                 logger.info(
                     "Applying category limit for dispatch.",
-                    limit=URL_PRODUCER_CATEGORY_LIMIT,
+                    limit=limit,
                     actual_count=len(categories_to_dispatch),
                 )
 
