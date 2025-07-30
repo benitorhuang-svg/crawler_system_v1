@@ -2,7 +2,7 @@ import structlog
 from collections import deque
 
 from crawler.worker import app
-from crawler.database.models import SourcePlatform, UrlCategoryPydantic
+from crawler.database.models import SourcePlatform, UrlCategoryPydantic, CategorySourcePydantic
 from crawler.database.repository import upsert_urls, upsert_url_categories
 from crawler.project_104.client_104 import fetch_job_urls_from_104_api
 
@@ -21,13 +21,15 @@ logger = structlog.get_logger(__name__)
 
 
 @app.task
-def crawl_and_store_category_urls(job_category_code: str, url_limit: int = 0) -> None:
+def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> None:
     """
     Celery 任務：遍歷指定職缺類別的所有頁面，抓取職缺網址，並將其儲存到資料庫。
 
-    :param job_category_code: 職缺類別代碼。
+    :param job_category: 職缺類別的 Pydantic 模型。
     :param url_limit: 限制抓取的 URL 數量。0 表示無限制。
     """
+    job_category = CategorySourcePydantic.model_validate(job_category)
+    job_category_code = job_category.source_category_id
     global_job_url_set = set()
     current_batch_urls = []
     current_batch_url_categories = [] # 新增：用於儲存 URL-Category 關聯
@@ -144,10 +146,11 @@ def crawl_and_store_category_urls(job_category_code: str, url_limit: int = 0) ->
 
 if __name__ == "__main__":
     # python -m crawler.project_104.task_urls_104
-    from crawler.database.connection import initialize_database
-    initialize_database()
-    job_category_lists = [2007000000, 2007001000, 2007002000, 2004003000]
-    for job_category_code_int in job_category_lists: 
-        job_category_code_str = str(job_category_code_int)
-        logger.info("Dispatching crawl_and_store_category_urls task for local testing.", job_category_code=job_category_code_str)
-        crawl_and_store_category_urls(job_category_code_str)
+    # from crawler.database.connection import initialize_database
+    # initialize_database()
+    from crawler.database.repository import get_all_categories_for_platform
+    job_category_lists = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
+
+    for job_category in job_category_lists:
+        logger.info("Dispatching crawl_and_store_category_urls task for local testing.", job_category_code=job_category.source_category_id)
+        crawl_and_store_category_urls(job_category.model_dump())

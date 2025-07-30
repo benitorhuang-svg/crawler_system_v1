@@ -1,20 +1,30 @@
 import json
+import random
+import time
+from typing import Any, Dict, Optional
+
 import requests
 import structlog
-import time
-import random
-from typing import Optional, Dict, Any
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from crawler.config import (
-    URL_CRAWLER_SLEEP_MIN_SECONDS,
-    URL_CRAWLER_SLEEP_MAX_SECONDS,
     URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
+    URL_CRAWLER_SLEEP_MAX_SECONDS,
+    URL_CRAWLER_SLEEP_MIN_SECONDS,
 )
-from crawler.project_104.config_104 import HEADERS_104_JOB_API, JOB_API_BASE_URL_104
 from crawler.logging_config import configure_logging
+from crawler.project_104.config_104 import (
+    HEADERS_104_JOB_API,
+    JOB_API_BASE_URL_104,
+)
+
+# Suppress only the single InsecureRequestWarning from urllib3 needed
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
 
 configure_logging()
 logger = structlog.get_logger(__name__)
+
 
 def _make_api_request(
     method: str,

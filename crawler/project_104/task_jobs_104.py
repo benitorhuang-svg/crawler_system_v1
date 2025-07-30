@@ -1,14 +1,13 @@
 import structlog
 from crawler.worker import app
-from crawler.database.models import SourcePlatform, JobPydantic, JobStatus, SkillPydantic, LanguagePydantic, LicensePydantic, JobSkillPydantic, JobLanguageAbilityPydantic, JobLicensePydantic
-from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_job_id_by_source_id, get_or_create_skill, get_or_create_language, get_or_create_license, upsert_job_skills, upsert_job_language_abilities, upsert_job_licenses
+from crawler.database.models import SourcePlatform, JobPydantic, JobStatus
+from crawler.database.repository import upsert_jobs, mark_urls_as_crawled
 from crawler.project_104.client_104 import (
     fetch_job_data_from_104_api,
 )  # Import the new API client
-from crawler.project_104.job_description_parser import extract_skills, extract_languages, extract_licenses
-from crawler.database.connection import get_session
 
-from typing import Optional, List
+
+from typing import Optional
 import re
 from datetime import datetime
 from crawler.database.models import SalaryType, CrawlStatus, JobType
@@ -171,38 +170,7 @@ def fetch_url_data_104(url: str) -> Optional[JobPydantic]:
 
         upsert_jobs([job_pydantic_data])
 
-        # --- Extract and store skills, languages, and licenses ---
-        db_job_id = get_job_id_by_source_id(SourcePlatform.PLATFORM_104, job_id)
-        if db_job_id:
-            job_description = job_detail.get("jobDescription", "")
-
-            # Extract and store skills
-            extracted_skills_pydantic = extract_skills(job_description)
-            job_skills_to_upsert = []
-            with get_session() as session:
-                for skill_pydantic in extracted_skills_pydantic:
-                    skill_obj = get_or_create_skill(session, skill_pydantic.name)
-                    job_skills_to_upsert.append(JobSkillPydantic(job_id=db_job_id, skill_id=skill_obj.id))
-            upsert_job_skills(job_skills_to_upsert)
-
-            # Extract and store languages
-            extracted_languages_pydantic = extract_languages(job_description)
-            job_languages_to_upsert = []
-            with get_session() as session:
-                for lang_pydantic in extracted_languages_pydantic:
-                    lang_obj = get_or_create_language(session, lang_pydantic.name)
-                    job_languages_to_upsert.append(JobLanguageAbilityPydantic(job_id=db_job_id, language_id=lang_obj.id))
-            upsert_job_language_abilities(job_languages_to_upsert)
-
-            # Extract and store licenses
-            extracted_licenses_pydantic = extract_licenses(job_description)
-            job_licenses_to_upsert = []
-            with get_session() as session:
-                for license_pydantic in extracted_licenses_pydantic:
-                    license_obj = get_or_create_license(session, license_pydantic.name)
-                    job_licenses_to_upsert.append(JobLicensePydantic(job_id=db_job_id, license_id=license_obj.id))
-            upsert_job_licenses(job_licenses_to_upsert)
-        # --- End extraction and storage ---
+        
 
         logger.info("Job parsed and upserted successfully.", job_id=job_id, url=url)
         mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]})  # 使用 SUCCESS 狀態

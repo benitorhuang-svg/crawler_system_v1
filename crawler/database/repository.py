@@ -18,18 +18,6 @@ from crawler.database.models import (
     JobPydantic,
     CategorySourcePydantic,
     UrlCategory,
-    Skill,
-    Language,
-    License,
-    JobSkill,
-    JobLanguageAbility,
-    JobLicense,
-    SkillPydantic,
-    LanguagePydantic,
-    LicensePydantic,
-    JobSkillPydantic,
-    JobLanguageAbilityPydantic,
-    JobLicensePydantic,
 )
 
 logger = structlog.get_logger(__name__)
@@ -63,77 +51,10 @@ def _generic_upsert(
         return result.rowcount # 返回受影響的行數
 
 
-def get_or_create_skill(session, skill_name: str) -> Skill:
-    skill = session.scalar(select(Skill).where(Skill.name == skill_name))
-    if not skill:
-        skill = Skill(name=skill_name)
-        session.add(skill)
-        session.flush()  # Flush to get the ID
-        logger.debug("Created new skill.", skill_name=skill_name, skill_id=skill.id)
-    return skill
 
 
-def get_or_create_language(session, language_name: str) -> Language:
-    language = session.scalar(select(Language).where(Language.name == language_name))
-    if not language:
-        language = Language(name=language_name)
-        session.add(language)
-        session.flush()  # Flush to get the ID
-        logger.debug("Created new language.", language_name=language_name, language_id=language.id)
-    return language
 
 
-def get_or_create_license(session, license_name: str) -> License:
-    license = session.scalar(select(License).where(License.name == license_name))
-    if not license:
-        license = License(name=license_name)
-        session.add(license)
-        session.flush()  # Flush to get the ID
-        logger.debug("Created new license.", license_name=license_name, license_id=license.id)
-    return license
-
-
-def upsert_job_skills(job_skills: List[JobSkillPydantic]) -> None:
-    if not job_skills:
-        logger.info("No job skills to upsert.")
-        return
-    data_list = [js.model_dump() for js in job_skills]
-    affected_rows = _generic_upsert(JobSkill, data_list, [])
-    logger.info("Job skills upserted successfully.", count=len(job_skills), affected_rows=affected_rows)
-
-
-def upsert_job_language_abilities(job_language_abilities: List[JobLanguageAbilityPydantic]) -> None:
-    if not job_language_abilities:
-        logger.info("No job language abilities to upsert.")
-        return
-    data_list = [jla.model_dump() for jla in job_language_abilities]
-    affected_rows = _generic_upsert(JobLanguageAbility, data_list, [])
-    logger.info("Job language abilities upserted successfully.", count=len(job_language_abilities), affected_rows=affected_rows)
-
-
-def upsert_job_licenses(job_licenses: List[JobLicensePydantic]) -> None:
-    if not job_licenses:
-        logger.info("No job licenses to upsert.")
-        return
-    data_list = [jl.model_dump() for jl in job_licenses]
-    affected_rows = _generic_upsert(JobLicense, data_list, [])
-    logger.info("Job licenses upserted successfully.", count=len(job_licenses), affected_rows=affected_rows)
-
-
-def get_job_id_by_source_id(source_platform: SourcePlatform, source_job_id: str) -> Optional[int]:
-    """
-    Retrieves the internal job ID from tb_jobs using source_platform and source_job_id.
-    """
-    with get_session() as session:
-        job = session.scalar(
-            select(Job.id)
-            .where(Job.source_platform == source_platform, Job.source_job_id == source_job_id)
-        )
-        if job:
-            logger.debug("Retrieved job ID.", source_platform=source_platform.value, source_job_id=source_job_id, job_id=job)
-        else:
-            logger.warning("Job ID not found for source ID.", source_platform=source_platform.value, source_job_id=source_job_id)
-        return job
 
 
 def sync_source_categories(

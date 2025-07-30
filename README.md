@@ -90,7 +90,7 @@ docker compose -f docker-compose-producer-network.yml up -d
 
 ####   worker/producer  <啟動 / 關閉>
     celery -A crawler.worker worker --loglevel=info
-    
+
     ENV=DEV python genenv.py
     python -m crawler.project_104.task_category_104
     python -m crawler.project_104.task_urls_104
@@ -108,36 +108,3 @@ docker compose -f docker-compose-producer-network.yml up -d
     DOCKER_IMAGE_VERSION=0.0.3 docker compose -f docker-compose-producer-network-version.yml up -d
     DOCKER_IMAGE_VERSION=0.0.3 docker compose -f docker-compose-producer-network-version.yml down
 
-
-
-#### 啟動 scheduler
-
-    DOCKER_IMAGE_VERSION=0.0.4 docker compose -f docker-compose-scheduler-network-version.yml up -d
-
-#### 關閉 scheduler
-
-    DOCKER_IMAGE_VERSION=0.0.4 docker compose -f docker-compose-scheduler-network-version.yml down
-
-#### 查看 log
-
-    docker logs container_name
-
-#### 下載 taiwan_stock_price.csv
-
-    wget https://github.com/FinMind/FinMindBook/releases/download/data/taiwan_stock_price.csv
-
-#### 上傳 taiwan_stock_price.csv
-
-    pipenv run python crawler/upload_taiwan_stock_price_to_mysql.py
-
-#### login
-    gcloud auth application-default login
-
-#### set GCP project
-    gcloud config set project high-transit-465916-a6
-
-#### 上傳台股股價到 BigQuery
-    pipenv run python crawler/upload_taiwan_stock_price_to_bigquery.py
-
-#### 輸入 Secret Manager
-    pipenv run python crawler/print_secret_manager.py

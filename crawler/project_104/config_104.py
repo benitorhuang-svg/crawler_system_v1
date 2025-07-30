@@ -46,7 +46,7 @@ HEADERS_104_JOB_API = {
 
 HEADERS_104_URL_CRAWLER = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "Referer": "https://www.104.com.tw/",
+    "Referer": "https://www.104.com.tw/jobs/search/",
 }
 
 URL_CRAWLER_BASE_URL_104 = config_section.get(
