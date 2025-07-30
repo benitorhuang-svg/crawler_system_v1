@@ -214,6 +214,20 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
     logger.info("Jobs upserted successfully.", count=len(job_dicts_to_upsert), affected_rows=affected_rows)
 
 
+def upsert_url_categories(url_category_data: List[Dict[str, Any]]) -> None:
+    """
+    將 URL 與其所屬的分類關聯數據同步到資料庫。
+    執行 UPSERT 操作，如果關聯已存在則更新，否則插入。
+    """
+    if not url_category_data:
+        logger.info("No URL category data to upsert.")
+        return
+
+    affected_rows = _generic_upsert(UrlCategory, url_category_data, []) # UrlCategory has composite primary key, no update columns needed for UPSERT
+
+    logger.info("URL categories upserted successfully.", count=len(url_category_data), affected_rows=affected_rows)
+
+
 def mark_urls_as_crawled(processed_urls: Dict[CrawlStatus, List[str]]) -> None:
     """
     根據處理狀態標記 URL 為已爬取。

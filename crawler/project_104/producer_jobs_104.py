@@ -43,10 +43,10 @@ def dispatch_job_urls():
 
         # 3. 使用 group 高效地批次分發任務，並指定佇列
         task_group = group(fetch_url_data_104.s(url) for url in urls_to_process)
-        task_group.apply_async(queue="jobs_104")
+        task_group.apply_async(queue="producer_jobs_104")
 
         logger.info(
-            "已成功分發一批職缺 URL 任務", count=len(urls_to_process), queue="jobs_104"
+            "已成功分發一批職缺 URL 任務", count=len(urls_to_process), queue="producer_jobs_104"
         )
 
     except SQLAlchemyError as e:
@@ -55,7 +55,7 @@ def dispatch_job_urls():
         logger.error("分發任務時發生未預期的錯誤", error=str(e))
 
 
-if __name__ == "__main__":
-    # 確保在執行前資料庫已初始化
-    initialize_database()
-    dispatch_job_urls()
+# if __name__ == "__main__":
+#     # 確保在執行前資料庫已初始化
+#     initialize_database()
+#     dispatch_job_urls()

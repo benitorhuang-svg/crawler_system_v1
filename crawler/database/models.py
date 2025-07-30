@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, Enum
+from sqlalchemy import Column, Integer, String, Text, DateTime, Enum, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship # Import relationship
 from datetime import datetime, timezone  # Import timezone
 import enum
 from typing import Optional
@@ -60,9 +61,12 @@ class CategorySource(Base):
     __tablename__ = "tb_category_source"
     id = Column(Integer, primary_key=True)
     source_platform = Column(Enum(SourcePlatform), nullable=False)
-    source_category_id = Column(String(255), nullable=False)
+    source_category_id = Column(String(255), nullable=False, unique=True) # Make unique for relationship
     source_category_name = Column(String(255), nullable=False)
     parent_source_id = Column(String(255))
+
+    # Relationship to UrlCategory
+    url_associations = relationship("UrlCategory", back_populates="category")
 
 
 class Url(Base):
@@ -85,6 +89,20 @@ class Url(Base):
         nullable=False,
     )  # Use timezone-aware datetime and onupdate
     details_crawled_at = Column(DateTime)
+
+    # Relationship to UrlCategory
+    category_associations = relationship("UrlCategory", back_populates="url")
+
+
+class UrlCategory(Base):
+    __tablename__ = "tb_url_categories"
+    source_url = Column(String(512), ForeignKey("tb_urls.source_url"), primary_key=True)
+    source_category_id = Column(String(255), ForeignKey("tb_category_source.source_category_id"), primary_key=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    # Relationships to parent tables
+    url = relationship("Url", back_populates="category_associations")
+    category = relationship("CategorySource", back_populates="url_associations")
 
 
 class Job(Base):
@@ -143,6 +161,15 @@ class UrlPydantic(BaseModel):
         default_factory=lambda: datetime.now(timezone.utc)
     )  # Use default_factory
     details_crawled_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class UrlCategoryPydantic(BaseModel):
+    source_url: str
+    source_category_id: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Config:
         from_attributes = True

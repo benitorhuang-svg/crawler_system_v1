@@ -2,8 +2,8 @@ import structlog
 from collections import deque
 
 from crawler.worker import app
-from crawler.database.models import SourcePlatform
-from crawler.database.repository import upsert_urls
+from crawler.database.models import SourcePlatform, UrlCategoryPydantic
+from crawler.database.repository import upsert_urls, upsert_url_categories
 from crawler.api_clients.client_104 import fetch_job_urls_from_104_api
 
 from crawler.config import (
@@ -27,6 +27,7 @@ def crawl_and_store_category_urls(job_category_code: str) -> None:
     """
     global_job_url_set = set()
     current_batch_urls = []
+    current_batch_url_categories = [] # 新增：用於儲存 URL-Category 關聯
     recent_counts = deque(maxlen=4)
 
     current_page = 1
@@ -85,15 +86,24 @@ def crawl_and_store_category_urls(job_category_code: str) -> None:
                 if job_link not in global_job_url_set:
                     global_job_url_set.add(job_link)
                     current_batch_urls.append(job_link)
+                # 無論是否是新的 URL，都將其與當前類別關聯
+                current_batch_url_categories.append(
+                    UrlCategoryPydantic(
+                        source_url=job_link,
+                        source_category_id=job_category_code,
+                    ).model_dump()
+                )
 
         if len(current_batch_urls) >= URL_CRAWLER_UPLOAD_BATCH_SIZE:
             logger.info(
-                "Batch upload size reached. Starting upload.",
+                "Batch upload size reached. Starting URL and URL-Category upload.",
                 count=len(current_batch_urls),
                 job_category_code=job_category_code,
             )
             upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
+            upsert_url_categories(current_batch_url_categories) # 上傳 URL-Category 關聯
             current_batch_urls.clear()
+            current_batch_url_categories.clear()
 
         total_jobs = len(global_job_url_set)
         recent_counts.append(total_jobs)
@@ -114,6 +124,7 @@ def crawl_and_store_category_urls(job_category_code: str) -> None:
             job_category_code=job_category_code,
         )
         upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
+        upsert_url_categories(current_batch_url_categories) # 上傳剩餘的 URL-Category 關聯
     else:
         logger.info(
             "Task completed. No URLs collected, skipping database storage.",

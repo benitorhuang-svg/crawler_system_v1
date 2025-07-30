@@ -46,9 +46,9 @@ def dispatch_urls_for_all_categories(limit: int = 0) -> None:
             for category_info in categories_to_dispatch:
                 category_id: str = category_info.source_category_id
                 logger.info("分發 URL 抓取任務", category_id=category_id)
-                crawl_and_store_category_urls.delay(
-                    category_id, queue="jobs_104"
-                )  # 指定佇列
+                crawl_and_store_category_urls.s(
+                    category_id
+                ).apply_async(queue="producer_urls_104")  # 指定佇列
         else:
             logger.info("No root categories found for PLATFORM_104.")
     else:
