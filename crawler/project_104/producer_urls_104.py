@@ -8,7 +8,7 @@ from crawler.logging_config import configure_logging
 configure_logging()
 logger = structlog.get_logger(__name__)
 
-def dispatch_urls_for_all_categories(limit: int = 0) -> None:
+def dispatch_urls_for_all_categories(limit: int = 0, sort_key: Optional[str] = None) -> None:
     """
     分發所有 104 職務類別的 URL 抓取任務。
 
@@ -16,10 +16,11 @@ def dispatch_urls_for_all_categories(limit: int = 0) -> None:
     由 `crawl_and_store_category_urls` 任務負責實際的 URL 抓取。
 
     :param limit: 限制分發的類別數量。0 表示無限制。
+    :param sort_key: 用於排序類別的鍵 (例如 'source_category_id', 'source_category_name')。
     :return: 無。
     :rtype: None
     """
-    logger.info("Starting URL task distribution for all 104 categories.", limit=limit)
+    logger.info("Starting URL task distribution for all 104 categories.", limit=limit, sort_key=sort_key)
 
     all_104_categories = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
 
@@ -34,6 +35,11 @@ def dispatch_urls_for_all_categories(limit: int = 0) -> None:
                 "Found root categories for PLATFORM_104.", count=len(root_categories)
             )
 
+            # 根據 sort_key 排序
+            if sort_key and hasattr(root_categories[0], sort_key):
+                root_categories.sort(key=lambda x: getattr(x, sort_key))
+                logger.info("Categories sorted.", sort_key=sort_key)
+
             categories_to_dispatch = root_categories
             if limit > 0:
                 categories_to_dispatch = root_categories[:limit]
@@ -47,8 +53,8 @@ def dispatch_urls_for_all_categories(limit: int = 0) -> None:
                 category_id: str = category_info.source_category_id
                 logger.info("分發 URL 抓取任務", category_id=category_id)
                 crawl_and_store_category_urls.s(
-                    category_id
-                ).apply_async(queue="producer_urls_104")  # 指定佇列
+                    category_id, queue="producer_urls_104"
+                )  # 指定佇列
         else:
             logger.info("No root categories found for PLATFORM_104.")
     else:

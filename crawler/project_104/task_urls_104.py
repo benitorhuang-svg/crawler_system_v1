@@ -21,9 +21,12 @@ logger = structlog.get_logger(__name__)
 
 
 @app.task
-def crawl_and_store_category_urls(job_category_code: str) -> None:
+def crawl_and_store_category_urls(job_category_code: str, url_limit: int = 0) -> None:
     """
     Celery 任務：遍歷指定職缺類別的所有頁面，抓取職缺網址，並將其儲存到資料庫。
+
+    :param job_category_code: 職缺類別代碼。
+    :param url_limit: 限制抓取的 URL 數量。0 表示無限制。
     """
     global_job_url_set = set()
     current_batch_urls = []
@@ -32,10 +35,15 @@ def crawl_and_store_category_urls(job_category_code: str) -> None:
 
     current_page = 1
     logger.info(
-        "Task started: crawling job category URLs.", job_category_code=job_category_code
+        "Task started: crawling job category URLs.", job_category_code=job_category_code, url_limit=url_limit
     )
 
     while True:
+        # 檢查是否達到 URL 限制
+        if url_limit > 0 and len(global_job_url_set) >= url_limit:
+            logger.info("URL limit reached. Ending task early.", job_category_code=job_category_code, url_limit=url_limit, collected_urls=len(global_job_url_set))
+            break
+
         if current_page % 5 == 1:
             logger.info(
                 "Current page being processed.",
