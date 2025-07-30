@@ -5,7 +5,11 @@ import time
 import random
 from typing import Optional, Dict, Any
 
-from crawler.config import URL_CRAWLER_SLEEP_MIN_SECONDS, URL_CRAWLER_SLEEP_MAX_SECONDS
+from crawler.config import (
+    URL_CRAWLER_SLEEP_MIN_SECONDS,
+    URL_CRAWLER_SLEEP_MAX_SECONDS,
+    URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
+)
 from crawler.project_104.config_104 import HEADERS_104_JOB_API, JOB_API_BASE_URL_104
 from crawler.logging_config import configure_logging
 
@@ -83,6 +87,7 @@ def fetch_job_data_from_104_api(job_id: str) -> Optional[Dict[str, Any]]:
         "GET",
         api_url,
         headers=HEADERS_104_JOB_API,
+        timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,  # 加上這行
         log_context={"job_id": job_id, "api_type": "job_data"},
     )
 

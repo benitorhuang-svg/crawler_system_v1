@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship # Import relationship
 from datetime import datetime, timezone  # Import timezone
 import enum
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, Field  # Import Field
 
 Base = declarative_base()
@@ -114,13 +114,13 @@ class Job(Base):
     status = Column(Enum(JobStatus), nullable=False)
     title = Column(String(255), nullable=False)
     description = Column(Text)
-    job_type = Column(Enum(JobType))  # Changed to Enum(JobType)
+    job_type = Column(Enum(JobType))
     location_text = Column(String(255))
     posted_at = Column(DateTime)
     salary_text = Column(String(255))
     salary_min = Column(Integer)
     salary_max = Column(Integer)
-    salary_type = Column(Enum(SalaryType))  # Changed to Enum(SalaryType)
+    salary_type = Column(Enum(SalaryType))
     experience_required_text = Column(String(255))
     education_required_text = Column(String(255))
     company_source_id = Column(String(255))
@@ -128,13 +128,72 @@ class Job(Base):
     company_url = Column(String(512))
     created_at = Column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
-    )  # Use timezone-aware datetime
+    )
     updated_at = Column(
         DateTime,
         default=lambda: datetime.now(timezone.utc),
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False,
-    )  # Use timezone-aware datetime and onupdate
+    )
+
+    # Relationships for extracted data
+    skills = relationship("JobSkill", back_populates="job", cascade="all, delete-orphan")
+    languages = relationship("JobLanguageAbility", back_populates="job", cascade="all, delete-orphan")
+    licenses = relationship("JobLicense", back_populates="job", cascade="all, delete-orphan")
+
+
+class Skill(Base):
+    __tablename__ = "lk_skills"  # Lookup table for skills
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), unique=True, nullable=False)
+
+    job_associations = relationship("JobSkill", back_populates="skill")
+
+
+class Language(Base):
+    __tablename__ = "lk_languages"  # Lookup table for languages
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), unique=True, nullable=False)
+
+    job_associations = relationship("JobLanguageAbility", back_populates="language")
+
+
+class License(Base):
+    __tablename__ = "lk_licenses"  # Lookup table for licenses
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(255), unique=True, nullable=False)
+
+    job_associations = relationship("JobLicense", back_populates="license")
+
+
+class JobSkill(Base):
+    __tablename__ = "tb_job_skills"
+    job_id = Column(Integer, ForeignKey("tb_jobs.id"), primary_key=True)
+    skill_id = Column(Integer, ForeignKey("lk_skills.id"), primary_key=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    job = relationship("Job", back_populates="skills")
+    skill = relationship("Skill", back_populates="job_associations")
+
+
+class JobLanguageAbility(Base):
+    __tablename__ = "tb_job_language_abilities"
+    job_id = Column(Integer, ForeignKey("tb_jobs.id"), primary_key=True)
+    language_id = Column(Integer, ForeignKey("lk_languages.id"), primary_key=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    job = relationship("Job", back_populates="languages")
+    language = relationship("Language", back_populates="job_associations")
+
+
+class JobLicense(Base):
+    __tablename__ = "tb_job_licenses"
+    job_id = Column(Integer, ForeignKey("tb_jobs.id"), primary_key=True)
+    license_id = Column(Integer, ForeignKey("lk_licenses.id"), primary_key=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    job = relationship("Job", back_populates="licenses")
+    license = relationship("License", back_populates="job_associations")
 
 
 # Pydantic Models
@@ -156,10 +215,10 @@ class UrlPydantic(BaseModel):
     details_crawl_status: CrawlStatus = CrawlStatus.PENDING
     crawled_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
-    )  # Use default_factory
+    )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
-    )  # Use default_factory
+    )
     details_crawled_at: Optional[datetime] = None
 
     class Config:
@@ -175,6 +234,57 @@ class UrlCategoryPydantic(BaseModel):
         from_attributes = True
 
 
+class SkillPydantic(BaseModel):
+    id: Optional[int] = None
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
+class LanguagePydantic(BaseModel):
+    id: Optional[int] = None
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
+class LicensePydantic(BaseModel):
+    id: Optional[int] = None
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
+class JobSkillPydantic(BaseModel):
+    job_id: int
+    skill_id: int
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Config:
+        from_attributes = True
+
+
+class JobLanguageAbilityPydantic(BaseModel):
+    job_id: int
+    language_id: int
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Config:
+        from_attributes = True
+
+
+class JobLicensePydantic(BaseModel):
+    job_id: int
+    license_id: int
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Config:
+        from_attributes = True
+
+
 class JobPydantic(BaseModel):
     id: Optional[int] = None
     source_platform: SourcePlatform
@@ -183,13 +293,13 @@ class JobPydantic(BaseModel):
     status: JobStatus
     title: str
     description: Optional[str] = None
-    job_type: Optional[JobType] = None  # Changed to Optional[JobType]
+    job_type: Optional[JobType] = None
     location_text: Optional[str] = None
     posted_at: Optional[datetime] = None
     salary_text: Optional[str] = None
     salary_min: Optional[int] = None
     salary_max: Optional[int] = None
-    salary_type: Optional[SalaryType] = None  # Changed to Optional[SalaryType]
+    salary_type: Optional[SalaryType] = None
     experience_required_text: Optional[str] = None
     education_required_text: Optional[str] = None
     company_source_id: Optional[str] = None
@@ -197,10 +307,15 @@ class JobPydantic(BaseModel):
     company_url: Optional[str] = None
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
-    )  # Use default_factory
+    )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
-    )  # Use default_factory
+    )
+
+    # Fields for extracted data
+    extracted_skills: List[SkillPydantic] = []
+    extracted_languages: List[LanguagePydantic] = []
+    extracted_licenses: List[LicensePydantic] = []
 
     class Config:
         from_attributes = True

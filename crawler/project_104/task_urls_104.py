@@ -4,7 +4,7 @@ from collections import deque
 from crawler.worker import app
 from crawler.database.models import SourcePlatform, UrlCategoryPydantic
 from crawler.database.repository import upsert_urls, upsert_url_categories
-from crawler.api_clients.client_104 import fetch_job_urls_from_104_api
+from crawler.project_104.client_104 import fetch_job_urls_from_104_api
 
 from crawler.config import (
     URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
@@ -140,3 +140,14 @@ def crawl_and_store_category_urls(job_category_code: str, url_limit: int = 0) ->
         )
 
     logger.info("Task execution finished.", job_category_code=job_category_code)
+
+
+if __name__ == "__main__":
+    # python -m crawler.project_104.task_urls_104
+    from crawler.database.connection import initialize_database
+    initialize_database()
+    job_category_lists = [2007000000, 2007001000, 2007002000, 2004003000]
+    for job_category_code_int in job_category_lists: 
+        job_category_code_str = str(job_category_code_int)
+        logger.info("Dispatching crawl_and_store_category_urls task for local testing.", job_category_code=job_category_code_str)
+        crawl_and_store_category_urls(job_category_code_str)

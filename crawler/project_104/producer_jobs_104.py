@@ -5,7 +5,6 @@ from sqlalchemy.exc import SQLAlchemyError
 from crawler.project_104.task_jobs_104 import fetch_url_data_104
 from crawler.database.repository import get_urls_by_crawl_status, update_urls_status
 from crawler.database.models import SourcePlatform, CrawlStatus
-from crawler.database.connection import initialize_database
 from crawler.logging_config import configure_logging
 from crawler.config import PRODUCER_BATCH_SIZE
 
@@ -24,7 +23,7 @@ def dispatch_job_urls():
 
     try:
         # 1. 讀取新任務 (PENDING) 和失敗的任務 (FAILED)
-        statuses_to_fetch = [CrawlStatus.PENDING, CrawlStatus.FAILED]
+        statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING]
         urls_to_process = get_urls_by_crawl_status(
             platform=SourcePlatform.PLATFORM_104,
             statuses=statuses_to_fetch,  # 傳入狀態列表
@@ -54,8 +53,3 @@ def dispatch_job_urls():
     except Exception as e:
         logger.error("分發任務時發生未預期的錯誤", error=str(e))
 
-
-# if __name__ == "__main__":
-#     # 確保在執行前資料庫已初始化
-#     initialize_database()
-#     dispatch_job_urls()

@@ -37,6 +37,7 @@ MYSQL_ROOT_PASSWORD = config_section.get("MYSQL_ROOT_PASSWORD", "root_password")
 MYSQL_PASSWORD = config_section.get("MYSQL_PASSWORD", "root_password")
 MYSQL_DATABASE = config_section.get("MYSQL_DATABASE", "crawler_db")
 LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO").upper()
+LOG_FORMATTER = config_section.get("LOG_FORMATTER", "json").lower()
 
 PRODUCER_BATCH_SIZE = int(config_section.get("PRODUCER_BATCH_SIZE", "100"))
 PRODUCER_DISPATCH_INTERVAL_SECONDS = float(

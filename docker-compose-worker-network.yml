@@ -5,7 +5,7 @@ services:
     image: benitorhuang/crawler_jobs:0.0.2 
 
     hostname: "crawler_104_category"
-    command: celery -A crawler.worker worker --loglevel=info --hostname=%h -Q jobs_104  
+    command: celery -A crawler.worker worker --loglevel=info --hostname=%h -Q producer_jobs_104,producer_urls_104,producer_category_104  
     # 啟動容器後執行的命令，這裡是啟動 Celery worker，指定 app 為 crawler.worker，設定日誌等級為 info，
     # 使用主機名稱當作 worker 名稱（%h），並將此 worker 加入名為 "twse" 的任務佇列 (queue)
 

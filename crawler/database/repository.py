@@ -17,6 +17,19 @@ from crawler.database.models import (
     CrawlStatus,
     JobPydantic,
     CategorySourcePydantic,
+    UrlCategory,
+    Skill,
+    Language,
+    License,
+    JobSkill,
+    JobLanguageAbility,
+    JobLicense,
+    SkillPydantic,
+    LanguagePydantic,
+    LicensePydantic,
+    JobSkillPydantic,
+    JobLanguageAbilityPydantic,
+    JobLicensePydantic,
 )
 
 logger = structlog.get_logger(__name__)
@@ -24,20 +37,103 @@ logger = structlog.get_logger(__name__)
 
 def _generic_upsert(
     model: DeclarativeBase, data_list: List[Dict[str, Any]], update_columns: List[str]
-) -> None:
+) -> int:
     """
     通用的 UPSERT 函式，用於將數據同步到資料庫。
     如果記錄已存在，則更新指定欄位；否則插入新記錄。
     """
     if not data_list:
-        return
+        return 0
 
     with get_session() as session:
         stmt = insert(model).values(data_list)
-        update_dict = {col: getattr(stmt.inserted, col) for col in update_columns}
-        stmt = stmt.on_duplicate_key_update(**update_dict)
+        
+        if update_columns: # 只有當有需要更新的欄位時才構建 update_dict
+            update_dict = {col: getattr(stmt.inserted, col) for col in update_columns}
+            stmt = stmt.on_duplicate_key_update(**update_dict)
+        else:
+            # 對於沒有額外更新欄位的 UPSERT (例如只有複合主鍵的關聯表)，
+            # 仍然需要呼叫 on_duplicate_key_update 以觸發 ON DUPLICATE KEY 行為
+            # 這裡選擇更新第一個非主鍵欄位為其自身，以滿足語法要求但不實際更新數據
+            # 如果沒有非主鍵欄位，則選擇第一個主鍵欄位
+            first_column_name = next(iter(model.__table__.columns)).name
+            stmt = stmt.on_duplicate_key_update(**{first_column_name: getattr(stmt.inserted, first_column_name)})
+
         result = session.execute(stmt)
         return result.rowcount # 返回受影響的行數
+
+
+def get_or_create_skill(session, skill_name: str) -> Skill:
+    skill = session.scalar(select(Skill).where(Skill.name == skill_name))
+    if not skill:
+        skill = Skill(name=skill_name)
+        session.add(skill)
+        session.flush()  # Flush to get the ID
+        logger.debug("Created new skill.", skill_name=skill_name, skill_id=skill.id)
+    return skill
+
+
+def get_or_create_language(session, language_name: str) -> Language:
+    language = session.scalar(select(Language).where(Language.name == language_name))
+    if not language:
+        language = Language(name=language_name)
+        session.add(language)
+        session.flush()  # Flush to get the ID
+        logger.debug("Created new language.", language_name=language_name, language_id=language.id)
+    return language
+
+
+def get_or_create_license(session, license_name: str) -> License:
+    license = session.scalar(select(License).where(License.name == license_name))
+    if not license:
+        license = License(name=license_name)
+        session.add(license)
+        session.flush()  # Flush to get the ID
+        logger.debug("Created new license.", license_name=license_name, license_id=license.id)
+    return license
+
+
+def upsert_job_skills(job_skills: List[JobSkillPydantic]) -> None:
+    if not job_skills:
+        logger.info("No job skills to upsert.")
+        return
+    data_list = [js.model_dump() for js in job_skills]
+    affected_rows = _generic_upsert(JobSkill, data_list, [])
+    logger.info("Job skills upserted successfully.", count=len(job_skills), affected_rows=affected_rows)
+
+
+def upsert_job_language_abilities(job_language_abilities: List[JobLanguageAbilityPydantic]) -> None:
+    if not job_language_abilities:
+        logger.info("No job language abilities to upsert.")
+        return
+    data_list = [jla.model_dump() for jla in job_language_abilities]
+    affected_rows = _generic_upsert(JobLanguageAbility, data_list, [])
+    logger.info("Job language abilities upserted successfully.", count=len(job_language_abilities), affected_rows=affected_rows)
+
+
+def upsert_job_licenses(job_licenses: List[JobLicensePydantic]) -> None:
+    if not job_licenses:
+        logger.info("No job licenses to upsert.")
+        return
+    data_list = [jl.model_dump() for jl in job_licenses]
+    affected_rows = _generic_upsert(JobLicense, data_list, [])
+    logger.info("Job licenses upserted successfully.", count=len(job_licenses), affected_rows=affected_rows)
+
+
+def get_job_id_by_source_id(source_platform: SourcePlatform, source_job_id: str) -> Optional[int]:
+    """
+    Retrieves the internal job ID from tb_jobs using source_platform and source_job_id.
+    """
+    with get_session() as session:
+        job = session.scalar(
+            select(Job.id)
+            .where(Job.source_platform == source_platform, Job.source_job_id == source_job_id)
+        )
+        if job:
+            logger.debug("Retrieved job ID.", source_platform=source_platform.value, source_job_id=source_job_id, job_id=job)
+        else:
+            logger.warning("Job ID not found for source ID.", source_platform=source_platform.value, source_job_id=source_job_id)
+        return job
 
 
 def sync_source_categories(
@@ -198,7 +294,10 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
     now = datetime.now(timezone.utc)
     job_dicts_to_upsert = [
         {
-            **job.model_dump(exclude_none=False),
+            **job.model_dump(
+                exclude_none=False,
+                exclude={"extracted_skills", "extracted_languages", "extracted_licenses"}
+            ),
             "updated_at": now,
             "created_at": job.created_at or now,
         }

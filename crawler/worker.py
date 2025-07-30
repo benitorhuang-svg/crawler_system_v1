@@ -1,6 +1,7 @@
 from celery import Celery
 import structlog
 import logging # Import logging module
+import sys # Import sys module
 
 from crawler.config import (
     RABBITMQ_HOST,
@@ -38,6 +39,13 @@ app = Celery(
 app.conf.broker_url = (
     f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/"
 )
+
+# Initialize database when Celery app is ready
+@app.on_after_configure.connect
+def setup_database_connection(sender, **kwargs):
+    from crawler.database.connection import initialize_database
+    initialize_database()
+    logger.info("Celery app configured and database initialized.")
 
 # Configure Celery's logging to use structlog
 @app.on_after_configure.connect

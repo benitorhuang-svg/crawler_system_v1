@@ -4,7 +4,7 @@ from crawler.worker import app
 from crawler.database.models import SourcePlatform
 from crawler.database.repository import get_source_categories, sync_source_categories
 from crawler.project_104.config_104 import HEADERS_104  # Changed import path
-from crawler.api_clients.client_104 import (
+from crawler.project_104.client_104 import (
     fetch_category_data_from_104_api,
 )  # Import the new API client
 
@@ -86,6 +86,9 @@ def fetch_url_data_104(url_JobCat):
         logger.error("An unexpected error occurred during category sync.", error=e, exc_info=True, url=url_JobCat)
 
 
-# if __name__ == "__main__":
-#     logger.info("Dispatching fetch_url_data_104 task for local testing.")
-#     fetch_url_data_104.delay(JOB_CAT_URL_104)
+if __name__ == "__main__":
+    from crawler.database.connection import initialize_database
+    from crawler.project_104.config_104 import JOB_CAT_URL_104
+    initialize_database()
+    logger.info("Dispatching fetch_url_data_104 task for local testing.", url=JOB_CAT_URL_104)
+    fetch_url_data_104(JOB_CAT_URL_104)

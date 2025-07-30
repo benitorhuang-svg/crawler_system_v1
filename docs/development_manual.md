@@ -254,11 +254,11 @@
 
 - **啟動 Producer**:
   ```bash
-  APP_ENV=DEV python -m crawler.project_104.producer_category_104
+   python -m crawler.project_104.producer_category_104
   ```
 - **啟動 Worker**:
   ```bash
-  APP_ENV=DEV celery -A crawler.worker worker --loglevel=info
+   celery -A crawler.worker worker --loglevel=info
   ```
 
 ---
