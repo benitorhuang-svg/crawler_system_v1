@@ -8,6 +8,7 @@ logger = structlog.get_logger(__name__)
 WEB_NAME_CAKERESUME = config_section.get("WEB_NAME_CAKERESUME", "CakeResume")
 JOB_CAT_URL_CAKERESUME = config_section.get("JOB_CAT_URL_CAKERESUME", "https://www.cakeresume.com/jobs")
 JOB_LISTING_BASE_URL_CAKERESUME = config_section.get("JOB_LISTING_BASE_URL_CAKERESUME", "https://www.cakeresume.com/jobs")
+logger.info("JOB_LISTING_BASE_URL_CAKERESUME loaded", url=JOB_LISTING_BASE_URL_CAKERESUME)
 JOB_DETAIL_BASE_URL_CAKERESUME = config_section.get("JOB_DETAIL_BASE_URL_CAKERESUME", "https://www.cakeresume.com") # Job URLs are constructed as base + path
 
 HEADERS_CAKERESUME = {

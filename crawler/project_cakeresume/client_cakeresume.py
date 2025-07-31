@@ -96,35 +96,16 @@ def fetch_cakeresume_category_data(
     html_content = _make_web_request("GET", url, headers=headers, log_context={"api_type": "cakeresume_category_data"})
     if html_content:
         soup = BeautifulSoup(html_content, 'html.parser')
-        scripts = soup.find_all('script')
-        if scripts and len(scripts) > 0 and scripts[-1].string:
+        data_script = soup.find('script', id='__NEXT_DATA__')
+
+        if data_script and data_script.string:
             try:
-                data = json.loads(scripts[-1].string)
-                data = json.loads(scripts[-1].string)
-                data = json.loads(scripts[-1].string)
-                i18n_store = data['props']['pageProps']['_nextI18Next']['initialI18nStore']['zh-TW']
-                
-                categories = []
-                
-                # Extract from 'sector'
-                for key, value in i18n_store.get('sector', {}).items():
-                    if key.startswith('sector_groups.') or key.startswith('sectors.'):
-                        categories.append({
-                            'source_category_id': key,
-                            'source_category_name': value
-                        })
-                
-                # Extract from 'profession'
-                for key, value in i18n_store.get('profession', {}).items():
-                    if key.startswith('profession_groups.') or key.startswith('professions.'):
-                        categories.append({
-                            'source_category_id': key,
-                            'source_category_name': value
-                        })
-                
-                return {"categories": categories}
+                data = json.loads(data_script.string)
+                # The relevant data is nested under props.pageProps._nextI18Next.initialI18nStore.zh-TW.sector
+                i18n_store_zh_tw_sector = data.get('props', {}).get('pageProps', {}).get('_nextI18Next', {}).get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {})
+                return {'initialI18nStore': {'zh-TW': {'sector': i18n_store_zh_tw_sector}}}
             except (json.JSONDecodeError, KeyError) as e:
-                logger.error("Failed to parse CakeResume category JSON data.", error=e, exc_info=True)
+                logger.error("Failed to parse CakeResume category JSON data from __NEXT_DATA__ script.", error=e, exc_info=True)
                 return None
     return None
 
@@ -143,6 +124,7 @@ def cake_me_url(KEYWORDS: str, CATEGORY: str, ORDER: Optional[str] = None) -> st
     """
 
     BASE_URL = JOB_LISTING_BASE_URL_CAKERESUME
+    logger.debug("Using BASE_URL for CakeResume job listing", base_url=BASE_URL)
 
     if KEYWORDS and CATEGORY:
         url = f"{BASE_URL}/{KEYWORDS}?profession[0]={CATEGORY}&page="
@@ -168,6 +150,7 @@ def fetch_cakeresume_job_urls(
     從 CakeResume 獲取職缺 URL 列表的原始數據 (HTML 內容)。
     """
     url = cake_me_url(KEYWORDS, CATEGORY, ORDER) + str(PAGE_NUM)
+    logger.debug("Final URL for CakeResume job listing", final_url=url)
     return _make_web_request(
         "GET",
         url,

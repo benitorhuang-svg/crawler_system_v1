@@ -1,59 +1,67 @@
-import os
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 import structlog
-from bs4 import BeautifulSoup
-import re
+import json
 
-from crawler.worker import app
 from crawler.database import connection as db_connection
 from crawler.database import repository
 from crawler.database.connection import initialize_database
 from crawler.database.schemas import SourcePlatform
 from crawler.project_yes123.client_yes123 import fetch_yes123_category_data
 from crawler.project_yes123.config_yes123 import JOB_CAT_URL_YES123
+from crawler.worker import app
+
+# Import MAPPING from apply_classification.py
+from crawler.database.category_classification_data.apply_classification import MAPPING
 
 logger = structlog.get_logger(__name__)
 
 
-def flatten_yes123_categories(html_content):
+def flatten_yes123_categories(json_content):
     """
-    Parses the HTML content from yes123 category page and flattens the category structure.
+    Parses the JSON content from yes123 category data and flattens the category structure.
+    Applies major category mapping for top-level categories.
     """
     flattened = []
-    soup = BeautifulSoup(html_content, 'html.parser')
+    try:
+        data = json.loads(json_content.encode('utf-8').decode('utf-8-sig'))
+        list_obj = data.get('listObj', [])
 
-    category_table = soup.find('table', class_='table_01')
+        for level1_item in list_obj:
+            for level2_item in level1_item.get('list_2', []):
+                source_category_id = level2_item.get('code')
+                source_category_name = level2_item.get('level_2_name')
 
-    if not category_table:
-        logger.error("Could not find category table in yes123 HTML.")
-        return flattened
+                parent_source_id = None
+                if source_category_id:
+                    parts = source_category_id.split('_')
+                    if len(parts) == 4:
+                        if parts[3] != '0000':
+                            parent_source_id = f"{parts[0]}_{parts[1]}_{parts[2]}_0000"
+                        else: # This is a top-level category in Yes123's original structure
+                            mapped_parent_id = MAPPING[SourcePlatform.PLATFORM_YES123].get(source_category_name)
+                            if mapped_parent_id:
+                                parent_source_id = mapped_parent_id
+                    else:
+                        logger.warning("Unexpected code format for parent derivation.", code=source_category_id)
 
-    for row in category_table.find_all('tr'):
-        for td in row.find_all('td'):
-            link = td.find('a')
-            if link and 'href' in link.attrs:
-                href = link['href']
-                match = re.search(r'job_kind=(\d+)', href)
-                if match:
-                    source_category_id = match.group(1)
-                    source_category_name = link.get_text(strip=True)
-                    
-                    parent_source_id = None
-                    if len(source_category_id) == 9 and source_category_id.endswith('001'):
-                        parent_source_id = source_category_id[:6]
-                    elif len(source_category_id) == 6 and source_category_id.endswith('00'):
-                        parent_source_id = source_category_id[:3]
 
+                if source_category_id and source_category_name:
                     flattened.append({
                         "parent_source_id": parent_source_id,
                         "source_category_id": source_category_id,
                         "source_category_name": source_category_name,
                         "source_platform": SourcePlatform.PLATFORM_YES123.value,
                     })
+    except json.JSONDecodeError as e:
+        logger.error("Failed to decode JSON content for yes123 categories.", error=e, exc_info=True)
+    except Exception as e:
+        logger.error("An unexpected error occurred during yes123 category flattening.", error=e, exc_info=True)
+
     return flattened
 
 
@@ -84,7 +92,6 @@ def fetch_url_data_yes123(url_JobCat: str = JOB_CAT_URL_YES123):
         api_categories_set = {
             (d["source_category_id"], d["source_category_name"], d["parent_source_id"])
             for d in flattened_data
-            if d.get("parent_source_id")
         }
         db_categories_set = {
             (

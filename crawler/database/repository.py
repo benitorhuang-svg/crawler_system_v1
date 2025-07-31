@@ -305,6 +305,36 @@ def mark_urls_as_crawled(processed_urls: Dict[CrawlStatus, List[str]]) -> None:
                     "URLs marked as crawled.", status=status.value, count=len(urls)
                 )
 
+def update_category_parent_id(
+    platform: SourcePlatform, source_category_id: str, new_parent_source_id: Optional[str]
+) -> None:
+    """
+    更新指定平台和 source_category_id 的職務分類的 parent_source_id。
+    """
+    with get_session() as session:
+        stmt = (
+            update(CategorySource)
+            .where(
+                CategorySource.source_platform == platform,
+                CategorySource.source_category_id == source_category_id,
+            )
+            .values(parent_source_id=new_parent_source_id)
+        )
+        result = session.execute(stmt)
+        if result.rowcount > 0:
+            logger.info(
+                "Updated parent_source_id for category.",
+                platform=platform.value,
+                source_category_id=source_category_id,
+                new_parent_source_id=new_parent_source_id,
+            )
+        else:
+            logger.warning(
+                "Category not found for update.",
+                platform=platform.value,
+                source_category_id=source_category_id,
+            )
+
 def get_all_category_source_ids_pandas(platform: SourcePlatform) -> Set[str]:
     """
     使用 Pandas 獲取指定平台所有職務分類的 source_category_id。
@@ -323,6 +353,27 @@ def get_all_crawled_category_ids_pandas(platform: SourcePlatform) -> Set[str]:
         query = select(UrlCategory.source_category_id).join(Url, UrlCategory.source_url == Url.source_url).where(Url.source == platform)
         df = pd.read_sql(query, session.bind)
         return set(df["source_category_id"].tolist())
+
+
+def get_root_categories(platform: SourcePlatform) -> List[CategorySourcePydantic]:
+    """
+    從資料庫獲取指定平台所有 parent_source_id 為 NULL 的職務分類 (即根分類)。
+    """
+    with get_session() as session:
+        stmt = select(CategorySource).where(
+            CategorySource.source_platform == platform,
+            CategorySource.parent_source_id.is_(None)  # Filter for NULL parent_source_id
+        )
+        categories = [
+            CategorySourcePydantic.model_validate(cat)
+            for cat in session.scalars(stmt).all()
+        ]
+        logger.debug(
+            "Fetched root categories for platform.",
+            platform=platform.value,
+            count=len(categories),
+        )
+        return categories
 
 
 def get_stale_crawled_category_ids_pandas(platform: SourcePlatform, n_days: int) -> Set[str]:

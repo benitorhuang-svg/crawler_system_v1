@@ -67,13 +67,16 @@ def crawl_and_store_yes123_category_urls(job_category: dict, url_limit: int = 0)
                 job_category_code=job_category_code,
             )
             break
+        logger.debug("HTML content retrieved.", html_content_length=len(html_content))
 
         soup = BeautifulSoup(html_content, 'html.parser')
         job_links_elements = soup.find_all('a', href=re.compile(r'job_detail\.asp\?p_id='))
+        logger.debug("Job links found.", count=len(job_links_elements))
 
         if not job_links_elements:
             logger.info("No job links found on this page. Checking for next page.", page=current_page, job_category_code=job_category_code)
             next_page_link = soup.find('a', text=re.compile(r'下一頁|Next'))
+            logger.debug("Next page link found.", found=bool(next_page_link))
             if not next_page_link:
                 logger.info("No next page link found. Ending task.", job_category_code=job_category_code)
                 break
@@ -143,6 +146,7 @@ if __name__ == "__main__":
     # --- End Database Initialization ---
 
     job_category_lists = get_all_categories_for_platform(SourcePlatform.PLATFORM_YES123)
+    logger.info("Fetched Yes123 categories from DB.", count=len(job_category_lists))
 
     for job_category in job_category_lists:
         logger.info("Dispatching crawl_and_store_yes123_category_urls task for local testing.", job_category_code=job_category.source_category_id)

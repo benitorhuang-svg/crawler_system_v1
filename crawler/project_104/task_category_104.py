@@ -7,15 +7,16 @@
 
 import structlog
 
-from crawler.worker import app
 from crawler.database import connection as db_connection
 from crawler.database import repository
 from crawler.database.connection import initialize_database
 from crawler.database.schemas import SourcePlatform
-from crawler.project_104.client_104 import (
-    fetch_category_data_from_104_api,
-)
+from crawler.project_104.client_104 import fetch_category_data_from_104_api
 from crawler.project_104.config_104 import HEADERS_104, JOB_CAT_URL_104
+from crawler.worker import app
+
+# Import MAPPING from apply_classification.py
+from crawler.database.category_classification_data.apply_classification import MAPPING
 
 logger = structlog.get_logger(__name__)
 
@@ -23,10 +24,18 @@ logger = structlog.get_logger(__name__)
 def flatten_jobcat_recursive(node_list, parent_no=None):
     """
     Recursively flattens the category tree using a generator.
+    Applies major category mapping for top-level categories.
     """
     for node in node_list:
+        current_parent_id = parent_no
+        if parent_no is None: # Only apply mapping for top-level categories
+            category_name = node.get("des")
+            mapped_parent_id = MAPPING[SourcePlatform.PLATFORM_104].get(category_name)
+            if mapped_parent_id:
+                current_parent_id = mapped_parent_id
+
         yield {
-            "parent_source_id": parent_no,
+            "parent_source_id": current_parent_id,
             "source_category_id": node.get("no"),
             "source_category_name": node.get("des"),
             "source_platform": SourcePlatform.PLATFORM_104.value,
@@ -62,7 +71,6 @@ def fetch_url_data_104(url_JobCat):
         api_categories_set = {
             (d["source_category_id"], d["source_category_name"], d["parent_source_id"])
             for d in flattened_data
-            if d.get("parent_source_id")
         }
         db_categories_set = {
             (

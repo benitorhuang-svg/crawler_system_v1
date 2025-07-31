@@ -1,18 +1,22 @@
-import os
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 
 import structlog
 
-from crawler.worker import app
+from crawler.database import connection as db_connection
+from crawler.database import repository
 from crawler.database.connection import initialize_database
-import crawler.database.repository as repository
 from crawler.database.schemas import SourcePlatform
 from crawler.project_1111.client_1111 import fetch_category_data_from_1111_api
 from crawler.project_1111.config_1111 import HEADERS_1111, JOB_CAT_URL_1111
+from crawler.worker import app
+
+# Import MAPPING from apply_classification.py
+from crawler.database.category_classification_data.apply_classification import MAPPING
 
 logger = structlog.get_logger(__name__)
 
@@ -20,10 +24,19 @@ logger = structlog.get_logger(__name__)
 def flatten_jobcat_recursive(node_list):
     """
     Flattens the 1111 job categories list, extracting main/sub categories.
+    Applies major category mapping for top-level categories.
     """
     for node in node_list:
+        current_parent_id = str(node.get("parentCode")) if node.get("parentCode") else None
+        
+        if current_parent_id is None: # Only apply mapping for top-level categories
+            category_name = node.get("name")
+            mapped_parent_id = MAPPING[SourcePlatform.PLATFORM_1111].get(category_name)
+            if mapped_parent_id:
+                current_parent_id = mapped_parent_id
+
         yield {
-            "parent_source_id": str(node.get("parentCode")) if node.get("parentCode") else None,
+            "parent_source_id": current_parent_id,
             "source_category_id": str(node.get("code")),
             "source_category_name": node.get("name"),
             "source_platform": SourcePlatform.PLATFORM_1111.value,
@@ -32,6 +45,7 @@ def flatten_jobcat_recursive(node_list):
 
 @app.task()
 def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
+    logger.info("Current database connection", db_url=str(db_connection.get_engine().url))
     logger.info("Starting 1111 category data fetch and sync.", url=url_JobCat)
 
     try:

@@ -1,13 +1,12 @@
-import os
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 
 import structlog
 
-from crawler.worker import app
 from crawler.database import connection as db_connection
 from crawler.database import repository
 from crawler.database.connection import initialize_database
@@ -16,36 +15,56 @@ from crawler.project_cakeresume.client_cakeresume import (
     fetch_cakeresume_category_data,
 )
 from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
+from crawler.worker import app
+
+# Import MAPPING from apply_classification.py
+from crawler.database.category_classification_data.apply_classification import MAPPING
 
 logger = structlog.get_logger(__name__)
 
 
 def flatten_cakeresume_categories(data):
     """
-    Flattens the CakeResume category data structure.
+    Flattens the CakeResume category data structure and applies major category mapping.
     """
     flattened = []
-    sectors_path = data.get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {}).get('sectors', {})
-    for key, name in sectors_path.items():
-        source_category_id = key.split('_')[-1] if '_' in key else key.replace('.', '')
-        flattened.append({
-            "parent_source_id": None,
-            "source_category_id": source_category_id,
-            "source_category_name": name,
-            "source_platform": SourcePlatform.PLATFORM_CAKERESUME.value,
-        })
+    
+    # Get the 'sector' dictionary directly
+    sector_data = data.get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {})
 
-    sector_groups_path = data.get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {}).get('sector_groups', {})
-    for group_key, group_data in sector_groups_path.items():
-        for sub_key, sub_name in group_data.items():
-            source_category_id = sub_key.split('_')[-1] if '_' in sub_key else sub_key.replace('.', '')
+    for key, name in sector_data.items():
+        if key.startswith('sector_groups.'):
+            # This is a top-level group from Cakeresume, apply major category mapping
+            source_category_id = key.replace('sector_groups.', '')
+            
+            # Determine parent_source_id based on major category mapping from MAPPING
+            mapped_parent_id = MAPPING[SourcePlatform.PLATFORM_CAKERESUME].get(name)
+            
             flattened.append({
-                "parent_source_id": group_key,
+                "parent_source_id": mapped_parent_id, # Use mapped ID or None
                 "source_category_id": source_category_id,
-                "source_category_name": sub_name,
+                "source_category_name": name,
                 "source_platform": SourcePlatform.PLATFORM_CAKERESUME.value,
             })
+        elif key.startswith('sectors.'):
+            # This is a sub-category, preserve Cakeresume's internal hierarchy
+            full_category_id = key.replace('sectors.', '') # e.g., "advertising-marketing-agency_adtech-martech"
+            parts = full_category_id.split('_', 1)
+            if len(parts) > 1:
+                parent_source_id = parts[0] # e.g., "advertising-marketing-agency"
+                source_category_id = full_category_id # The full key is the source_category_id
+            else:
+                # Handle cases where 'sectors.' key might not have an underscore for parent
+                # This might be a top-level sector if it doesn't have a group parent
+                parent_source_id = None # Keep as None if no internal parent
+                source_category_id = full_category_id
 
+            flattened.append({
+                "parent_source_id": parent_source_id,
+                "source_category_id": source_category_id,
+                "source_category_name": name,
+                "source_platform": SourcePlatform.PLATFORM_CAKERESUME.value,
+            })
     return flattened
 
 
@@ -72,7 +91,6 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
         api_categories_set = {
             (d["source_category_id"], d["source_category_name"], d["parent_source_id"])
             for d in flattened_data
-            if d.get("parent_source_id")
         }
         db_categories_set = {
             (

@@ -1,0 +1,17 @@
+[
+    {"source_category_id": "MAJOR_IT_SOFTWARE", "source_category_name": "資訊/軟體/網路", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_ENGINEERING_RD", "source_category_name": "工程研發", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_PRODUCTION_QC", "source_category_name": "生產製造/品管", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_BUSINESS_ADMIN", "source_category_name": "商業/管理/行政", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_FINANCE_LEGAL", "source_category_name": "財會/金融/法務", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_MARKETING_PROJECT", "source_category_name": "行銷/企劃/專案", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_SALES_CS_TRADE", "source_category_name": "業務/客服/貿易", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_DESIGN_MEDIA_ARTS", "source_category_name": "設計/媒體/藝術", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_CONSTRUCTION_SPACE", "source_category_name": "營建/建築/空間", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_HEALTHCARE_BIOTECH", "source_category_name": "醫療/生技/健康", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_EDUCATION_ACADEMIC", "source_category_name": "教育/學術/輔導", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_HOSPITALITY_TRAVEL", "source_category_name": "餐飲/旅遊/生活服務", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_LOGISTICS_PROCUREMENT", "source_category_name": "物流/倉儲/採購", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_OPERATIONS_MAINTENANCE", "source_category_name": "操作/技術/維修", "parent_source_id": null, "source_platform": "platform_104"},
+    {"source_category_id": "MAJOR_PUBLIC_AFFAIRS_OTHER", "source_category_name": "公共事務/農林漁牧/其他", "parent_source_id": null, "source_platform": "platform_104"}
+]

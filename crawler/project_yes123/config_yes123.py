@@ -5,7 +5,7 @@ logger = structlog.get_logger(__name__)
 
 # yes123 平台相關設定
 WEB_NAME_YES123 = config_section.get("WEB_NAME_YES123", "yes123_求職網")
-JOB_CAT_URL_YES123 = config_section.get("JOB_CAT_URL_YES123", "https://www.yes123.com.tw/admin/job_refer_data.asp?sno=20090101_jobkind_001")
+JOB_CAT_URL_YES123 = config_section.get("JOB_CAT_URL_YES123", "https://www.yes123.com.tw/json_file/work_mode.json")
 JOB_LISTING_BASE_URL_YES123 = config_section.get("JOB_LISTING_BASE_URL_YES123", "https://www.yes123.com.tw/findjob/job_list.asp")
 JOB_DETAIL_BASE_URL_YES123 = config_section.get("JOB_DETAIL_BASE_URL_YES123", "https://www.yes123.com.tw/findjob/job_detail.asp")
 
