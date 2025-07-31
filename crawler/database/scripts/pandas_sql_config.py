@@ -1,6 +1,11 @@
+import os
+import sys
 import pandas as pd
 import structlog
 from sqlalchemy import create_engine
+
+# Add project root to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
 
 from crawler.logging_config import configure_logging
 from crawler.config import (
@@ -17,22 +22,16 @@ logger = structlog.get_logger(__name__)
 
 def main():
     """
-    示範如何透過 Pandas 直接連線到資料庫並讀取資料。
+    Demonstrates connecting to the database and reading data using Pandas.
     """
-    # 建立資料庫連接 URL
-    # 使用 mysql+mysqlconnector 驅動
     db_url = (
         f"mysql+mysqlconnector://{MYSQL_ACCOUNT}:{MYSQL_PASSWORD}@"
         f"{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
     )
 
-    # 建立 SQLAlchemy 引擎
     engine = create_engine(db_url)
 
     try:
-        # 嘗試從資料庫讀取一個範例資料表
-        # 請替換 'tb_category_source' 為你實際想要查詢的資料表名稱
-        # 如果資料庫中沒有 'tb_category_source'，請替換為其他存在的資料表
         table_name = "tb_category_source"
         logger.info(
             "Attempting to read data from database using Pandas.", table=table_name
@@ -52,11 +51,11 @@ def main():
         )
 
     finally:
-        # 關閉引擎連接池
         engine.dispose()
         logger.info("Database engine disposed.")
 
 
 if __name__ == "__main__":
-    # python -m crawler.database.pandas_sql_config
+    # To run this script for the test database, set the environment variable:
+    # CRAWLER_DB_NAME=test_db python -m crawler.database.scripts.pandas_sql_config
     main()

@@ -1,6 +1,6 @@
-# Project 104 本地測試計畫
+# Project yes123 本地測試計畫
 
-本文件旨在提供 `project_104` 相關 Producer 和 Task 的本地測試步驟，確保任務分發、Worker 執行及資料庫寫入流程正常運作。
+本文件旨在提供 `project_yes123` 相關 Producer 和 Task 的本地測試步驟，確保任務分發、Worker 執行及資料庫寫入流程正常運作。
 
 ## 測試前準備
 
@@ -23,29 +23,29 @@
 
 本專案中的所有 `task_*.py` 檔案都已內建本地測試模式。當你直接執行這些檔案時，它們會自動將資料庫連線指向 `test_db`，確保測試不會影響到正式的開發資料庫 (`crawler_db`)。
 
-### 測試 `task_category_104.py`
+### 測試 `task_category_yes123.py`
 
 1.  **執行任務**：
     ```bash
-    python -m crawler.project_104.task_category_104
+    python -m crawler.project_yes123.task_category_yes123
     ```
 2.  **觀察日誌**：日誌會顯示 `Connecting to database: test_db@...`，並記錄後續的抓取與同步過程。
-3.  **驗證資料庫**：你可以連線到 `test_db` 來驗證 `tb_category_source` 表中是否已寫入 104 的類別資料。
+3.  **驗證資料庫**：你可以連線到 `test_db` 來驗證 `tb_category_source` 表中是否已寫入 yes123 的類別資料。
 
-### 測試 `task_urls_104.py`
+### 測試 `task_urls_yes123.py`
 
 1.  **執行任務**：
     ```bash
-    python -m crawler.project_104.task_urls_104
+    python -m crawler.project_yes123.task_urls_yes123
     ```
 2.  **觀察日誌**：日誌會顯示從 `test_db` 讀取類別，然後抓取 URL 並存入 `test_db` 的過程。
 3.  **驗證資料庫**：驗證 `test_db` 中的 `tb_urls` 和 `tb_url_categories` 表是否已寫入資料。
 
-### 測試 `task_jobs_104.py`
+### 測試 `task_jobs_yes123.py`
 
 1.  **執行任務**：
     ```bash
-    python -m crawler.project_104.task_jobs_104
+    python -m crawler.project_yes123.task_jobs_yes123
     ```
 2.  **觀察日誌**：日誌會顯示從 `test_db` 讀取待處理的 URL，抓取職缺詳情，並將結果存回 `test_db`。
 3.  **驗證資料庫**：驗證 `test_db` 中的 `tb_jobs` 表是否已寫入資料，以及 `tb_urls` 表的 `details_crawl_status` 是否已更新。
@@ -54,29 +54,29 @@
 
 Producer 的職責是與正式的 `crawler_db` 互動，產生任務並發送到 RabbitMQ。測試 Producer 時，我們通常會驗證它是否能正確地將任務發送給 Worker。
 
-### 測試 `producer_category_104`
+### 測試 `producer_category_yes123`
 
 1.  **執行 Producer**：
     ```bash
-    python -m crawler.project_104.producer_category_104
+    python -m crawler.project_yes123.producer_category_yes123
     ```
-2.  **觀察 Worker 日誌**：回到 Celery Worker 的終端視窗，觀察是否有 `fetch_and_sync_104_categories` 任務被接收並成功執行。
+2.  **觀察 Worker 日誌**：回到 Celery Worker 的終端視窗，觀察是否有 `fetch_and_sync_yes123_categories` 任務被接收並成功執行。
 
-### 測試 `producer_urls_104`
+### 測試 `producer_urls_yes123`
 
 1.  **執行 Producer**：
     ```bash
-    python -m crawler.project_104.producer_urls_104
+    python -m crawler.project_yes123.producer_urls_yes123
     ```
-2.  **觀察 Worker 日誌**：觀察是否有 `crawl_and_store_category_urls` 任務被接收並成功執行。
+2.  **觀察 Worker 日誌**：觀察是否有 `crawl_and_store_yes123_category_urls` 任務被接收並成功執行。
 
-### 測試 `producer_jobs_104`
+### 測試 `producer_jobs_yes123`
 
 1.  **執行 Producer**：
     ```bash
-    python -m crawler.project_104.producer_jobs_104
+    python -m crawler.project_yes123.producer_jobs_yes123
     ```
-2.  **觀察 Worker 日誌**：觀察是否有 `fetch_url_data_104` 任務被接收並成功執行。
+2.  **觀察 Worker 日誌**：觀察是否有 `fetch_url_data_yes123` 任務被接收並成功執行。
 
 ## 監控任務與 Worker 狀態
 

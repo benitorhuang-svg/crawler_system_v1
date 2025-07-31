@@ -1,6 +1,7 @@
 import structlog
-from typing import List, Dict, Any, Optional
-from datetime import datetime, timezone
+from typing import List, Dict, Any, Optional, Set
+from datetime import datetime, timezone, timedelta
+import pandas as pd
 
 from sqlalchemy import select, update
 from sqlalchemy.dialects.mysql import insert
@@ -12,12 +13,16 @@ from crawler.database.models import (
     CategorySource,
     Url,
     Job,
+    UrlCategory,
+    JobLocation,
+)
+from crawler.database.schemas import (
     SourcePlatform,
     JobStatus,
     CrawlStatus,
     JobPydantic,
     CategorySourcePydantic,
-    UrlCategory,
+    JobLocationPydantic,
 )
 
 logger = structlog.get_logger(__name__)
@@ -234,6 +239,31 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
     logger.info("Jobs upserted successfully.", count=len(job_dicts_to_upsert), affected_rows=affected_rows)
 
 
+def upsert_job_locations(job_locations: List[JobLocationPydantic]) -> None:
+    """
+    將 JobLocation 對象列表同步到資料庫。
+    執行 UPSERT 操作，如果經緯度資訊已存在則更新，否則插入。
+    """
+    if not job_locations:
+        logger.info("No job locations to upsert.", count=0)
+        return
+
+    now = datetime.now(timezone.utc)
+    location_dicts_to_upsert = [
+        {
+            **loc.model_dump(exclude_none=False),
+            "updated_at": now,
+            "created_at": loc.created_at or now,
+        }
+        for loc in job_locations
+    ]
+
+    update_cols = ["latitude", "longitude", "updated_at"]
+    affected_rows = _generic_upsert(JobLocation, location_dicts_to_upsert, update_cols)
+
+    logger.info("Job locations upserted successfully.", count=len(location_dicts_to_upsert), affected_rows=affected_rows)
+
+
 def upsert_url_categories(url_category_data: List[Dict[str, Any]]) -> None:
     """
     將 URL 與其所屬的分類關聯數據同步到資料庫。
@@ -269,3 +299,44 @@ def mark_urls_as_crawled(processed_urls: Dict[CrawlStatus, List[str]]) -> None:
                 logger.info(
                     "URLs marked as crawled.", status=status.value, count=len(urls)
                 )
+
+def get_all_category_source_ids_pandas(platform: SourcePlatform) -> Set[str]:
+    """
+    使用 Pandas 獲取指定平台所有職務分類的 source_category_id。
+    """
+    with get_session() as session:
+        query = select(CategorySource.source_category_id).where(CategorySource.source_platform == platform)
+        df = pd.read_sql(query, session.bind)
+        return set(df["source_category_id"].tolist())
+
+
+def get_all_crawled_category_ids_pandas(platform: SourcePlatform) -> Set[str]:
+    """
+    使用 Pandas 獲取指定平台所有已爬取 URL 的 source_category_id。
+    """
+    with get_session() as session:
+        query = select(UrlCategory.source_category_id).join(Url, UrlCategory.source_url == Url.source_url).where(Url.source == platform)
+        df = pd.read_sql(query, session.bind)
+        return set(df["source_category_id"].tolist())
+
+
+def get_stale_crawled_category_ids_pandas(platform: SourcePlatform, n_days: int) -> Set[str]:
+    """
+    使用 Pandas 獲取指定平台中，上次爬取時間超過 n_days 的 source_category_id。
+    """
+    threshold_date = datetime.now(timezone.utc) - timedelta(days=n_days)
+    with get_session() as session:
+        query = (
+            select(UrlCategory.source_category_id)
+            .join(Url, UrlCategory.source_url == Url.source_url)
+            .where(
+                Url.source == platform,
+                UrlCategory.created_at < threshold_date
+            )
+            .distinct()
+        )
+        df = pd.read_sql(query, session.bind)
+        return set(df["source_category_id"].tolist())
+
+
+

@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 import requests
 import structlog
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
 from crawler.config import (
     URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
@@ -26,6 +27,12 @@ configure_logging()
 logger = structlog.get_logger(__name__)
 
 
+@retry(
+    stop=stop_after_attempt(5),
+    wait=wait_exponential(multiplier=1, min=4, max=10),
+    retry=retry_if_exception_type(requests.exceptions.RequestException),
+    reraise=True,
+)
 def _make_api_request(
     method: str,
     url: str,
@@ -68,7 +75,7 @@ def _make_api_request(
             exc_info=True,
             **log_context,
         )
-        return None
+        raise  # Re-raise the exception to trigger tenacity retry
     except json.JSONDecodeError:
         logger.error(
             "Failed to parse JSON response from API.",
@@ -121,7 +128,7 @@ def fetch_job_urls_from_104_api(
     headers: Dict[str, str],
     params: Dict[str, Any],
     timeout: int,
-    verify: bool = False,
+    verify: bool = True,
 ) -> Optional[Dict[str, Any]]:
     """
     從 104 API 獲取職缺 URL 列表的原始數據。

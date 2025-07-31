@@ -1,0 +1,2487 @@
+{
+  "data": [
+    {
+      "appearDate": "20250730",
+      "applyCnt": 0,
+      "coIndustry": 1011001003,
+      "coIndustryDesc": "其他營造業",
+      "custName": "統上開發建設股份有限公司",
+      "custNo": "130000000194576",
+      "description": "工作內容:\n1.市場趨勢研究及同業競品分析。\n2.專案執行(新型態商機專案研究、公司中長期年度計畫)。\n3.專案進度追蹤。\n4.專案分析管控。\n",
+      "descSnippet": "工作內容:\n1.市場趨勢研究及同業競品分析。\n2.專案執行(新型態商機專案研究、公司中長期年度計畫)。\n3.專案進度追蹤。\n4.專案分析管控。\n",
+      "mrtDist": 0,
+      "jobAddress": "永安路165巷155號",
+      "jobAddrNo": 6001014007,
+      "jobAddrNoDesc": "台南市永康區",
+      "jobName": "經營企劃人員(需不動產相關科系)",
+      "jobNameSnippet": "經營企劃人員(需不動產相關科系)",
+      "jobNo": "14570953",
+      "jobRo": 1,
+      "jobType": 1,
+      "lat": 23.0445358,
+      "lon": 120.2425509,
+      "link": {
+        "job": "https://www.104.com.tw/job/8ob0p",
+        "cust": "https://www.104.com.tw/company/1a2x6bm5g0",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8ob0p?channel=104rpt"
+      },
+      "major": [
+        "其他相關科系"
+      ],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 35000,
+      "salaryLow": 30000,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf18": {
+          "desc": "",
+          "param": "wf18"
+        },
+        "wf31": {
+          "desc": "",
+          "param": "wf31"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf32": {
+          "desc": "",
+          "param": "wf32"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf17": {
+          "desc": "",
+          "param": "wf17"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf23": {
+          "desc": "",
+          "param": "wf23"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "8:00~17:00",
+      "hrBehaviorPR": 0,
+      "jobCat": [
+        2001001003,
+        2004001005,
+        2005003004
+      ],
+      "labels": [
+        "c@wf7",
+        "c@wf18",
+        "c@wf31",
+        "c@wf9",
+        "c@wf2",
+        "c@wf32",
+        "c@wf10",
+        "c@wf17",
+        "c@wf1",
+        "c@wf23",
+        "c@wf4",
+        "c@wf28",
+        "c@wf3"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        },
+        {
+          "language": 18,
+          "ability": {
+            "listening": 2,
+            "speaking": 2,
+            "reading": 2,
+            "writing": 2
+          }
+        }
+      ],
+      "acceptRole": [
+        2
+      ],
+      "employeeCount": 15,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": null,
+        "lastCustReplyTimestamp": null,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250727",
+      "applyCnt": 4,
+      "coIndustry": 1009004002,
+      "coIndustryDesc": "汽機車維修業",
+      "custName": "Gogoro_渝城車業有限公司",
+      "custNo": "130000000113203",
+      "description": "只要你是《積極、樂觀、細膩、善溝通、配合度高 》，歡迎加入我們！\n歡迎尋求長期工作穩定、心思細膩、能跟夥伴互助合作、同甘共苦者，一同加入我們的行列。 \n\n工作內容： \n\n1. Gogoro智慧雙輪 銷售 交車\n2. Gogoro智慧雙輪 品牌價值認同 推廣\n3. 售後服務\n4. 客戶關係維繫 維修預約進廠安排\n\n- 本薪、伙食津貼、業績達成獎金\n- 具銷售經驗1年以上、具備說話藝術者尤佳\n- Gogoro認證培訓課程(帶薪)\n- 需配合門市夥伴排班排假\n- 需配合公司政策及人力需求而調動服務門市\n\n在你的工作中，你願意提供自己的經驗，讓你與你的團隊追求卓越表現。完成公司賦予的目標，包含業績目標、客戶滿意度、行政流程等。此外，在你的工作中，能夠達到甚至超越自己設定的工作目標與表現，讓你與你的團隊追求卓越。",
+      "descSnippet": "只要你是《積極、樂觀、細膩、善溝通、配合度高 》，歡迎加入我們！\n歡迎尋求長期工作穩定、心思細膩、能跟夥伴互助合作、同甘共苦者，一同加入我們的行列。 \n\n工作內容： \n\n1. Gogoro智慧雙輪 銷售 交車\n2. Gogoro智慧雙輪 品牌價值認同 推廣\n3. 售後服務\n4. 客戶關係維繫 維修預約進廠安排\n\n- 本薪、伙食津貼、業績達成獎金\n- 具銷售經驗1年以上、具備說話藝術者尤佳\n- Gogoro認證培訓課程(帶薪)\n- 需配合門市夥伴排班排假\n- 需配合公司政策及人力需求而調動服務門市\n\n在你的工作中，你願意提供自己的經驗，讓你與你的團隊追求卓越表現。完成公司賦予的目標，包含業績目標、客戶滿意度、行政流程等。此外，在你的工作中，能夠達到甚至超越自己設定的工作目標與表現，讓你與你的團隊追求卓越。",
+      "mrtDist": 0,
+      "jobAddress": "",
+      "jobAddrNo": 6001002021,
+      "jobAddrNoDesc": "新北市新莊區",
+      "jobName": "GOGORO新莊民安【帶薪培訓】銷售業務&儲備幹部 Sales Specialist [本薪+績效獎金]",
+      "jobNameSnippet": "GOGORO新莊民安【帶薪培訓】銷售業務&儲備幹部 Sales Specialist [本薪+績效獎金]",
+      "jobNo": "13040563",
+      "jobRo": 1,
+      "jobType": 1,
+      "lat": 25.0265985,
+      "lon": 121.4178347,
+      "link": {
+        "job": "https://www.104.com.tw/job/7ri5v",
+        "cust": "https://www.104.com.tw/company/1a2x6bkenn",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7ri5v?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        3,
+        4
+      ],
+      "period": 2,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 70000,
+      "salaryLow": 32400,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        }
+      },
+      "s9": [
+        1,
+        2
+      ],
+      "s5": 256,
+      "d3": "11:30-20:30, 12:30-21:30",
+      "hrBehaviorPR": 0.8558028490931103,
+      "jobCat": [
+        2005002004,
+        2001001002,
+        2005003004
+      ],
+      "labels": [
+        "college@student_invited",
+        "c@wf7"
+      ],
+      "languageRequirements": [
+        {
+          "language": 18,
+          "ability": {
+            "listening": 2,
+            "speaking": 2,
+            "reading": 2,
+            "writing": 2
+          }
+        }
+      ],
+      "acceptRole": [
+        2
+      ],
+      "employeeCount": 35,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753613395,
+        "lastCustReplyTimestamp": 1753692175,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 28,
+      "coIndustry": 1003001015,
+      "coIndustryDesc": "綜合商品批發代理業",
+      "custName": "京麗國際股份有限公司",
+      "custNo": "130000000211566",
+      "description": "1.通路主管拜訪、合作評估規劃與開發\n2.熟悉公司產品、規章作業流程\n3.現有客戶之關係維護與溝通\n4.對各類營銷數據具高度敏感分析能力\n5.節慶促銷活動提案與檢討\n6.需具跨部門協商之溝通表達能力\n7.善於安排管理與引領部門所屬工作方向\n8.積極完成上級主管其他交辦事項",
+      "descSnippet": "1.通路主管拜訪、合作評估規劃與開發\n2.熟悉公司產品、規章作業流程\n3.現有客戶之關係維護與溝通\n4.對各類營銷數據具高度敏感分析能力\n5.節慶促銷活動提案與檢討\n6.需具跨部門協商之溝通表達能力\n7.善於安排管理與引領部門所屬工作方向\n8.積極完成上級主管其他交辦事項",
+      "mrtDist": 0.5,
+      "jobAddress": "重陽路477號",
+      "jobAddrNo": 6001001011,
+      "jobAddrNoDesc": "台北市南港區",
+      "jobName": "業務部門主管",
+      "jobNameSnippet": "業務部門主管",
+      "jobNo": "13636052",
+      "jobRo": 3,
+      "jobType": 0,
+      "lat": 25.06001,
+      "lon": 121.61094,
+      "link": {
+        "job": "https://www.104.com.tw/job/849n8",
+        "cust": "https://www.104.com.tw/company/1a2x6bmijy",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/849n8?channel=104rpt"
+      },
+      "major": [
+        "企業管理相關",
+        "市場行銷相關",
+        "其他商業及管理相關"
+      ],
+      "mrt": "99001001023",
+      "mrtDesc": "捷運南港軟體園區站",
+      "optionEdu": [
+        4,
+        5
+      ],
+      "period": 4,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": {
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf34": {
+          "desc": "",
+          "param": "wf34"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf25": {
+          "desc": "",
+          "param": "wf25"
+        },
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "landmark": {
+          "desc": "距捷運南港軟體園區站約500公尺"
+        }
+      },
+      "s9": [],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.9405876961721676,
+      "jobCat": [
+        9009002000,
+        9009004000,
+        9001001000
+      ],
+      "labels": [
+        "foreigners@full_fc_em_jbs",
+        "c@wf9",
+        "45plus@45invited",
+        "c@wf29",
+        "c@wf7",
+        "c@wf28",
+        "senior@senior_job_I",
+        "c@wf1",
+        "c@wf2",
+        "c@wf34",
+        "c@wf10",
+        "c@wf25",
+        "c@wf26",
+        "college@student_invited",
+        "c@wf3"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [],
+      "employeeCount": 30,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753861291,
+        "lastCustReplyTimestamp": 1753863289,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 12,
+      "coIndustry": 1009005002,
+      "coIndustryDesc": "美容／美體業",
+      "custName": "享淨顏_佳登國際有限公司",
+      "custNo": "130000000232919",
+      "description": "我們有完整的員工訓練且注重工作氣氛和員工福利對人才極為重視，薪水方面隨著年資增長未來只會更高。\r\n\r\n\r\n【福利】\r\n*績效獎金、每月業績獎金\r\n*享勞健保及6%勞退\r\n*不定期部門聚餐\r\n*每月一次免費潔顏福利\r\n*提供員工工作圍裙\r\n*良好升遷管道(培訓幹部、店長等...)\r\n*三節禮金（春節禮金加碼）\r\n*全額補助考取美容證照\r\n*已有美容證照給予專業加給\r\n丙級500/乙級1000（每月給予）\r\n*久任獎金（滿兩年2000、滿三年5000每年給予）\r\n*每年按考績調升薪資\r\n\r\n【工作內容】\r\n1.基本臉部清潔、美容課程操作(洗卸、粉刺清潔、儀器導入等)、相關知識解說。\r\n2.客戶肌膚檢測分析、建議課程資訊。\r\n3.客戶服務管理、行政庶務及系統操作。\r\n4.店務處理(盤點進貨、環境整潔、日報回覆...等)。\r\n5.無需推銷產品\r\n\r\n【所需特質】\r\n1.無經驗可(乙、丙級美容證照or美容銷售經驗佳)\r\n2.熱愛學習，能保持彈性吸收新鮮事物\r\n3.喜歡與顧客互動，口條流暢善溝通，不害怕主動與人接觸\r\n4.具有高度向心力，具團隊合作精神\r\n\r\n【薪獎制度】\r\n1. 當月激勵：當月作滿105人次以上，每多一人獎金200元(月結)\r\n2. 當月儲值：第一名2000、第二名1500、第三名1000\r\n3. 當月個人營業額獎勵(不含儲值金)： (1)9萬1.5% (2)10萬2% （3）15萬3%\r\n4.全勤：1000元",
+      "descSnippet": "我們有完整的員工訓練且注重工作氣氛和員工福利對人才極為重視，薪水方面隨著年資增長未來只會更高。\r\n\r\n\r\n【福利】\r\n*績效獎金、每月業績獎金\r\n*享勞健保及6%勞退\r\n*不定期部門聚餐\r\n*每月一次免費潔顏福利\r\n*提供員工工作圍裙\r\n*良好升遷管道(培訓幹部、店長等...)\r\n*三節禮金（春節禮金加碼）\r\n*全額補助考取美容證照\r\n*已有美容證照給予專業加給\r\n丙級500/乙級1000（每月給予）\r\n*久任獎金（滿兩年2000、滿三年5000每年給予）\r\n*每年按考績調升薪資\r\n\r\n【工作內容】\r\n1.基本臉部清潔、美容課程操作(洗卸、粉刺清潔、儀器導入等)、相關知識解說。\r\n2.客戶肌膚檢測分析、建議課程資訊。\r\n3.客戶服務管理、行政庶務及系統操作。\r\n4.店務處理(盤點進貨、環境整潔、日報回覆...等)。\r\n5.無需推銷產品\r\n\r\n【所需特質】\r\n1.無經驗可(乙、丙級美容證照or美容銷售經驗佳)\r\n2.熱愛學習，能保持彈性吸收新鮮事物\r\n3.喜歡與顧客互動，口條流暢善溝通，不害怕主動與人接觸\r\n4.具有高度向心力，具團隊合作精神\r\n\r\n【薪獎制度】\r\n1. 當月激勵：當月作滿105人次以上，每多一人獎金200元(月結)\r\n2. 當月儲值：第一名2000、第二名1500、第三名1000\r\n3. 當月個人營業額獎勵(不含儲值金)： (1)9萬1.5% (2)10萬2% （3）15萬3%\r\n4.全勤：1000元",
+      "mrtDist": 0.09,
+      "jobAddress": "和平街19號",
+      "jobAddrNo": 6001002015,
+      "jobAddrNoDesc": "新北市中和區",
+      "jobName": "美容師/潔顏師（享淨顏-新北中和店）",
+      "jobNameSnippet": "美容師/潔顏師（享淨顏-新北中和店）",
+      "jobNo": "14051744",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.9906111,
+      "lon": 121.5085711,
+      "link": {
+        "job": "https://www.104.com.tw/job/8d6e8",
+        "cust": "https://www.104.com.tw/company/1a2x6bmz13",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8d6e8?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001004001",
+      "mrtDesc": "捷運南勢角站",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 55000,
+      "salaryLow": 32000,
+      "tags": {
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "landmark": {
+          "desc": "距捷運南勢角站約90公尺"
+        }
+      },
+      "s9": [
+        1,
+        2
+      ],
+      "s5": 256,
+      "d3": "日班(10:30~19:30)晚班(11:00~20:00)",
+      "hrBehaviorPR": 0.8974587323723998,
+      "jobCat": [
+        2006003001,
+        2006003008,
+        2001001002
+      ],
+      "labels": [
+        "college@student_invited",
+        "c@wf29",
+        "c@wf26",
+        "c@wf2"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [],
+      "employeeCount": 10,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753865431,
+        "lastCustReplyTimestamp": 1753865505,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 3,
+      "coIndustry": 1008003001,
+      "coIndustryDesc": "工商顧問服務業",
+      "custName": "泰紅心國際有限公司",
+      "custNo": "130000000242963",
+      "description": "工作內容：\n\n我們正在尋找一位充滿熱情、具有領導能力的門市店長，加入米蘭廚房的大家庭！\n作為店長，您將負責帶領團隊打造高效、溫馨的用餐環境，並確保門市營運順暢，讓每一位顧客都感受到我們的用心與專業。\n\n主要工作職責包含：\n\t•\t門市營運管理：人員排班、進出貨管理、庫存控管\n\t•\t銷售目標設定與達成：分析業績數據、擬定促銷策略\n\t•\t團隊管理與訓練：帶領團隊提升服務品質與工作效率\n\t•\t顧客服務與客訴處理\n\t•\t品牌形象維護與標準SOP執行\n\n工作地點：\n\n台中市西屯區（鄰近逢甲商圈／交通便利）\n\n薪資福利：\n\t•\t月薪 通常 50,000 （績效獎金、營收分紅、年終獎金可能更多）\n\t•\t員工餐飲優惠、完整培訓制度、升遷管道明確\n\n上班時間：\n\n排班制，月休8天（可彈性協調）\n\n我們希望你具備：\n\t•\t具門市管理經驗者優先（如餐飲、零售、美業等）\n\t•\t擅長溝通協調，能激勵團隊士氣\n\t•\t目標導向，具執行力\n\t•\t對顧客服務有熱忱，有責任感與抗壓性",
+      "descSnippet": "工作內容：\n\n我們正在尋找一位充滿熱情、具有領導能力的門市店長，加入米蘭廚房的大家庭！\n作為店長，您將負責帶領團隊打造高效、溫馨的用餐環境，並確保門市營運順暢，讓每一位顧客都感受到我們的用心與專業。\n\n主要工作職責包含：\n\t•\t門市營運管理：人員排班、進出貨管理、庫存控管\n\t•\t銷售目標設定與達成：分析業績數據、擬定促銷策略\n\t•\t團隊管理與訓練：帶領團隊提升服務品質與工作效率\n\t•\t顧客服務與客訴處理\n\t•\t品牌形象維護與標準SOP執行\n\n工作地點：\n\n台中市西屯區（鄰近逢甲商圈／交通便利）\n\n薪資福利：\n\t•\t月薪 通常 50,000 （績效獎金、營收分紅、年終獎金可能更多）\n\t•\t員工餐飲優惠、完整培訓制度、升遷管道明確\n\n上班時間：\n\n排班制，月休8天（可彈性協調）\n\n我們希望你具備：\n\t•\t具門市管理經驗者優先（如餐飲、零售、美業等）\n\t•\t擅長溝通協調，能激勵團隊士氣\n\t•\t目標導向，具執行力\n\t•\t對顧客服務有熱忱，有責任感與抗壓性",
+      "mrtDist": 0,
+      "jobAddress": "寶慶街50巷51號",
+      "jobAddrNo": 6001008007,
+      "jobAddrNoDesc": "台中市西屯區",
+      "jobName": "高底薪＋獎金｜門市店長｜西屯區｜米蘭廚房親子餐廳",
+      "jobNameSnippet": "高底薪＋獎金｜門市店長｜西屯區｜米蘭廚房親子餐廳",
+      "jobNo": "14751928",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.1722414,
+      "lon": 120.6475223,
+      "link": {
+        "job": "https://www.104.com.tw/job/8s6ns",
+        "cust": "https://www.104.com.tw/company/1a2x6bn6s3",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8s6ns?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 9999999,
+      "salaryLow": 50000,
+      "tags": {
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf11": {
+          "desc": "",
+          "param": "wf11"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.64529391953745,
+      "jobCat": [
+        2005002002,
+        2005002001,
+        2001001002
+      ],
+      "labels": [
+        "senior@senior_job_I",
+        "c@wf2",
+        "c@wf4",
+        "c@wf11",
+        "foreigners@foreigners_tick",
+        "foreigners@overseasStudents_tick"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384,
+        32768,
+        65536,
+        131072
+      ],
+      "employeeCount": 10,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753849823,
+        "lastCustReplyTimestamp": null,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 5,
+      "coIndustry": 1004001006,
+      "coIndustryDesc": "其他金融及輔助業",
+      "custName": "宏旺當舖",
+      "custNo": "130000000165552",
+      "description": "新型態當鋪徵才中！（無經驗可）\r\n業務專員 / 儲備幹部\r\n\r\n工作內容：\r\n辦公室夏天吹冷氣冬天吹暖氣\r\n只需會操作使用手機及電腦\r\n不需曬太陽淋雨路邊發傳單\r\n與客戶聊天中了解客戶需求\r\n學習金融借款審核模式\r\n與主管學習觀念及管理\r\n升遷管道暢通晉升無阻礙\r\n\r\n工作時間：\r\n0900-1700、1300-2100（輪班制，靈活調整）\r\n依照業績調整工作時數，從8小時可降至6小時，最低上班只要4小時，賺錢輕鬆、時間自由！\r\n\r\n薪資待遇：\r\n保障底薪+業績獎金+每月分紅\r\n半年後月薪：$55,000以上\r\n兩年後月薪：$100,000以上，挑戰無上限！\r\n\r\n工作福利：\r\n分紅獎金、激勵獎金、年終獎金、招募獎金\r\n三節禮品、生日禮金、業績獎金、特殊獎金\r\n不定期員工聚餐，工作氛圍良好，無惡性競爭\r\n\r\n休假制度：\r\n月休共8天每週日固定公休\r\n其餘天數自由排休\r\n\r\n為什麼選我們？\r\n零經驗可，教到會\r\n室內上班，不外跑\r\n獎金無上限，在職越久薪水越多\r\n我們是創新當鋪，主打內勤業務＋高收入。\r\n完整培訓制度，無經驗也能快速上手。\r\n保障基本底薪＋高獎金，輕鬆十萬月薪不是夢！\r\n歡迎銀行、融資、保險、代書、金主、車行、\r\n房仲、保經、電銷、代辦、各行各業業務轉行。\r\n想賺錢，來就對了！",
+      "descSnippet": "新型態當鋪徵才中！（無經驗可）\r\n業務專員 / 儲備幹部\r\n\r\n工作內容：\r\n辦公室夏天吹冷氣冬天吹暖氣\r\n只需會操作使用手機及電腦\r\n不需曬太陽淋雨路邊發傳單\r\n與客戶聊天中了解客戶需求\r\n學習金融借款審核模式\r\n與主管學習觀念及管理\r\n升遷管道暢通晉升無阻礙\r\n\r\n工作時間：\r\n0900-1700、1300-2100（輪班制，靈活調整）\r\n依照業績調整工作時數，從8小時可降至6小時，最低上班只要4小時，賺錢輕鬆、時間自由！\r\n\r\n薪資待遇：\r\n保障底薪+業績獎金+每月分紅\r\n半年後月薪：$55,000以上\r\n兩年後月薪：$100,000以上，挑戰無上限！\r\n\r\n工作福利：\r\n分紅獎金、激勵獎金、年終獎金、招募獎金\r\n三節禮品、生日禮金、業績獎金、特殊獎金\r\n不定期員工聚餐，工作氛圍良好，無惡性競爭\r\n\r\n休假制度：\r\n月休共8天每週日固定公休\r\n其餘天數自由排休\r\n\r\n為什麼選我們？\r\n零經驗可，教到會\r\n室內上班，不外跑\r\n獎金無上限，在職越久薪水越多\r\n我們是創新當鋪，主打內勤業務＋高收入。\r\n完整培訓制度，無經驗也能快速上手。\r\n保障基本底薪＋高獎金，輕鬆十萬月薪不是夢！\r\n歡迎銀行、融資、保險、代書、金主、車行、\r\n房仲、保經、電銷、代辦、各行各業業務轉行。\r\n想賺錢，來就對了！",
+      "mrtDist": 0.28,
+      "jobAddress": "幸福路66號1樓",
+      "jobAddrNo": 6001002021,
+      "jobAddrNoDesc": "新北市新莊區",
+      "jobName": "新手業務第一首選，我們一起成長！",
+      "jobNameSnippet": "新手業務第一首選，我們一起成長！",
+      "jobNo": "14505866",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 25.0495205,
+      "lon": 121.457265,
+      "link": {
+        "job": "https://www.104.com.tw/job/8mwsq",
+        "cust": "https://www.104.com.tw/company/1a2x6blj1s",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8mwsq?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001006013",
+      "mrtDesc": "捷運幸福站",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 100000,
+      "salaryLow": 28590,
+      "tags": {
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "landmark": {
+          "desc": "距捷運幸福站約280公尺"
+        }
+      },
+      "s9": [
+        1,
+        2
+      ],
+      "s5": 256,
+      "d3": "09:00-17:00/13:00-21:00（依業績調整上班時間，最低上班時數四小時）",
+      "hrBehaviorPR": 0.9961574713449076,
+      "jobCat": [
+        2005003016,
+        2001001002,
+        2005003015
+      ],
+      "labels": [
+        "c@wf1",
+        "c@wf4",
+        "foreigners@foreigners",
+        "c@wf2",
+        "college@student_invited",
+        "c@wf29",
+        "c@wf7",
+        "foreigners@chineseDiasporas",
+        "c@wf10"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        64,
+        2048
+      ],
+      "employeeCount": 0,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753748167,
+        "lastCustReplyTimestamp": 1753893623,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 18,
+      "coIndustry": 1002003001,
+      "coIndustryDesc": "鞋類製造業",
+      "custName": "賜昌集團_英屬維京群島商賜昌有限公司",
+      "custNo": "130000000116851",
+      "description": "1.規劃、執行與協調行政事務作業\n2.協助集團推動相關專案，包含資訊蒐集與分析、數據彙整與報告、進度掌握等\n3.參與跨單位會議與追蹤決議事項 \n4.報表分析與會議簡報製作\n5.廠區人事作業執行(海外幹部到職及入境事宜)\n6.廠區大型活動與會議籌備\n7.執行越南總管理處有關財務、關務、庶務…等工作配合事宜\n8.其他主管交辦事項",
+      "descSnippet": "1.規劃、執行與協調行政事務作業\n2.協助集團推動相關專案，包含資訊蒐集與分析、數據彙整與報告、進度掌握等\n3.參與跨單位會議與追蹤決議事項 \n4.報表分析與會議簡報製作\n5.廠區人事作業執行(海外幹部到職及入境事宜)\n6.廠區大型活動與會議籌備\n7.執行越南總管理處有關財務、關務、庶務…等工作配合事宜\n8.其他主管交辦事項",
+      "mrtDist": 0,
+      "jobAddress": "",
+      "jobAddrNo": 6003002001,
+      "jobAddrNoDesc": "越南",
+      "jobName": "【行政/幕僚】廠區主管室主管/人員(越南)",
+      "jobNameSnippet": "【行政/幕僚】廠區主管室主管/人員(越南)",
+      "jobNo": "14290959",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": 14.058324,
+      "lon": 108.277199,
+      "link": {
+        "job": "https://www.104.com.tw/job/8iaz3",
+        "cust": "https://www.104.com.tw/company/1a2x6bkhgz",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8iaz3?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        4,
+        5
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": {
+        "wf16": {
+          "desc": "",
+          "param": "wf16"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf27": {
+          "desc": "",
+          "param": "wf27"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf34": {
+          "desc": "",
+          "param": "wf34"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.8372079340114733,
+      "jobCat": [
+        2001001003,
+        2002001003,
+        2001001001
+      ],
+      "labels": [
+        "c@wf16",
+        "c@wf9",
+        "senior@senior_job_B",
+        "c@wf10",
+        "foreigners@foreigners",
+        "c@wf27",
+        "c@wf1",
+        "c@wf34",
+        "45plus@45invited"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        }
+      ],
+      "acceptRole": [],
+      "employeeCount": 120000,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753861478,
+        "lastCustReplyTimestamp": 1753335411,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 9,
+      "coIndustry": 1006003001,
+      "coIndustryDesc": "廣告行銷公關業",
+      "custName": "時代社群行銷有限公司",
+      "custNo": "130000000149039",
+      "description": "We Need You Can Do\n①專案控管\n - 專案管理：負責專案規劃、執行與進度追蹤，確保項目目標達成\n - 策略執行：根據營運長決策，協助策略落地並監督執行情況\n - 成本與資源控管：協助優化營運成本，提高工作流程效率\n - 跨部門協作：與全公司營運部門協調合作，確保營運順暢\n - 內外部關係經營：負責與客戶、合作夥伴、供應商的溝通協調\n - 會議與行程管理：協助營運長行程、內外部會議，並製作簡報、會議紀錄與追蹤決議事項\n②行銷策略輔助，協助規劃行銷活動、品牌推廣與執行、執行活動時程控管\n③應變與問題解決，處理突發狀況，提供高效解決方案\n④時間與細節管理，有效安排工作優先順序，確保各項事務順利進行\n⑤稅務作業流程(各類所得及二代健保之扣繳/營業稅)\n⑥配合財務團隊及會計師查帳作業\n⑦其他營運長交辦事項\n\nWe Expect You\n①具備出色的組織和協調能力,能夠有效處理多項任務。\n②擁有優秀的溝通技巧,能夠舆不同層級的人員有效溝通。\n③具備保密性和敏感性,能夠處理機密信息。\n④具有良好的時間管理能力和工作細心的態度。\n⑤學習能力佳，有上進心，願意與公司一同發展成長。\n ＊薪資待遇依照工作能力與經驗而定＊\n\n媒體網站：https://cyclingtime.com/tw.html\n粉絲專頁：https://www.facebook.com/cyclingtime.tw\n公司官網：https://timedia.tw/\n\n了解執行長：www.youtube.com/@heynick2024\n---\n我們是時代社群行銷團隊，公司大多是U35的夥伴\n專門協助傳統產業(ex.自行車)數位轉型、整合行銷...\n我們還擁有一個將近17萬追蹤的粉絲專頁「單車時代CYCLINGTIME」，\n是目前全亞洲最大的自行車媒體，\n更有一個超過4萬訂閱的Youtube頻道，\n讓你的創意可以透過實際數據反饋更加了解市場需求，\n而且我們還舉辦了亞洲最大自行車百K挑戰活動「時代騎輪節」，\n邀請具有創造力，有主見有想法的夥伴一起加入我們的行列\n\n公司文化與福利\n我們創造一個開放式、鼓勵夥伴互相碰撞想法的工作環境\n團隊注重創新與成長，定期安排專家講座激發大家的想像力\n因為我們認為想像是你能力的唯一限制～\n更是非常重視團隊個人的意見與想法，熱於傾聽每個人的聲音\n---\nTIMEDIA\nTendency 趨勢＊Innovation 創新＊Marvel 驚奇＊Enthusiasm 熱情＊Desire 渴望＊Influence 影響力＊Ambition 野心\n\n我們是一個關注「趨勢」擁抱「創新」不斷創造「驚奇」並且充滿「熱情」的團隊，我們是由一群對成長極度「渴望」的Y+Z世代組成，立志於拼搏的過程持續創造對社會正面的「影響力」，「野心」早已刻在心中...",
+      "descSnippet": "We Need You Can Do\n①專案控管\n - 專案管理：負責專案規劃、執行與進度追蹤，確保項目目標達成\n - 策略執行：根據營運長決策，協助策略落地並監督執行情況\n - 成本與資源控管：協助優化營運成本，提高工作流程效率\n - 跨部門協作：與全公司營運部門協調合作，確保營運順暢\n - 內外部關係經營：負責與客戶、合作夥伴、供應商的溝通協調\n - 會議與行程管理：協助營運長行程、內外部會議，並製作簡報、會議紀錄與追蹤決議事項\n②行銷策略輔助，協助規劃行銷活動、品牌推廣與執行、執行活動時程控管\n③應變與問題解決，處理突發狀況，提供高效解決方案\n④時間與細節管理，有效安排工作優先順序，確保各項事務順利進行\n⑤稅務作業流程(各類所得及二代健保之扣繳/營業稅)\n⑥配合財務團隊及會計師查帳作業\n⑦其他營運長交辦事項\n\nWe Expect You\n①具備出色的組織和協調能力,能夠有效處理多項任務。\n②擁有優秀的溝通技巧,能夠舆不同層級的人員有效溝通。\n③具備保密性和敏感性,能夠處理機密信息。\n④具有良好的時間管理能力和工作細心的態度。\n⑤學習能力佳，有上進心，願意與公司一同發展成長。\n ＊薪資待遇依照工作能力與經驗而定＊\n\n媒體網站：https://cyclingtime.com/tw.html\n粉絲專頁：https://www.facebook.com/cyclingtime.tw\n公司官網：https://timedia.tw/\n\n了解執行長：www.youtube.com/@heynick2024\n---\n我們是時代社群行銷團隊，公司大多是U35的夥伴\n專門協助傳統產業(ex.自行車)數位轉型、整合行銷...\n我們還擁有一個將近17萬追蹤的粉絲專頁「單車時代CYCLINGTIME」，\n是目前全亞洲最大的自行車媒體，\n更有一個超過4萬訂閱的Youtube頻道，\n讓你的創意可以透過實際數據反饋更加了解市場需求，\n而且我們還舉辦了亞洲最大自行車百K挑戰活動「時代騎輪節」，\n邀請具有創造力，有主見有想法的夥伴一起加入我們的行列\n\n公司文化與福利\n我們創造一個開放式、鼓勵夥伴互相碰撞想法的工作環境\n團隊注重創新與成長，定期安排專家講座激發大家的想像力\n因為我們認為想像是你能力的唯一限制～\n更是非常重視團隊個人的意見與想法，熱於傾聽每個人的聲音\n---\nTIMEDIA\nTendency 趨勢＊Innovation 創新＊Marvel 驚奇＊Enthusiasm 熱情＊Desire 渴望＊Influence 影響力＊Ambition 野心\n\n我們是一個關注「趨勢」擁抱「創新」不斷創造「驚奇」並且充滿「熱情」的團隊，我們是由一群對成長極度「渴望」的Y+Z世代組成，立志於拼搏的過程持續創造對社會正面的「影響力」，「野心」早已刻在心中...",
+      "mrtDist": 0.24,
+      "jobAddress": "文心路三段241號11樓之五",
+      "jobAddrNo": 6001008007,
+      "jobAddrNoDesc": "台中市西屯區",
+      "jobName": "營運長特助",
+      "jobNameSnippet": "營運長特助",
+      "jobNo": "14545891",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.1722076,
+      "lon": 120.6629809,
+      "link": {
+        "job": "https://www.104.com.tw/job/8nroj",
+        "cust": "https://www.104.com.tw/company/1a2x6bl6b3",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8nroj?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99003001007",
+      "mrtDesc": "捷運文華高中站",
+      "optionEdu": [
+        4,
+        5,
+        6
+      ],
+      "period": 4,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 50000,
+      "salaryLow": 38000,
+      "tags": {
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "landmark": {
+          "desc": "距捷運文華高中站約240公尺"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "09:00-18:00",
+      "hrBehaviorPR": 0.7026488192896503,
+      "jobCat": [
+        2001001003,
+        2003001010,
+        2001001001
+      ],
+      "labels": [
+        "c@wf1",
+        "c@wf2",
+        "c@wf29",
+        "c@wf3",
+        "c@wf26",
+        "c@wf7"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2048
+      ],
+      "employeeCount": 12,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753894774,
+        "lastCustReplyTimestamp": 1752222882,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 3,
+      "coIndustry": 1003001001,
+      "coIndustryDesc": "農／畜／水產品批發業",
+      "custName": "擎燁有限公司",
+      "custNo": "130000000215386",
+      "description": "依照固定路線配送蔬果至餐廳、學校、企業等熟客據點\n\n負責每日出車、回場卸貨、整理冷藏區作業（須搬運10～30公斤）\n\n協助車輛保養、載貨安全確認\n\n學習司機排班、新手訓練、路線交接與客訴處理\n\n表現穩定者可晉升儲備幹部，參與跨部門管理會議",
+      "descSnippet": "依照固定路線配送蔬果至餐廳、學校、企業等熟客據點\n\n負責每日出車、回場卸貨、整理冷藏區作業（須搬運10～30公斤）\n\n協助車輛保養、載貨安全確認\n\n學習司機排班、新手訓練、路線交接與客訴處理\n\n表現穩定者可晉升儲備幹部，參與跨部門管理會議",
+      "mrtDist": 0,
+      "jobAddress": "民生路一段202號",
+      "jobAddrNo": 6001008020,
+      "jobAddrNoDesc": "台中市大雅區",
+      "jobName": "【儲備司機幹部｜固定早班】可升主管／熟客路線／穩定長期",
+      "jobNameSnippet": "【儲備司機幹部｜固定早班】可升主管／熟客路線／穩定長期",
+      "jobNo": "13529865",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.2274529,
+      "lon": 120.6509676,
+      "link": {
+        "job": "https://www.104.com.tw/job/81zpl",
+        "cust": "https://www.104.com.tw/company/1a2x6bmli2",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/81zpl?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "period": 4,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 60000,
+      "salaryLow": 50000,
+      "tags": {
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "0430-1430",
+      "hrBehaviorPR": 0.8116430373731316,
+      "jobCat": [
+        2001001002,
+        2011002001,
+        2011002003
+      ],
+      "labels": [
+        "c@wf1"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        64,
+        2048
+      ],
+      "employeeCount": 0,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753357347,
+        "lastCustReplyTimestamp": 1752072390,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 2,
+      "coIndustry": 1002001001,
+      "coIndustryDesc": "菸草製造業",
+      "custName": "104測試_APP公司(請勿應徵)",
+      "custNo": "130000000005797",
+      "description": "[img] https://upload.cc/i1/2023/10/20/z7f6QZ.png [/img]\n1.規劃測試計畫與測試案例（test case）。\n2.測試與驗證系統功能、相容性、效能、壓力承載、可靠度等。\n3.建立測試環境，撰寫、維護、改善測試程式。\n4.分析測試資料、釐清問題、提出改善建議，並撰寫測試報告。\n5.維護相關測試設備。",
+      "descSnippet": "[img] https://upload.cc/i1/2023/10/20/z7f6QZ.png [/img]\n1.規劃測試計畫與測試案例（test case）。\n2.測試與驗證系統功能、相容性、效能、壓力承載、可靠度等。\n3.建立測試環境，撰寫、維護、改善測試程式。\n4.分析測試資料、釐清問題、提出改善建議，並撰寫測試報告。\n5.維護相關測試設備。",
+      "mrtDist": 0,
+      "jobAddress": "大安路66號",
+      "jobAddrNo": 6007001005,
+      "jobAddrNoDesc": "冰島",
+      "jobName": "測試職務_請勿應徵_web_qa_e2e_主動應徵",
+      "jobNameSnippet": "測試職務_請勿應徵_web_qa_e2e_主動應徵",
+      "jobNo": "12201294",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 64.963051,
+      "lon": -19.020835,
+      "link": {
+        "job": "https://www.104.com.tw/job/79iku",
+        "cust": "https://www.104.com.tw/company/1a2x6bi3s5",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/79iku?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": [],
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.9951323278154313,
+      "jobCat": [
+        2001002005,
+        2018002002,
+        2001001002
+      ],
+      "labels": [],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        }
+      ],
+      "acceptRole": [],
+      "employeeCount": 1234,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753829249,
+        "lastCustReplyTimestamp": 1753913252,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 3,
+      "coIndustry": 1016002001,
+      "coIndustryDesc": "餐館業",
+      "custName": "老王炸烤_三匠國際興業股份有限公司",
+      "custNo": "130000000206725",
+      "description": "老王炸烤/信義旗艦店-誠徵門市主管\n\n基本主管底薪：50000 起\n工作時間：16：00-01：00 (到打洋收完)\n\n上班地點：臺北市信義區忠孝東路5段486號\n具餐飲門市三年以上管理經驗 優先錄取\n\n工作內容【門市主管】 \n1.\t負責門市營業業績目標達成\n2.\t維持門市環境的清潔衛生\n3.\t客戶關係管理維護\n4.\t管理店內員工的招募、出缺勤、業績、訓練、升遷。\n5.\t掌管物料的進出貨數量和品質。\n6.\t協助當地商圈廣告活動規劃\n7.\t協調及促銷宣傳、商圈市場調查\n8.\t商品銷售與流程品質控管\n9.\t解決較複雜的顧客抱怨\n10.\t店舖行政工作管理與帳務處理\n11.\t門市人力調配。\n12.\t制訂餐廳作業標準流程。\n13.\t監督食物之製作流程、份量及擺盤等事務。\n14.\t親自品嚐餐食以確保菜色品質穩定。\n15.\t協調外場點餐與內場廚師料理的順序與速度。\n16.\t主動詢問顧客需求與對服務之滿意度。\n17.\t建立員工表現及顧客滿意度的標準。\n18.\t進行門市營運成本之管控。\n\n工作態度：積極是基本「禮貌尊重」最為重要\n\n月休8天(排班)、勞、健保、勞退\n另有全勤獎金、月獎金、年資獎金、考核獎金\n\n試用期2~3個月 (除個人特殊狀況)\n試用期門市獎金（入職第一個月沒有）\n\n上班非常忙碌，有心理準備再來，不缺人，缺人才\n看過履歷覺得合適者會通知面試，老王感謝您～",
+      "descSnippet": "老王炸烤/信義旗艦店-誠徵門市主管\n\n基本主管底薪：50000 起\n工作時間：16：00-01：00 (到打洋收完)\n\n上班地點：臺北市信義區忠孝東路5段486號\n具餐飲門市三年以上管理經驗 優先錄取\n\n工作內容【門市主管】 \n1.\t負責門市營業業績目標達成\n2.\t維持門市環境的清潔衛生\n3.\t客戶關係管理維護\n4.\t管理店內員工的招募、出缺勤、業績、訓練、升遷。\n5.\t掌管物料的進出貨數量和品質。\n6.\t協助當地商圈廣告活動規劃\n7.\t協調及促銷宣傳、商圈市場調查\n8.\t商品銷售與流程品質控管\n9.\t解決較複雜的顧客抱怨\n10.\t店舖行政工作管理與帳務處理\n11.\t門市人力調配。\n12.\t制訂餐廳作業標準流程。\n13.\t監督食物之製作流程、份量及擺盤等事務。\n14.\t親自品嚐餐食以確保菜色品質穩定。\n15.\t協調外場點餐與內場廚師料理的順序與速度。\n16.\t主動詢問顧客需求與對服務之滿意度。\n17.\t建立員工表現及顧客滿意度的標準。\n18.\t進行門市營運成本之管控。\n\n工作態度：積極是基本「禮貌尊重」最為重要\n\n月休8天(排班)、勞、健保、勞退\n另有全勤獎金、月獎金、年資獎金、考核獎金\n\n試用期2~3個月 (除個人特殊狀況)\n試用期門市獎金（入職第一個月沒有）\n\n上班非常忙碌，有心理準備再來，不缺人，缺人才\n看過履歷覺得合適者會通知面試，老王感謝您～",
+      "mrtDist": 0.21,
+      "jobAddress": "忠孝東路五段486號",
+      "jobAddrNo": 6001001007,
+      "jobAddrNoDesc": "台北市信義區",
+      "jobName": "門市店長(信義店)",
+      "jobNameSnippet": "門市店長(信義店)",
+      "jobNo": "13425601",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": 25.04071,
+      "lon": 121.578065,
+      "link": {
+        "job": "https://www.104.com.tw/job/7zr9d",
+        "cust": "https://www.104.com.tw/company/1a2x6bmeth",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7zr9d?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001005019",
+      "mrtDesc": "捷運永春站",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 70000,
+      "salaryLow": 50000,
+      "tags": {
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf31": {
+          "desc": "",
+          "param": "wf31"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf27": {
+          "desc": "",
+          "param": "wf27"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf17": {
+          "desc": "",
+          "param": "wf17"
+        },
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "landmark": {
+          "desc": "距捷運永春站約210公尺"
+        }
+      },
+      "s9": [
+        1,
+        2,
+        8
+      ],
+      "s5": 0,
+      "d3": "(依公司規定排班)",
+      "hrBehaviorPR": 0.9897622738433338,
+      "jobCat": [
+        2006002002,
+        2001001002,
+        2005002001
+      ],
+      "labels": [
+        "c@wf3",
+        "c@wf31",
+        "c@wf7",
+        "foreigners@foreigners_tick",
+        "c@wf1",
+        "c@wf4",
+        "foreigners@overseasStudents_tick",
+        "c@wf27",
+        "foreigners@foreignStudents",
+        "college@student_invited",
+        "c@wf28",
+        "senior@senior_job_A",
+        "c@wf29",
+        "c@wf10",
+        "c@wf17",
+        "c@wf26",
+        "foreigners@chineseDiasporas",
+        "foreigners@overseasStudents",
+        "foreigners@foreigners",
+        "45plus@45invited",
+        "c@wf2"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        1024,
+        2048,
+        16384,
+        32768,
+        65536,
+        131072
+      ],
+      "employeeCount": 50,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753866167,
+        "lastCustReplyTimestamp": 1753852939,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 1,
+      "coIndustry": 1016002001,
+      "coIndustryDesc": "餐館業",
+      "custName": "八和和牛燒肉專門店/黑武士老火鍋/SSAM韓式燒肉專門店_八和餐飲有限公司",
+      "custNo": "130000000162856",
+      "description": "我們在找這樣的你  \n-學歷不限，對餐飲充滿熱忱\n-具備不同程度的餐飲經驗，並渴望發展長期職涯  \n*儲備店長 ：2 年以上餐飲服務業經驗，具管理或營運經驗  \n*儲備副店長 / 儲備副料理長：2 年以上餐飲經驗，曾負責營運值班  \n*儲備值班幹部：一年以上餐飲經驗，對未來充滿企圖心  \n\n●你的工作舞台  \n營運管理 & 顧客服務  \n- 確保門市順利運作，帶領團隊達成營運目標  \n- 安排人力調度、培訓夥伴，打造高效團隊  \n- 提供優質的餐點與服務，讓顧客滿意而歸  \n\n廚房管理 & 出餐品質  \n- 確保烹飪流程符合食品安全標準  \n- 協助餐點製作，維持穩定的高品質  \n- 與外場緊密配合，提升出餐流暢度  \n\n\n我們提供完善的培訓計畫，讓你快速成長、晉升，透明且完整的調薪制度，固定每半年考核，能力強調薪快，餐飲業高薪不是夢! 開啟餐飲職涯新篇章！\n (1) 每季各店損益表之稅後淨利，可獲得額外激勵獎金\n (2) You Can & We Pay，工作所獲得的報酬源自於【信任】，因為相信你/妳可以勝任未來的職務所以我們願意投資。\n\n薪資 (以上薪資不含加班費，加班費另計)\n1. 儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)\n2. 副店長    ，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n3. 副料理長，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n4. 店長        ，薪資 $65,000~92,000 + (另享每季分紅獎金$6000~51000)\n5. 計時社員，薪資 $230元/HR(含全勤獎金$20/每小時) + (另享每季分紅獎金$3000~12000)\n\n公司福利\n季獎金：\n1. 儲備幹部，每季分紅獎金$6000~27000\n2. 副店長    ，每季分紅獎金$6000~39000\n3. 副料理長，每季分紅獎金$6000~39000\n4. 店長        ，每季分紅獎金$6000~51000\n5. 計時社員，每季分紅獎金$3000~12000\n介紹獎金 $8000(過試用期3000，滿半年再加5000元)申請者及被介紹者都需再職。\n生日禮金+(正職人員另享有1天生日假)\n特殊技能津貼:(切肉津貼，通過考核於每月發放)\n三節禮金：春節、端午、中秋。\n\n享食好福利 \n\n員工餐 - 每日供應美味員工餐，讓你吃飽喝好。\n店鋪用餐 - 員工用餐折扣7折。\n店鋪聚餐 - 每月同仁定期聚餐/娛樂歡聚活動\n國內外員工旅遊(滿一年享有全額補助)。\n健康檢查 - 到職滿一年，免費的年度身體健康檢查\n\n基本的不能少 \n勞保、健保、每月提撥6%勞退 是基本的喔！",
+      "descSnippet": "我們在找這樣的你  \n-學歷不限，對餐飲充滿熱忱\n-具備不同程度的餐飲經驗，並渴望發展長期職涯  \n*儲備店長 ：2 年以上餐飲服務業經驗，具管理或營運經驗  \n*儲備副店長 / 儲備副料理長：2 年以上餐飲經驗，曾負責營運值班  \n*儲備值班幹部：一年以上餐飲經驗，對未來充滿企圖心  \n\n●你的工作舞台  \n營運管理 & 顧客服務  \n- 確保門市順利運作，帶領團隊達成營運目標  \n- 安排人力調度、培訓夥伴，打造高效團隊  \n- 提供優質的餐點與服務，讓顧客滿意而歸  \n\n廚房管理 & 出餐品質  \n- 確保烹飪流程符合食品安全標準  \n- 協助餐點製作，維持穩定的高品質  \n- 與外場緊密配合，提升出餐流暢度  \n\n\n我們提供完善的培訓計畫，讓你快速成長、晉升，透明且完整的調薪制度，固定每半年考核，能力強調薪快，餐飲業高薪不是夢! 開啟餐飲職涯新篇章！\n (1) 每季各店損益表之稅後淨利，可獲得額外激勵獎金\n (2) You Can & We Pay，工作所獲得的報酬源自於【信任】，因為相信你/妳可以勝任未來的職務所以我們願意投資。\n\n薪資 (以上薪資不含加班費，加班費另計)\n1. 儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)\n2. 副店長    ，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n3. 副料理長，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n4. 店長        ，薪資 $65,000~92,000 + (另享每季分紅獎金$6000~51000)\n5. 計時社員，薪資 $230元/HR(含全勤獎金$20/每小時) + (另享每季分紅獎金$3000~12000)\n\n公司福利\n季獎金：\n1. 儲備幹部，每季分紅獎金$6000~27000\n2. 副店長    ，每季分紅獎金$6000~39000\n3. 副料理長，每季分紅獎金$6000~39000\n4. 店長        ，每季分紅獎金$6000~51000\n5. 計時社員，每季分紅獎金$3000~12000\n介紹獎金 $8000(過試用期3000，滿半年再加5000元)申請者及被介紹者都需再職。\n生日禮金+(正職人員另享有1天生日假)\n特殊技能津貼:(切肉津貼，通過考核於每月發放)\n三節禮金：春節、端午、中秋。\n\n享食好福利 \n\n員工餐 - 每日供應美味員工餐，讓你吃飽喝好。\n店鋪用餐 - 員工用餐折扣7折。\n店鋪聚餐 - 每月同仁定期聚餐/娛樂歡聚活動\n國內外員工旅遊(滿一年享有全額補助)。\n健康檢查 - 到職滿一年，免費的年度身體健康檢查\n\n基本的不能少 \n勞保、健保、每月提撥6%勞退 是基本的喔！",
+      "mrtDist": 0.08,
+      "jobAddress": "安和路1段102巷4號",
+      "jobAddrNo": 6001001005,
+      "jobAddrNoDesc": "台北市大安區",
+      "jobName": "【八和和牛燒肉-安和店】一頭班 外場儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)",
+      "jobNameSnippet": "【八和和牛燒肉-安和店】一頭班 外場儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)",
+      "jobNo": "14524766",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 25.0329786,
+      "lon": 121.5521903,
+      "link": {
+        "job": "https://www.104.com.tw/job/8nbdq",
+        "cust": "https://www.104.com.tw/company/1a2x6blgyw",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8nbdq?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001002003",
+      "mrtDesc": "捷運信義安和站",
+      "optionEdu": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 55000,
+      "salaryLow": 40000,
+      "tags": {
+        "wf20": {
+          "desc": "",
+          "param": "wf20"
+        },
+        "wf17": {
+          "desc": "",
+          "param": "wf17"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf14": {
+          "desc": "",
+          "param": "wf14"
+        },
+        "landmark": {
+          "desc": "距捷運信義安和站約80公尺"
+        }
+      },
+      "s9": [
+        2
+      ],
+      "s5": 256,
+      "d3": "",
+      "hrBehaviorPR": 0.8844506427194253,
+      "jobCat": [
+        2001001001,
+        2001001002,
+        2006002002
+      ],
+      "labels": [
+        "c@wf20",
+        "c@wf17",
+        "foreigners@foreigners_tick",
+        "c@wf29",
+        "c@wf3",
+        "foreigners@foreigners",
+        "c@wf1",
+        "foreigners@chineseDiasporas",
+        "c@wf7",
+        "c@wf2",
+        "c@wf9",
+        "c@wf28",
+        "foreigners@overseasStudents_tick",
+        "c@wf4",
+        "c@wf14"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        1024,
+        2048,
+        65536,
+        131072
+      ],
+      "employeeCount": 130,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753859626,
+        "lastCustReplyTimestamp": 1753859315,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 0,
+      "coIndustry": 1016002001,
+      "coIndustryDesc": "餐館業",
+      "custName": "老王炸烤_三匠國際興業股份有限公司",
+      "custNo": "130000000206725",
+      "description": "老王炸烤/南京店-誠徵門市主管\n\n基本主管底薪：50000 起\n工作時間：16：00-01：00 (到打洋收完)\n\n上班地點：台北市松山區健康路220號\n具餐飲門市三年以上管理經驗 優先錄取\n\n工作內容【門市主管】 \n1.\t負責門市營業業績目標達成\n2.\t維持門市環境的清潔衛生\n3.\t客戶關係管理維護\n4.\t管理店內員工的招募、出缺勤、業績、訓練、升遷。\n5.\t掌管物料的進出貨數量和品質。\n6.\t協助當地商圈廣告活動規劃\n7.\t協調及促銷宣傳、商圈市場調查\n8.\t商品銷售與流程品質控管\n9.\t解決較複雜的顧客抱怨\n10.\t店舖行政工作管理與帳務處理\n11.\t門市人力調配。\n12.\t制訂餐廳作業標準流程。\n13.\t監督食物之製作流程、份量及擺盤等事務。\n14.\t親自品嚐餐食以確保菜色品質穩定。\n15.\t協調外場點餐與內場廚師料理的順序與速度。\n16.\t主動詢問顧客需求與對服務之滿意度。\n17.\t建立員工表現及顧客滿意度的標準。\n18.\t進行門市營運成本之管控。\n\n工作態度：積極是基本「禮貌尊重」最為重要\n\n月休8天(排班)、勞、健保、勞退\n另有全勤獎金、月獎金、年資獎金、考核獎金\n\n試用期2~3個月 (除個人特殊狀況)\n試用期門市獎金（入職第一個月沒有）\n\n上班非常忙碌，有心理準備再來，不缺人，缺人才\n看過履歷覺得合適者會通知面試，老王感謝您～",
+      "descSnippet": "老王炸烤/南京店-誠徵門市主管\n\n基本主管底薪：50000 起\n工作時間：16：00-01：00 (到打洋收完)\n\n上班地點：台北市松山區健康路220號\n具餐飲門市三年以上管理經驗 優先錄取\n\n工作內容【門市主管】 \n1.\t負責門市營業業績目標達成\n2.\t維持門市環境的清潔衛生\n3.\t客戶關係管理維護\n4.\t管理店內員工的招募、出缺勤、業績、訓練、升遷。\n5.\t掌管物料的進出貨數量和品質。\n6.\t協助當地商圈廣告活動規劃\n7.\t協調及促銷宣傳、商圈市場調查\n8.\t商品銷售與流程品質控管\n9.\t解決較複雜的顧客抱怨\n10.\t店舖行政工作管理與帳務處理\n11.\t門市人力調配。\n12.\t制訂餐廳作業標準流程。\n13.\t監督食物之製作流程、份量及擺盤等事務。\n14.\t親自品嚐餐食以確保菜色品質穩定。\n15.\t協調外場點餐與內場廚師料理的順序與速度。\n16.\t主動詢問顧客需求與對服務之滿意度。\n17.\t建立員工表現及顧客滿意度的標準。\n18.\t進行門市營運成本之管控。\n\n工作態度：積極是基本「禮貌尊重」最為重要\n\n月休8天(排班)、勞、健保、勞退\n另有全勤獎金、月獎金、年資獎金、考核獎金\n\n試用期2~3個月 (除個人特殊狀況)\n試用期門市獎金（入職第一個月沒有）\n\n上班非常忙碌，有心理準備再來，不缺人，缺人才\n看過履歷覺得合適者會通知面試，老王感謝您～",
+      "mrtDist": 0.36,
+      "jobAddress": "健康路220號",
+      "jobAddrNo": 6001001004,
+      "jobAddrNoDesc": "台北市松山區",
+      "jobName": "門市主管(南京店)",
+      "jobNameSnippet": "門市主管(南京店)",
+      "jobNo": "13425603",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": 25.0538007,
+      "lon": 121.5614413,
+      "link": {
+        "job": "https://www.104.com.tw/job/7zr9f",
+        "cust": "https://www.104.com.tw/company/1a2x6bmeth",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7zr9f?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001003019",
+      "mrtDesc": "捷運南京三民站",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 70000,
+      "salaryLow": 50000,
+      "tags": {
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf17": {
+          "desc": "",
+          "param": "wf17"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf31": {
+          "desc": "",
+          "param": "wf31"
+        },
+        "wf27": {
+          "desc": "",
+          "param": "wf27"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "landmark": {
+          "desc": "距捷運南京三民站約360公尺"
+        }
+      },
+      "s9": [
+        1,
+        2,
+        8
+      ],
+      "s5": 0,
+      "d3": "(依公司規定排班)",
+      "hrBehaviorPR": 0.9179669378472262,
+      "jobCat": [
+        2006002002,
+        2001001002,
+        2005002001
+      ],
+      "labels": [
+        "c@wf26",
+        "c@wf28",
+        "c@wf2",
+        "senior@senior_job_A",
+        "45plus@45invited",
+        "c@wf17",
+        "foreigners@overseasStudents_tick",
+        "c@wf4",
+        "c@wf3",
+        "c@wf1",
+        "foreigners@chineseDiasporas",
+        "c@wf31",
+        "c@wf27",
+        "foreigners@foreignStudents",
+        "c@wf10",
+        "foreigners@foreigners_tick",
+        "foreigners@foreigners",
+        "college@student_invited",
+        "c@wf7",
+        "c@wf29"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        1024,
+        2048,
+        16384,
+        32768,
+        65536,
+        131072
+      ],
+      "employeeCount": 50,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753851307,
+        "lastCustReplyTimestamp": 1753860040,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 4,
+      "coIndustry": 1009006001,
+      "coIndustryDesc": "保全樓管相關業",
+      "custName": "齊家公寓大廈管理維護股份有限公司",
+      "custNo": "84760406000",
+      "description": "1. 提供管委會全方位的整體性大樓綜合管理服務，及住戶生活服務等業務規劃執行。\n2. 召開會議並執行會議決議事項。\n3. 警衛安全管理、監督廠商設備維護、清潔環保工作。\n4. 處理社區行政事務、規畫財務、安全、環境、設備等管理事項規劃與執行。\n5. 處理住戶客訴，並規勸喧嘩及濫用公物等行為。\n6. 執行公共設施的各項使用管理辦法。\n7. 其他交辦事項。",
+      "descSnippet": "1. 提供管委會全方位的整體性大樓綜合管理服務，及住戶生活服務等業務規劃執行。\n2. 召開會議並執行會議決議事項。\n3. 警衛安全管理、監督廠商設備維護、清潔環保工作。\n4. 處理社區行政事務、規畫財務、安全、環境、設備等管理事項規劃與執行。\n5. 處理住戶客訴，並規勸喧嘩及濫用公物等行為。\n6. 執行公共設施的各項使用管理辦法。\n7. 其他交辦事項。",
+      "mrtDist": 0,
+      "jobAddress": "",
+      "jobAddrNo": 6001005007,
+      "jobAddrNoDesc": "桃園市桃園區",
+      "jobName": "社區經理-桃園區-桃園齊家",
+      "jobNameSnippet": "社區經理-桃園區-桃園齊家",
+      "jobNo": "12262130",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": 24.9934099,
+      "lon": 121.2969674,
+      "link": {
+        "job": "https://www.104.com.tw/job/7atiq",
+        "cust": "https://www.104.com.tw/company/12xs5nu8",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7atiq?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 2,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 50000,
+      "salaryLow": 47000,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        }
+      },
+      "s9": [
+        1,
+        2
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.7433507960035756,
+      "jobCat": [
+        2017002005,
+        2001001002,
+        2002001001
+      ],
+      "labels": [
+        "senior@senior_job_A",
+        "c@wf7",
+        "45plus@45invited",
+        "c@wf2"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        64,
+        2048,
+        4096,
+        32768
+      ],
+      "employeeCount": 750,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753775815,
+        "lastCustReplyTimestamp": 1752584612,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 1,
+      "coIndustry": 1016002003,
+      "coIndustryDesc": "其他餐飲業",
+      "custName": "花磚甜點有限公司",
+      "custNo": "130000000237825",
+      "description": "1.負責商品介紹銷售與諮詢、收銀結帳包裝等。\r\n2.協助商品訂貨、庫存盤點管理，商品排面整理。\r\n3.協助器具清洗、門市清潔、商品陳列佈置等。\r\n4.協助門市進行活動規劃，並提出營運建議。\r\n5.學習人力調度與人員管理。\r\n\r\n\r\n門市儲備幹部是本公司培養未來銷售管理人才的重要崗位，透過訓練與實務操作，讓您成為專業的銷售幹部，展現您的銷售潛力。\r\n歡迎有興趣的您加入我們的團隊，一同成長與發展！",
+      "descSnippet": "1.負責商品介紹銷售與諮詢、收銀結帳包裝等。\r\n2.協助商品訂貨、庫存盤點管理，商品排面整理。\r\n3.協助器具清洗、門市清潔、商品陳列佈置等。\r\n4.協助門市進行活動規劃，並提出營運建議。\r\n5.學習人力調度與人員管理。\r\n\r\n\r\n門市儲備幹部是本公司培養未來銷售管理人才的重要崗位，透過訓練與實務操作，讓您成為專業的銷售幹部，展現您的銷售潛力。\r\n歡迎有興趣的您加入我們的團隊，一同成長與發展！",
+      "mrtDist": 0,
+      "jobAddress": "忠誠路二段154巷7號1樓",
+      "jobAddrNo": 6001001008,
+      "jobAddrNoDesc": "台北市士林區",
+      "jobName": "店員門市",
+      "jobNameSnippet": "店員門市",
+      "jobNo": "14198781",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 25.115113,
+      "lon": 121.5323589,
+      "link": {
+        "job": "https://www.104.com.tw/job/8gbul",
+        "cust": "https://www.104.com.tw/company/1a2x6bn2td",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8gbul?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        3,
+        4
+      ],
+      "period": 3,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 40000,
+      "salaryLow": 34000,
+      "tags": {
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "10:00-19:00",
+      "hrBehaviorPR": 0.6176480560195472,
+      "jobCat": [
+        2005002001,
+        2005002004,
+        2001001002
+      ],
+      "labels": [
+        "c@wf2",
+        "c@wf29",
+        "c@wf1",
+        "c@wf3",
+        "c@wf7"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        }
+      ],
+      "acceptRole": [],
+      "employeeCount": 0,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753864415,
+        "lastCustReplyTimestamp": 1753890399,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 5,
+      "coIndustry": 1016002001,
+      "coIndustryDesc": "餐館業",
+      "custName": "八和和牛燒肉專門店/黑武士老火鍋/SSAM韓式燒肉專門店_八和餐飲有限公司",
+      "custNo": "130000000162856",
+      "description": "我們在找這樣的你  \n-學歷不限，對餐飲充滿熱忱\n-具備不同程度的餐飲經驗，並渴望發展長期職涯  \n*儲備店長 ：2 年以上餐飲服務業經驗，具管理或營運經驗  \n*儲備副店長 / 儲備副料理長：2 年以上餐飲經驗，曾負責營運值班  \n*儲備值班幹部：一年以上餐飲經驗，對未來充滿企圖心  \n\n●你的工作舞台  \n營運管理 & 顧客服務  \n- 確保門市順利運作，帶領團隊達成營運目標  \n- 安排人力調度、培訓夥伴，打造高效團隊  \n- 提供優質的餐點與服務，讓顧客滿意而歸  \n\n廚房管理 & 出餐品質  \n- 確保烹飪流程符合食品安全標準  \n- 協助餐點製作，維持穩定的高品質  \n- 與外場緊密配合，提升出餐流暢度  \n\n\n我們提供完善的培訓計畫，讓你快速成長、晉升，透明且完整的調薪制度，固定每半年考核，能力強調薪快，餐飲業高薪不是夢! 開啟餐飲職涯新篇章！\n (1) 每季各店損益表之稅後淨利，可獲得額外激勵獎金\n (2) You Can & We Pay，工作所獲得的報酬源自於【信任】，因為相信你/妳可以勝任未來的職務所以我們願意投資。\n\n薪資 (以上薪資不含加班費，加班費另計)\n1. 儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)\n2. 副店長    ，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n3. 副料理長，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n4. 店長        ，薪資 $65,000~92,000 + (另享每季分紅獎金$6000~51000)\n5. 計時社員，薪資 $230元/HR(含全勤獎金$20/每小時) + (另享每季分紅獎金$3000~12000)\n\n公司福利\n季獎金：\n1. 儲備幹部，每季分紅獎金$6000~27000\n2. 副店長    ，每季分紅獎金$6000~39000\n3. 副料理長，每季分紅獎金$6000~39000\n4. 店長        ，每季分紅獎金$6000~51000\n5. 計時社員，每季分紅獎金$3000~12000\n介紹獎金 $8000(過試用期3000，滿半年再加5000元)申請者及被介紹者都需再職。\n生日禮金+(正職人員另享有1天生日假)\n特殊技能津貼:(切肉津貼，通過考核於每月發放)\n三節禮金：春節、端午、中秋。\n\n享食好福利 \n\n員工餐 - 每日供應美味員工餐，讓你吃飽喝好。\n店鋪用餐 - 員工用餐折扣7折。\n店鋪聚餐 - 每月同仁定期聚餐/娛樂歡聚活動\n國內外員工旅遊(滿一年享有全額補助)。\n健康檢查 - 到職滿一年，免費的年度身體健康檢查\n\n基本的不能少 \n勞保、健保、每月提撥6%勞退 是基本的喔！",
+      "descSnippet": "我們在找這樣的你  \n-學歷不限，對餐飲充滿熱忱\n-具備不同程度的餐飲經驗，並渴望發展長期職涯  \n*儲備店長 ：2 年以上餐飲服務業經驗，具管理或營運經驗  \n*儲備副店長 / 儲備副料理長：2 年以上餐飲經驗，曾負責營運值班  \n*儲備值班幹部：一年以上餐飲經驗，對未來充滿企圖心  \n\n●你的工作舞台  \n營運管理 & 顧客服務  \n- 確保門市順利運作，帶領團隊達成營運目標  \n- 安排人力調度、培訓夥伴，打造高效團隊  \n- 提供優質的餐點與服務，讓顧客滿意而歸  \n\n廚房管理 & 出餐品質  \n- 確保烹飪流程符合食品安全標準  \n- 協助餐點製作，維持穩定的高品質  \n- 與外場緊密配合，提升出餐流暢度  \n\n\n我們提供完善的培訓計畫，讓你快速成長、晉升，透明且完整的調薪制度，固定每半年考核，能力強調薪快，餐飲業高薪不是夢! 開啟餐飲職涯新篇章！\n (1) 每季各店損益表之稅後淨利，可獲得額外激勵獎金\n (2) You Can & We Pay，工作所獲得的報酬源自於【信任】，因為相信你/妳可以勝任未來的職務所以我們願意投資。\n\n薪資 (以上薪資不含加班費，加班費另計)\n1. 儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)\n2. 副店長    ，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n3. 副料理長，薪資 $52,000~65,000 + (另享每季分紅獎金$6000~39000)\n4. 店長        ，薪資 $65,000~92,000 + (另享每季分紅獎金$6000~51000)\n5. 計時社員，薪資 $230元/HR(含全勤獎金$20/每小時) + (另享每季分紅獎金$3000~12000)\n\n公司福利\n季獎金：\n1. 儲備幹部，每季分紅獎金$6000~27000\n2. 副店長    ，每季分紅獎金$6000~39000\n3. 副料理長，每季分紅獎金$6000~39000\n4. 店長        ，每季分紅獎金$6000~51000\n5. 計時社員，每季分紅獎金$3000~12000\n介紹獎金 $8000(過試用期3000，滿半年再加5000元)申請者及被介紹者都需再職。\n生日禮金+(正職人員另享有1天生日假)\n特殊技能津貼:(切肉津貼，通過考核於每月發放)\n三節禮金：春節、端午、中秋。\n\n享食好福利 \n\n員工餐 - 每日供應美味員工餐，讓你吃飽喝好。\n店鋪用餐 - 員工用餐折扣7折。\n店鋪聚餐 - 每月同仁定期聚餐/娛樂歡聚活動\n國內外員工旅遊(滿一年享有全額補助)。\n健康檢查 - 到職滿一年，免費的年度身體健康檢查\n\n基本的不能少 \n勞保、健保、每月提撥6%勞退 是基本的喔！",
+      "mrtDist": 0.38,
+      "jobAddress": "敦化北路100號",
+      "jobAddrNo": 6001001004,
+      "jobAddrNoDesc": "台北市松山區",
+      "jobName": "【八和和牛燒肉-敦北店】一頭班 外場儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)",
+      "jobNameSnippet": "【八和和牛燒肉-敦北店】一頭班 外場儲備幹部，薪資 $40,000~55,000 + (另享每季分紅獎金$6000~27000)",
+      "jobNo": "14524772",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 25.053227,
+      "lon": 121.5485558,
+      "link": {
+        "job": "https://www.104.com.tw/job/8nbdw",
+        "cust": "https://www.104.com.tw/company/1a2x6blgyw",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8nbdw?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "99001003018",
+      "mrtDesc": "捷運台北小巨蛋站",
+      "optionEdu": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 55000,
+      "salaryLow": 40000,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf17": {
+          "desc": "",
+          "param": "wf17"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        },
+        "wf14": {
+          "desc": "",
+          "param": "wf14"
+        },
+        "wf20": {
+          "desc": "",
+          "param": "wf20"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "landmark": {
+          "desc": "距捷運台北小巨蛋站約380公尺"
+        }
+      },
+      "s9": [
+        2
+      ],
+      "s5": 256,
+      "d3": "",
+      "hrBehaviorPR": 0.8895634661416718,
+      "jobCat": [
+        2001001002,
+        2001001001,
+        2006002002
+      ],
+      "labels": [
+        "college@student_invited",
+        "foreigners@overseasStudents_tick",
+        "c@wf7",
+        "c@wf9",
+        "c@wf17",
+        "c@wf4",
+        "c@wf28",
+        "c@wf1",
+        "c@wf3",
+        "c@wf14",
+        "c@wf20",
+        "foreigners@foreigners_tick",
+        "c@wf29",
+        "foreigners@foreigners",
+        "c@wf2"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        1024,
+        2048,
+        65536,
+        131072
+      ],
+      "employeeCount": 130,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753677685,
+        "lastCustReplyTimestamp": 1753859339,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 6,
+      "coIndustry": 1002003001,
+      "coIndustryDesc": "鞋類製造業",
+      "custName": "賜昌集團_英屬維京群島商賜昌有限公司",
+      "custNo": "130000000116851",
+      "description": "1.負責產線作業及人員管理，達成生產目標\n2.執行生管排程計劃，反饋並解決生產異常\n3.推動精實專案，落實各項專案計劃並提供反饋\n4.負責生產安全，減少工傷發生\n5.配合內外部環安衛稽查及改善\n\n本職位負責負責廠務管理和產線作業等相關工作，為公司製造類的核心職務，具有重要的意義和發揮空間。\n如果您符合以上要求且對此職位有興趣，請提交您的履歷表並聯繫我們，期待您加入我們的專業團隊，謝謝！",
+      "descSnippet": "1.負責產線作業及人員管理，達成生產目標\n2.執行生管排程計劃，反饋並解決生產異常\n3.推動精實專案，落實各項專案計劃並提供反饋\n4.負責生產安全，減少工傷發生\n5.配合內外部環安衛稽查及改善\n\n本職位負責負責廠務管理和產線作業等相關工作，為公司製造類的核心職務，具有重要的意義和發揮空間。\n如果您符合以上要求且對此職位有興趣，請提交您的履歷表並聯繫我們，期待您加入我們的專業團隊，謝謝！",
+      "mrtDist": 0,
+      "jobAddress": "",
+      "jobAddrNo": 6003002010,
+      "jobAddrNoDesc": "印尼",
+      "jobName": "【生產製造】產品製造部培訓幹部(印尼)",
+      "jobNameSnippet": "【生產製造】產品製造部培訓幹部(印尼)",
+      "jobNo": "12435145",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": -0.789275,
+      "lon": 113.921327,
+      "link": {
+        "job": "https://www.104.com.tw/job/7ej0p",
+        "cust": "https://www.104.com.tw/company/1a2x6bkhgz",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7ej0p?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        3,
+        4,
+        5
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": {
+        "wf34": {
+          "desc": "",
+          "param": "wf34"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf16": {
+          "desc": "",
+          "param": "wf16"
+        },
+        "wf27": {
+          "desc": "",
+          "param": "wf27"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.8037339186910918,
+      "jobCat": [
+        2001001002,
+        2009002001,
+        2009001001
+      ],
+      "labels": [
+        "c@wf34",
+        "c@wf10",
+        "c@wf16",
+        "c@wf27",
+        "c@wf1",
+        "c@wf9",
+        "foreigners@foreigners"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        }
+      ],
+      "acceptRole": [
+        2
+      ],
+      "employeeCount": 120000,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753864419,
+        "lastCustReplyTimestamp": 1753064041,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 1,
+      "coIndustry": 1016002001,
+      "coIndustryDesc": "餐館業",
+      "custName": "永芯茶檔有限公司",
+      "custNo": "130000000229814",
+      "description": "\n準備食材並烹調菜餚\n掌控菜餚的擺盤與出菜的順序\n測量食材的容量與重量並協助處理廚房事務完成主廚指派工作\n\n【中壢內壢店】桃園市中壢區成章四街61號\n\n工作時段:(工作時段依現場營運狀況調整)\n10:00-21:30\n\n一天工作八小時+1至2小時休息時間\n月休8-10天(按法定休假日排休)\n\n其他福利項目 員工勞健保並額外替員工承擔「團保職災險」。\n每日供餐、定期聚餐。\n\n年終獎金、分紅獎金、月獎金、季獎金\n讓我們一起朝目標衝刺！\n\n工作環境極佳\n培訓優秀幹部，員工的成長我們看得見\n如果你對我們的職缺有興趣，想在一個公平且友善的環境工作，歡迎你跟我們聯絡。\n\n★起薪依學經歷而定★\n★獎金依個人績效能力而定★\n★依個人工作能力不定期調薪★",
+      "descSnippet": "\n準備食材並烹調菜餚\n掌控菜餚的擺盤與出菜的順序\n測量食材的容量與重量並協助處理廚房事務完成主廚指派工作\n\n【中壢內壢店】桃園市中壢區成章四街61號\n\n工作時段:(工作時段依現場營運狀況調整)\n10:00-21:30\n\n一天工作八小時+1至2小時休息時間\n月休8-10天(按法定休假日排休)\n\n其他福利項目 員工勞健保並額外替員工承擔「團保職災險」。\n每日供餐、定期聚餐。\n\n年終獎金、分紅獎金、月獎金、季獎金\n讓我們一起朝目標衝刺！\n\n工作環境極佳\n培訓優秀幹部，員工的成長我們看得見\n如果你對我們的職缺有興趣，想在一個公平且友善的環境工作，歡迎你跟我們聯絡。\n\n★起薪依學經歷而定★\n★獎金依個人績效能力而定★\n★依個人工作能力不定期調薪★",
+      "mrtDist": 0,
+      "jobAddress": "成章四街61號",
+      "jobAddrNo": 6001005001,
+      "jobAddrNoDesc": "桃園市中壢區",
+      "jobName": "桃園內壢店【內場儲備幹部】熱忱內場廚房【薪資37,000元至45,000元(含全勤)】",
+      "jobNameSnippet": "桃園內壢店【內場儲備幹部】熱忱內場廚房【薪資37,000元至45,000元(含全勤)】",
+      "jobNo": "14045037",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.974788,
+      "lon": 121.2567711,
+      "link": {
+        "job": "https://www.104.com.tw/job/8d17x",
+        "cust": "https://www.104.com.tw/company/1a2x6bmwmu",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/8d17x?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "period": 4,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 45000,
+      "salaryLow": 38000,
+      "tags": {
+        "wf26": {
+          "desc": "",
+          "param": "wf26"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf18": {
+          "desc": "",
+          "param": "wf18"
+        },
+        "wf30": {
+          "desc": "",
+          "param": "wf30"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf12": {
+          "desc": "",
+          "param": "wf12"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf3": {
+          "desc": "",
+          "param": "wf3"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.9666626734506133,
+      "jobCat": [
+        2006001002,
+        2006001004,
+        2001001002
+      ],
+      "labels": [
+        "senior@senior_job_E",
+        "c@wf26",
+        "c@wf10",
+        "foreigners@overseasStudents",
+        "45plus@45invited",
+        "c@wf18",
+        "college@student_invited",
+        "c@wf30",
+        "c@wf2",
+        "c@wf4",
+        "c@wf12",
+        "c@wf1",
+        "foreigners@foreigners",
+        "foreigners@chineseDiasporas",
+        "foreigners@foreignStudents",
+        "c@wf29",
+        "c@wf3"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        2,
+        4,
+        8,
+        2048
+      ],
+      "employeeCount": 20,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753875874,
+        "lastCustReplyTimestamp": 1753867603,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 3,
+      "coIndustry": 1002003001,
+      "coIndustryDesc": "鞋類製造業",
+      "custName": "賜昌集團_英屬維京群島商賜昌有限公司",
+      "custNo": "130000000116851",
+      "description": "．學習各類鞋材知識及系統開單流程\n．學習工作計畫擬定及任務安排方法\n．供應商管理、交期追蹤\n．協助主管建構當地團隊及與越南區對應\n．協助主管處理異常與索賠",
+      "descSnippet": "．學習各類鞋材知識及系統開單流程\n．學習工作計畫擬定及任務安排方法\n．供應商管理、交期追蹤\n．協助主管建構當地團隊及與越南區對應\n．協助主管處理異常與索賠",
+      "mrtDist": 0,
+      "jobAddress": "Cirebon",
+      "jobAddrNo": 6003002010,
+      "jobAddrNoDesc": "印尼",
+      "jobName": "【行政/幕僚】採購培訓幹部(印尼)",
+      "jobNameSnippet": "【行政/幕僚】採購培訓幹部(印尼)",
+      "jobNo": "13315358",
+      "jobRo": 1,
+      "jobType": 2,
+      "lat": -6.6898876,
+      "lon": 108.4750846,
+      "link": {
+        "job": "https://www.104.com.tw/job/7xe72",
+        "cust": "https://www.104.com.tw/company/1a2x6bkhgz",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7xe72?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        4
+      ],
+      "period": 0,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": {
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "wf34": {
+          "desc": "",
+          "param": "wf34"
+        },
+        "wf16": {
+          "desc": "",
+          "param": "wf16"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf9": {
+          "desc": "",
+          "param": "wf9"
+        },
+        "wf27": {
+          "desc": "",
+          "param": "wf27"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "",
+      "hrBehaviorPR": 0.6509645956618654,
+      "jobCat": [
+        2001001002,
+        2011001003
+      ],
+      "labels": [
+        "c@wf1",
+        "c@wf34",
+        "c@wf16",
+        "c@wf10",
+        "c@wf9",
+        "c@wf27"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 8,
+            "speaking": 8,
+            "reading": 8,
+            "writing": 8
+          }
+        }
+      ],
+      "acceptRole": [
+        2
+      ],
+      "employeeCount": 120000,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753861718,
+        "lastCustReplyTimestamp": 1751964746,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 7,
+      "coIndustry": 1003001015,
+      "coIndustryDesc": "綜合商品批發代理業",
+      "custName": "馨昌股份有限公司",
+      "custNo": "22946706000",
+      "description": "\r\n1.負責主管交辦專案業務計劃擬定、推動、執行，隨時掌控進度。\r\n2.負責行政事務流程之溝通、整合及規劃。\r\n3.配合公司營運策略，協助進行企劃與專案管理、進行跨技術的統合。\r\n4.協助市場分析，專案成效追蹤及費用相關報告。\r\n5.可配合主管假日專案業務行程。",
+      "descSnippet": "\r\n1.負責主管交辦專案業務計劃擬定、推動、執行，隨時掌控進度。\r\n2.負責行政事務流程之溝通、整合及規劃。\r\n3.配合公司營運策略，協助進行企劃與專案管理、進行跨技術的統合。\r\n4.協助市場分析，專案成效追蹤及費用相關報告。\r\n5.可配合主管假日專案業務行程。",
+      "mrtDist": 0.49,
+      "jobAddress": "基隆路二段51號6樓之6(110)",
+      "jobAddrNo": 6001001007,
+      "jobAddrNoDesc": "台北市信義區",
+      "jobName": "董事長室特助",
+      "jobNameSnippet": "董事長室特助",
+      "jobNo": "10229416",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 25.0309321,
+      "lon": 121.558469,
+      "link": {
+        "job": "https://www.104.com.tw/job/6392g",
+        "cust": "https://www.104.com.tw/company/ajhvjo0",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/6392g?channel=104rpt"
+      },
+      "major": [
+        "商業及管理學科類",
+        "企業管理相關",
+        "國際貿易相關"
+      ],
+      "mrt": "99001002002",
+      "mrtDesc": "捷運台北101/世貿站",
+      "optionEdu": [
+        4,
+        5,
+        6
+      ],
+      "period": 3,
+      "remoteWorkType": 0,
+      "s10": 10,
+      "salaryHigh": 0,
+      "salaryLow": 0,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf10": {
+          "desc": "",
+          "param": "wf10"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf31": {
+          "desc": "",
+          "param": "wf31"
+        },
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf18": {
+          "desc": "",
+          "param": "wf18"
+        },
+        "wf32": {
+          "desc": "",
+          "param": "wf32"
+        },
+        "wf1": {
+          "desc": "",
+          "param": "wf1"
+        },
+        "landmark": {
+          "desc": "距捷運台北101/世貿站約490公尺"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "9:00~18:00",
+      "hrBehaviorPR": 0.6778261804274771,
+      "jobCat": [
+        2001001003
+      ],
+      "labels": [
+        "c@wf7",
+        "c@wf10",
+        "c@wf28",
+        "c@wf31",
+        "c@wf2",
+        "c@wf18",
+        "c@wf32",
+        "c@wf1"
+      ],
+      "languageRequirements": [
+        {
+          "language": 1,
+          "ability": {
+            "listening": 2,
+            "speaking": 2,
+            "reading": 2,
+            "writing": 2
+          }
+        }
+      ],
+      "acceptRole": [],
+      "employeeCount": 45,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753677543,
+        "lastCustReplyTimestamp": 1753777038,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 7,
+      "coIndustry": 1009006001,
+      "coIndustryDesc": "保全樓管相關業",
+      "custName": "台灣國際物業_台灣國際公寓大廈管理維護有限公司",
+      "custNo": "70654740000",
+      "description": "1.本職務為擔任高級社區物業管理工作。\r\n2.具飯店俱樂休閒事業或相關社區實務經驗佳。\r\n3.具有物業經理之相關證照及經驗優先錄取。\r\n4.需具一般電腦文書作業系統及會計基礎概念。\r\n5.本公司有強大之溝通能力、工作支援性與人員教育訓練。\r\n6.免費培訓升為物業經理之專業知識。\r\n7.公司定期參與工會舉辦團體物業經理之報考相關證照與獎勵。\r\n8.公司之薪資福利待遇佳，值得您選擇！\r\n9.若有相關之證照﹝防火管理人及總幹事證照﹞請影印一份攜帶至本公司。\r\n（一）深入物業組織學習能力、專業教育訓練，有效累積物業管理的專業知識及經驗。\r\n（二）不與同業惡性競爭，培養具有產業差異化且互補的核心專長業務。\r\n（三）研訂長期發展策略，以勞力密集的建築物管理維護業務為基礎，朝資訊化、人文涵養方面多角化發展，拓展高附加價值的商業支援、資產管理及生活服務的業務。\r\n（四）提升業界形象，改善工作條件，以吸引更多優秀人才投入服務、提升企業優質文化與同仁工作尊嚴。\r\n（五）培育專業物業經理人以儲備未來業務發展的需要，與國際品牌競爭。",
+      "descSnippet": "1.本職務為擔任高級社區物業管理工作。\r\n2.具飯店俱樂休閒事業或相關社區實務經驗佳。\r\n3.具有物業經理之相關證照及經驗優先錄取。\r\n4.需具一般電腦文書作業系統及會計基礎概念。\r\n5.本公司有強大之溝通能力、工作支援性與人員教育訓練。\r\n6.免費培訓升為物業經理之專業知識。\r\n7.公司定期參與工會舉辦團體物業經理之報考相關證照與獎勵。\r\n8.公司之薪資福利待遇佳，值得您選擇！\r\n9.若有相關之證照﹝防火管理人及總幹事證照﹞請影印一份攜帶至本公司。\r\n（一）深入物業組織學習能力、專業教育訓練，有效累積物業管理的專業知識及經驗。\r\n（二）不與同業惡性競爭，培養具有產業差異化且互補的核心專長業務。\r\n（三）研訂長期發展策略，以勞力密集的建築物管理維護業務為基礎，朝資訊化、人文涵養方面多角化發展，拓展高附加價值的商業支援、資產管理及生活服務的業務。\r\n（四）提升業界形象，改善工作條件，以吸引更多優秀人才投入服務、提升企業優質文化與同仁工作尊嚴。\r\n（五）培育專業物業經理人以儲備未來業務發展的需要，與國際品牌競爭。",
+      "mrtDist": 0,
+      "jobAddress": "（依照公司規定分派）",
+      "jobAddrNo": 6001008007,
+      "jobAddrNoDesc": "台中市西屯區",
+      "jobName": "台中市豪宅物業經理",
+      "jobNameSnippet": "台中市豪宅物業經理",
+      "jobNo": "4855867",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.162568013470807,
+      "lon": 120.64123167036131,
+      "link": {
+        "job": "https://www.104.com.tw/job/2w2t7",
+        "cust": "https://www.104.com.tw/company/wgi0aao",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/2w2t7?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        3,
+        4,
+        5
+      ],
+      "period": 3,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 50000,
+      "salaryLow": 38000,
+      "tags": {
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        },
+        "wf31": {
+          "desc": "",
+          "param": "wf31"
+        }
+      },
+      "s9": [
+        1
+      ],
+      "s5": 0,
+      "d3": "09:00~18:00",
+      "hrBehaviorPR": 0.6610461761278131,
+      "jobCat": [
+        2001001001,
+        2005001001,
+        2017002005
+      ],
+      "labels": [
+        "senior@senior_job_G",
+        "c@wf7",
+        "45plus@45invited",
+        "c@wf31"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        64,
+        2048,
+        4096,
+        32768
+      ],
+      "employeeCount": 800,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": null,
+        "lastCustReplyTimestamp": 1752044986,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    },
+    {
+      "appearDate": "20250731",
+      "applyCnt": 8,
+      "coIndustry": 1003002003,
+      "coIndustryDesc": "鞋類／布類／服飾品零售業",
+      "custName": "Nab_Shop女裝_自然堂國際時尚有限公司",
+      "custNo": "24350667000",
+      "description": "工作內容： \n1. 門市管理及推動業績目標達成。 \n2. 商品介紹及銷售服務。 \n3. 排班及人員填補。 \n4. 獨立性高、具備帶人及管理經驗。 \n5.負責員工的招募、訓練、稽核與管理與調度。\n6. 可支援台中區門市巡店及人員調度。\n\n\n公司好康: \n1. 月休8-9天、 滿半年特休3天、滿一年特休7天。\n2. 享有勞、健保與6%勞退新制 。\n3. 全勤獎金、伙食津貼、業績獎金、全區月達標獎金。\n4. 員購優惠 。\n5.生日、中秋、端午禮金(品)。\n6. 補助津貼(結婚、生育) 。\n7. 公司聚餐，培養姊妹滔同事們的情誼。\n\n公司悄悄話: \n只要是人才，有自信心，業績表現優異，公司待遇優於其他同業。 \nNab_Shop在台中、新竹已設有9家門市，陸續在拓展中，如果屬於你的感覺跟 \n風格，趕快加入我們行列吧 。\n有耐心,善於溝通,並喜歡流行服飾者,我們歡迎你。\n具備一年以上相關門市管理經驗者優先面試。\n\n相關資料請參考: \n官網: www.nab.com.tw\nIG: nabshop.ig\n",
+      "descSnippet": "工作內容： \n1. 門市管理及推動業績目標達成。 \n2. 商品介紹及銷售服務。 \n3. 排班及人員填補。 \n4. 獨立性高、具備帶人及管理經驗。 \n5.負責員工的招募、訓練、稽核與管理與調度。\n6. 可支援台中區門市巡店及人員調度。\n\n\n公司好康: \n1. 月休8-9天、 滿半年特休3天、滿一年特休7天。\n2. 享有勞、健保與6%勞退新制 。\n3. 全勤獎金、伙食津貼、業績獎金、全區月達標獎金。\n4. 員購優惠 。\n5.生日、中秋、端午禮金(品)。\n6. 補助津貼(結婚、生育) 。\n7. 公司聚餐，培養姊妹滔同事們的情誼。\n\n公司悄悄話: \n只要是人才，有自信心，業績表現優異，公司待遇優於其他同業。 \nNab_Shop在台中、新竹已設有9家門市，陸續在拓展中，如果屬於你的感覺跟 \n風格，趕快加入我們行列吧 。\n有耐心,善於溝通,並喜歡流行服飾者,我們歡迎你。\n具備一年以上相關門市管理經驗者優先面試。\n\n相關資料請參考: \n官網: www.nab.com.tw\nIG: nabshop.ig\n",
+      "mrtDist": 0,
+      "jobAddress": "文華路45號",
+      "jobAddrNo": 6001008007,
+      "jobAddrNoDesc": "台中市西屯區",
+      "jobName": "Nab 女裝-【台中區】儲備幹部",
+      "jobNameSnippet": "Nab 女裝-【台中區】儲備幹部",
+      "jobNo": "12364218",
+      "jobRo": 1,
+      "jobType": 0,
+      "lat": 24.1772192,
+      "lon": 120.6464504,
+      "link": {
+        "job": "https://www.104.com.tw/job/7d0ai",
+        "cust": "https://www.104.com.tw/company/b6prawo",
+        "applyAnalyze": "https://www.104.com.tw/jobs/apply/analysis/7d0ai?channel=104rpt"
+      },
+      "major": [],
+      "mrt": "",
+      "mrtDesc": "",
+      "optionEdu": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "period": 2,
+      "remoteWorkType": 0,
+      "s10": 50,
+      "salaryHigh": 55000,
+      "salaryLow": 40000,
+      "tags": {
+        "wf2": {
+          "desc": "",
+          "param": "wf2"
+        },
+        "wf14": {
+          "desc": "",
+          "param": "wf14"
+        },
+        "wf28": {
+          "desc": "",
+          "param": "wf28"
+        },
+        "wf29": {
+          "desc": "",
+          "param": "wf29"
+        },
+        "wf4": {
+          "desc": "",
+          "param": "wf4"
+        },
+        "wf7": {
+          "desc": "",
+          "param": "wf7"
+        }
+      },
+      "s9": [
+        1,
+        2
+      ],
+      "s5": 256,
+      "d3": "",
+      "hrBehaviorPR": 0.925921316149764,
+      "jobCat": [
+        2005002002,
+        2005002001,
+        2001001002
+      ],
+      "labels": [
+        "senior@senior_job_E",
+        "c@wf2",
+        "c@wf14",
+        "45plus@45invited",
+        "c@wf28",
+        "c@wf29",
+        "c@wf4",
+        "c@wf7"
+      ],
+      "languageRequirements": [],
+      "acceptRole": [
+        64,
+        2048
+      ],
+      "employeeCount": 20,
+      "isSave": null,
+      "interactionRecord": {
+        "lastProcessedResumeAtTime": 1753867143,
+        "lastCustReplyTimestamp": 1753694861,
+        "nowTimestamp": 1753913482
+      },
+      "isApplied": null,
+      "applyDate": null,
+      "userApplyCount": null
+    }
+  ],
+  "metadata": {
+    "pagination": {
+      "count": 22,
+      "currentPage": 2,
+      "lastPage": 150,
+      "total": 21314
+    },
+    "isPreciseHotJob": false,
+    "filterQuery": {
+      "order": 11,
+      "asc": 0,
+      "jobcat": [
+        "2001001000"
+      ],
+      "ro": [
+        0
+      ],
+      "scstrict": 0,
+      "scneg": 0,
+      "page": 2,
+      "pagesize": 20
+    },
+    "personalBoost": 0
+  }
+}

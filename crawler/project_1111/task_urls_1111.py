@@ -1,49 +1,39 @@
-# import os
-# # --- Local Test Environment Setup ---
-# if __name__ == "__main__":
-#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# # --- End Local Test Environment Setup ---
-
+import os
+# --- Local Test Environment Setup ---
+if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# --- End Local Test Environment Setup ---
 
 import structlog
 from collections import deque
-from typing import Set, List
 from crawler.worker import app
 from crawler.database.schemas import (
     SourcePlatform,
     UrlCategoryPydantic,
     CategorySourcePydantic,
-    CrawlStatus,
 )
 from crawler.database.repository import (
     upsert_urls,
     upsert_url_categories,
     upsert_jobs,
-    mark_urls_as_crawled,
     get_all_categories_for_platform,
-    get_all_crawled_category_ids_pandas,
-    get_stale_crawled_category_ids_pandas,
 )
-from crawler.project_104.client_104 import fetch_job_urls_from_104_api
-from crawler.project_104.parser_apidata_104 import parse_job_item_to_pydantic
+from crawler.project_1111.client_1111 import fetch_job_urls_from_1111_api
+from crawler.project_1111.parser_apidata_1111 import parse_job_list_json_to_pydantic
 from crawler.config import (
-    URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
     URL_CRAWLER_UPLOAD_BATCH_SIZE,
 )
-from crawler.project_104.config_104 import (
-    URL_CRAWLER_BASE_URL_104,
-    URL_CRAWLER_PAGE_SIZE_104,
-    URL_CRAWLER_ORDER_BY_104,
-    HEADERS_104_URL_CRAWLER,
+from crawler.project_1111.config_1111 import (
+    URL_CRAWLER_ORDER_BY_1111,
 )
 
 logger = structlog.get_logger(__name__)
 
 
 @app.task
-def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> None:
+def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -> int:
     """
-    Celery task: Iterates through all pages of a specified job category, fetches job URLs
+    Celery task: Iterates through all pages of a specified 1111 job category, fetches job URLs
     and preliminary data, and stores them in the database in batches.
     """
     job_category = CategorySourcePydantic.model_validate(job_category)
@@ -57,7 +47,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
 
     current_page = 1
     logger.info(
-        "Task started: crawling job category URLs and data.",
+        "Task started: crawling 1111 job category URLs and data.",
         job_category_code=job_category_code,
         url_limit=url_limit,
     )
@@ -79,36 +69,25 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
                 job_category_code=job_category_code,
             )
 
-        params = {
-            "jobsource": "index_s",
-            "page": current_page,
-            "pagesize": URL_CRAWLER_PAGE_SIZE_104,
-            "order": URL_CRAWLER_ORDER_BY_104,
-            "jobcat": job_category_code,
-            "mode": "s",
-            "searchJobs": "1",
-        }
-
-        api_response = fetch_job_urls_from_104_api(
-            URL_CRAWLER_BASE_URL_104,
-            HEADERS_104_URL_CRAWLER,
-            params,
-            URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
-            verify=False,
+        api_response = fetch_job_urls_from_1111_api(
+            KEYWORDS="",
+            CATEGORY=job_category_code,
+            ORDER=URL_CRAWLER_ORDER_BY_1111,
+            PAGE_NUM=current_page,
         )
 
         if api_response is None:
             logger.error(
-                "Failed to retrieve data from 104 API.",
+                "Failed to retrieve data from 1111 API.",
                 page=current_page,
                 job_category_code=job_category_code,
             )
             break
 
-        job_items = api_response.get("data", [])
+        job_items = api_response.get("result", {}).get("hits", [])
         if not isinstance(job_items, list):
             logger.error(
-                "API response 'data.list' format is incorrect or missing.",
+                "API response 'result.hits' format is incorrect or missing.",
                 page=current_page,
                 job_category_code=job_category_code,
                 api_data_type=type(job_items),
@@ -124,7 +103,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
             break
 
         for job_item in job_items:
-            job_pydantic = parse_job_item_to_pydantic(job_item)
+            job_pydantic = parse_job_list_json_to_pydantic(job_item)
             if job_pydantic and job_pydantic.url:
                 if job_pydantic.url not in global_job_url_set:
                     global_job_url_set.add(job_pydantic.url)
@@ -145,9 +124,8 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
                 job_category_code=job_category_code,
             )
             upsert_jobs(current_batch_jobs)
-            upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
+            upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
             upsert_url_categories(current_batch_url_categories)
-            mark_urls_as_crawled({CrawlStatus.SUCCESS: current_batch_urls})
             current_batch_jobs.clear()
             current_batch_urls.clear()
             current_batch_url_categories.clear()
@@ -170,7 +148,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
             job_category_code=job_category_code,
         )
         upsert_jobs(current_batch_jobs)
-        upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
+        upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
         upsert_url_categories(current_batch_url_categories)
     else:
         logger.info(
@@ -179,37 +157,28 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
         )
 
     logger.info("Task execution finished.", job_category_code=job_category_code)
+    return len(global_job_url_set)
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_104.task_urls_104
+    # python -m crawler.project_1111.task_urls_1111
     
     # --- Database Initialization for Local Test ---
     from crawler.database.connection import initialize_database
     initialize_database()
     # --- End Database Initialization ---
 
-    n_days = 7  # Define n_days for local testing
-    url_limit = 20
-
-    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
-    all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
-    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104)
-    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104, n_days)
-    categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
-    categories_to_dispatch = [
-        cat for cat in all_categories_pydantic 
-        if cat.source_category_id in categories_to_dispatch_ids
-    ]
-
+    job_category_lists = get_all_categories_for_platform(SourcePlatform.PLATFORM_1111)
+    
     # Only process the first category for local testing
-    if categories_to_dispatch:
-        for job_category in categories_to_dispatch:
-            logger.info(
-                "Dispatching crawl_and_store_category_urls task for local testing.",
-                job_category_code=job_category.source_category_id,
-                url_limit=url_limit,
-            )
-            crawl_and_store_category_urls(job_category.model_dump(), url_limit=url_limit)
+    if job_category_lists:
+        test_category = job_category_lists[1] # Changed from [1] to [0]
+        
+        logger.info("Testing with category:", job_category=test_category.model_dump())
+
+        url_limit = 20
+        total_urls_collected = crawl_and_store_1111_category_urls(test_category.model_dump(), url_limit=url_limit) # Changed url_limit to 20
+        
+        logger.info("Total URLs collected:", count=total_urls_collected)
     else:
-        logger.info("No categories found to dispatch for testing.")
+        logger.info("No categories found to process for testing.")

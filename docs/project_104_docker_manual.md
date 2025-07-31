@@ -81,7 +81,7 @@ Worker 是長時間運行的背景服務，它會持續監聽並處理來自 Rab
 # 啟動 Worker 服務
 docker compose -f docker-compose-worker-network.yml up -d
 ```
-**注意**：Worker 容器會監聽 `producer_jobs_104`、`producer_category_104` 和 `producer_urls_104` 佇列。
+**注意**：Worker 容器會監聽 `producer_jobs_104`、`producer_category_104`、`producer_urls_104`、`producer_jobs_1111`、`producer_category_1111`、`producer_urls_1111`、`producer_jobs_cakeresume`、`producer_category_cakeresume`、`producer_urls_cakeresume`、`producer_jobs_yes123`、`producer_category_yes123` 和 `producer_urls_yes123` 佇列。
 
 #### 4.2.2. 執行 Producer
 

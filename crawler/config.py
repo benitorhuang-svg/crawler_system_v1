@@ -27,7 +27,7 @@ config_section = config[app_env]
 WORKER_ACCOUNT = config_section.get("WORKER_ACCOUNT", "worker")
 WORKER_PASSWORD = config_section.get("WORKER_PASSWORD", "worker")
 
-RABBITMQ_HOST = config_section.get("RABBITMQ_HOST", "rabbitmq")
+RABBITMQ_HOST = config_section.get("RABBITMQ_HOST", "127.0.0.1")
 RABBITMQ_PORT = int(config_section.get("RABBITMQ_PORT", "5672"))
 
 MYSQL_HOST = config_section.get("MYSQL_HOST", "crawler_jobs_mysql")
@@ -35,7 +35,7 @@ MYSQL_PORT = int(config_section.get("MYSQL_PORT", "3306"))
 MYSQL_ACCOUNT = config_section.get("MYSQL_ACCOUNT", "root")
 MYSQL_ROOT_PASSWORD = config_section.get("MYSQL_ROOT_PASSWORD", "root_password")
 MYSQL_PASSWORD = config_section.get("MYSQL_PASSWORD", "root_password")
-MYSQL_DATABASE = config_section.get("MYSQL_DATABASE", "crawler_db")
+MYSQL_DATABASE = os.environ.get('CRAWLER_DB_NAME') or config_section.get("MYSQL_DATABASE", "crawler_db")
 LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO").upper()
 LOG_FORMATTER = config_section.get("LOG_FORMATTER", "json").lower()
 

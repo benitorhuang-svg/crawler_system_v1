@@ -1,0 +1,2261 @@
+{
+  "result": {
+    "pagination": {
+      "page": 2,
+      "limit": 30,
+      "totalCount": 41528,
+      "totalPage": 1385
+    },
+    "hits": [
+      {
+        "updateAt": "2025/07/30 00:10:00",
+        "jobId": 98706131,
+        "companyId": 6248,
+        "companyName": "糖村 (笠豐食品有限公司)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n7.可配合店鋪輪調尤佳\n\n幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發",
+        "title": "【糖村-台中福雅店】門市正職人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~32,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100907,
+          "name": "台中市西屯區"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【糖村-台中福雅店】門市正職人員",
+          "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n7.可配合店鋪輪調尤佳\n\n幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 08:58:00",
+        "jobId": 85120237,
+        "companyId": 69588457,
+        "companyName": "全家便利商店(全國門市聯合招募)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "3",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.櫃檯收銀\n2.賣場清潔、商品補貨\n3.機台清潔",
+        "title": "全家便利商店-加盟店【民善店】大夜班正職人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 45,000元~50,000元",
+        "industry": {
+          "id": 250215,
+          "name": "量販流通相關"
+        },
+        "workCity": {
+          "id": 100110,
+          "name": "台北市內湖區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1010"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "全家便利商店-加盟店【民善店】大夜班正職人員",
+          "description": "1.櫃檯收銀\n2.賣場清潔、商品補貨\n3.機台清潔"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 00:10:00",
+        "jobId": 130198445,
+        "companyId": 51471366,
+        "companyName": "花間集養生事業有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "4",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.熟悉欲銷售之產品、公司規章作業流程\n2.接受顧客詢問或主動提供諮商建議給顧客\n3.陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n4.向顧客說明貨品的性質、特徵、品質與價格\n5.在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n\n星期六、日(10:30-21:30)\n午餐及晚餐各用餐一小時\n享勞健保及勞退、 日薪高2000元以上\n\n(需輪蘆洲及重新家樂福)\n\n*如您想進一步了解詳細工作內容，應徵方式請先加入LINE ID:flower22683268 \n加入完成後請傳訊息給我，你要應徵的門市店名，我們先以在LINE方式先做簡易面試~",
+        "title": "銷售員假日班(需輪蘆洲及重新家樂福)",
+        "role": [
+          "2"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "時薪 205元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 100220,
+          "name": "新北市三重區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 2,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "銷售員假日班(需輪蘆洲及重新家樂福)",
+          "description": "1.熟悉欲銷售之產品、公司規章作業流程\n2.接受顧客詢問或主動提供諮商建議給顧客\n3.陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n4.向顧客說明貨品的性質、特徵、品質與價格\n5.在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n\n星期六、日(10:30-21:30)\n午餐及晚餐各用餐一小時\n享勞健保及勞退、 日薪高2000元以上\n\n(需輪蘆洲及重新家樂福)\n\n*如您想進一步了解詳細工作內容，應徵方式請先加入LINE ID:flower22683268 \n加入完成後請傳訊息給我，你要應徵的門市店名，我們先以在LINE方式先做簡易面試~"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 07:23:10",
+        "jobId": 113015398,
+        "companyId": 117091183,
+        "companyName": "金好運投注站",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.台灣彩券相關產品銷售，如大樂透,威力彩、今彩539以及刮刮樂之相關產品。\n2.無需負擔業績\n3.薪資,福利優渥,包刮交通與餐費經貼\n4.具三節獎金\n5.旅遊經貼補助",
+        "title": "門市人員(海湖店)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 35,000元~40,000元",
+        "industry": {
+          "id": 210101,
+          "name": "運動服務"
+        },
+        "workCity": {
+          "id": 100513,
+          "name": "桃園市蘆竹區"
+        },
+        "recruitCount": 0,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1003",
+          "1004",
+          "1005",
+          "1010",
+          "1017",
+          "1024",
+          "1026"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "門市人員(海湖店)",
+          "description": "1.台灣彩券相關產品銷售，如大樂透,威力彩、今彩539以及刮刮樂之相關產品。\n2.無需負擔業績\n3.薪資,福利優渥,包刮交通與餐費經貼\n4.具三節獎金\n5.旅遊經貼補助"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 08:34:00",
+        "jobId": 131998332,
+        "companyId": 117092217,
+        "companyName": "旺莊百貨有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。",
+        "title": "陳列人員(縣聯店)(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,590元~40,000元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 102101,
+          "name": "花蓮縣花蓮市"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "陳列人員(縣聯店)(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+          "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 08:34:00",
+        "jobId": 131998325,
+        "companyId": 117092217,
+        "companyName": "旺莊百貨有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。",
+        "title": "商品陳列人員(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,590元~40,000元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 102104,
+          "name": "花蓮縣吉安鄉"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "商品陳列人員(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+          "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 00:10:00",
+        "jobId": 113108005,
+        "companyId": 69429432,
+        "companyName": "寶御食品有限公司(宝泉)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務（如：電話諮詢、調貨、修改、包裝及退換貨處理）。\n3.負責商品進貨入庫、銷售管理及庫存管理。\n4.負責商品包裝、陳列及促銷品換檔工作。\n5.維持店櫃週遭之整潔。\n6.具高度服務熱忱，有學習意願。\n7.騎機車可到，有停車場。",
+        "title": "門市人員(湖口服務區)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 29,000元以上",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100702,
+          "name": "新竹縣湖口鄉"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "門市人員(湖口服務區)",
+          "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務（如：電話諮詢、調貨、修改、包裝及退換貨處理）。\n3.負責商品進貨入庫、銷售管理及庫存管理。\n4.負責商品包裝、陳列及促銷品換檔工作。\n5.維持店櫃週遭之整潔。\n6.具高度服務熱忱，有學習意願。\n7.騎機車可到，有停車場。"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 00:10:00",
+        "jobId": 103843529,
+        "companyId": 51471366,
+        "companyName": "花間集養生事業有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "4",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.熟悉欲銷售之產品、公司規章作業流程\n2.接受顧客詢問或主動提供諮商建議給顧客\n3.陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n4.向顧客說明貨品的性質、特徵、品質與價格\n5.在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n\n星期六、日(10:30-21:30)\n午餐及晚餐各用餐一小時\n享勞健保及勞退、 日薪高2000元以上\n\n應徵方式加入LINE ID:flower22683268",
+        "title": "銷售員假日班(林口家樂福)",
+        "role": [
+          "2"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "時薪 205元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 100223,
+          "name": "新北市林口區"
+        },
+        "recruitCount": 2,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 2,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "銷售員假日班(林口家樂福)",
+          "description": "1.熟悉欲銷售之產品、公司規章作業流程\n2.接受顧客詢問或主動提供諮商建議給顧客\n3.陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n4.向顧客說明貨品的性質、特徵、品質與價格\n5.在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n\n星期六、日(10:30-21:30)\n午餐及晚餐各用餐一小時\n享勞健保及勞退、 日薪高2000元以上\n\n應徵方式加入LINE ID:flower22683268"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 00:10:00",
+        "jobId": 78600194,
+        "companyId": 6248,
+        "companyName": "糖村 (笠豐食品有限公司)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作 \n4.進貨庫存、補貨上架、陳列擺設 \n5.執行庫存盤點、電腦行政作業等工作 \n6.維持店鋪環境整潔 \n7.可配合店鋪輪調尤佳\n\n＜幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修] \n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發",
+        "title": "【糖村-內湖瑞光店】門市正職人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 33,000元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100110,
+          "name": "台北市內湖區"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【糖村-內湖瑞光店】門市正職人員",
+          "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作 \n4.進貨庫存、補貨上架、陳列擺設 \n5.執行庫存盤點、電腦行政作業等工作 \n6.維持店鋪環境整潔 \n7.可配合店鋪輪調尤佳\n\n＜幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修] \n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 10:28:21",
+        "jobId": 113134032,
+        "companyId": 71959281,
+        "companyName": "京旺煙酒有限公司",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1. 收銀、銷貨單、網購商品取貨作業\n2. 庫存作業管理。\n3. 商品展示及陳列。\n4. 消費者需求動態掌握。\n5. 門市常態工作執行。\n6. 配合總公司規則及決策。\n7. 配合總公司促銷活動執行。\n8. 上級交辦事項。\n9. 具升遷或升等機會。",
+        "title": "門市人員-東明、大明(儲備幹部)-連鎖煙酒專賣 (無經驗可/獎金另計)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 5,
+        "salary": "月薪 28,600元~35,000元",
+        "industry": {
+          "id": 250202,
+          "name": "食品什貨零售"
+        },
+        "workCity": {
+          "id": 100910,
+          "name": "台中市大里區"
+        },
+        "recruitCount": 2,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1005",
+          "1010",
+          "1017"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "門市人員-東明、大明(儲備幹部)-連鎖煙酒專賣 (無經驗可/獎金另計)",
+          "description": "1. 收銀、銷貨單、網購商品取貨作業\n2. 庫存作業管理。\n3. 商品展示及陳列。\n4. 消費者需求動態掌握。\n5. 門市常態工作執行。\n6. 配合總公司規則及決策。\n7. 配合總公司促銷活動執行。\n8. 上級交辦事項。\n9. 具升遷或升等機會。"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 08:34:00",
+        "jobId": 131998329,
+        "companyId": 117092217,
+        "companyName": "旺莊百貨有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。",
+        "title": "陳列人員(全民店)(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,590元~40,000元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 102101,
+          "name": "花蓮縣花蓮市"
+        },
+        "recruitCount": 2,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "陳列人員(全民店)(薪30590起~40000 月休8-10天  電話:0963-701-222 聯絡時間:13點後)",
+          "description": "1.商品補貨上架。\n2.商品進貨點貨。\n3.整理賣場商品陳列。\n4.環境清潔。"
+        }
+      },
+      {
+        "updateAt": "2025/07/28 00:10:00",
+        "jobId": 132040158,
+        "companyId": 117198099,
+        "companyName": "四寶貝美食團購有限公司",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "4",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "160100",
+            "100100",
+            "100200"
+          ]
+        },
+        "description": "著重在門市取貨、進貨\n（待人親切是最重要的，我們的出發點都希望客人有個愉快的購物）\n1.每天進貨、盤點\n（商品大多數是生鮮食品有點重，要能搬得動箱子唷）\n（大約需要 1小時-2小時）\n2.查詢團員訂單、前台結帳(大約3-4小時)\n3.通知團員取貨（大約需要 30分鐘-1小時）\n4.私訊回覆（大約需要 30分鐘-1小時）\n（其他小細節會在面試時詳談）\n工作內容會接觸到電腦，使用excel是基本技能\n面試會測試中打速度及快捷鍵(複製、貼上、搜尋)\n5. 主管交辦事項\n6. 需先在四寶貝相關門市訓練2~3個月",
+        "title": "門市人員 (土城店)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~40,000元",
+        "industry": {
+          "id": 250116,
+          "name": "綜合商品批發代理"
+        },
+        "workCity": {
+          "id": 100216,
+          "name": "新北市土城區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1005",
+          "1010",
+          "1017",
+          "1023",
+          "1024",
+          "1026"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "門市人員 (土城店)",
+          "description": "著重在門市取貨、進貨\n（待人親切是最重要的，我們的出發點都希望客人有個愉快的購物）\n1.每天進貨、盤點\n（商品大多數是生鮮食品有點重，要能搬得動箱子唷）\n（大約需要 1小時-2小時）\n2.查詢團員訂單、前台結帳(大約3-4小時)\n3.通知團員取貨（大約需要 30分鐘-1小時）\n4.私訊回覆（大約需要 30分鐘-1小時）\n（其他小細節會在面試時詳談）\n工作內容會接觸到電腦，使用excel是基本技能\n面試會測試中打速度及快捷鍵(複製、貼上、搜尋)\n5. 主管交辦事項\n6. 需先在四寶貝相關門市訓練2~3個月"
+        }
+      },
+      {
+        "updateAt": "2025/07/28 00:10:00",
+        "jobId": 79956370,
+        "companyId": 6248,
+        "companyName": "糖村 (笠豐食品有限公司)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n7.可配合店鋪輪調尤佳\n\n幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發",
+        "title": "【糖村-板橋大遠百店】正職門市人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 33,000元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100203,
+          "name": "新北市板橋區"
+        },
+        "recruitCount": 2,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1005",
+          "1006"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【糖村-板橋大遠百店】正職門市人員",
+          "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n7.可配合店鋪輪調尤佳\n\n幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發"
+        }
+      },
+      {
+        "updateAt": "2025/07/28 14:12:33",
+        "jobId": 98744798,
+        "companyId": 2915040,
+        "companyName": "旺來昌實業股份有限公司",
+        "require": {
+          "drivingLicense": [
+            "69"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            1,
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.商品管理-陳列補貨/商品效期檢視/貨架清潔/維持賣場環境整潔 \n\n2.互相協助、代理同事工作，完成主管交辦事項\n\n3.倉庫區商品整理定位，維持倉庫整齊與清潔 \n\n4.接受顧客詢問或主動提供諮商建議給顧客\n\n5.向顧客說明商品性質、特徵、品質與價格\n\n6.可配合公司輪班(排班制)\n\n7.須能獨立搬貨物25-30公斤\n\n日班:08:30~17:30 休息一小時\n晚班:12:45-21:15 休息半小時",
+        "title": "正職營業人員（鳳山店）",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 29,000元以上",
+        "industry": {
+          "id": 250102,
+          "name": "食品什貨批發"
+        },
+        "workCity": {
+          "id": 101824,
+          "name": "高雄市鳳山區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1003",
+          "1005"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "正職營業人員（鳳山店）",
+          "description": "1.商品管理-陳列補貨/商品效期檢視/貨架清潔/維持賣場環境整潔 \n\n2.互相協助、代理同事工作，完成主管交辦事項\n\n3.倉庫區商品整理定位，維持倉庫整齊與清潔 \n\n4.接受顧客詢問或主動提供諮商建議給顧客\n\n5.向顧客說明商品性質、特徵、品質與價格\n\n6.可配合公司輪班(排班制)\n\n7.須能獨立搬貨物25-30公斤\n\n日班:08:30~17:30 休息一小時\n晚班:12:45-21:15 休息半小時"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:10:00",
+        "jobId": 130293013,
+        "companyId": 595118,
+        "companyName": "英達資訊有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "2",
+          "grades": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "GARMIN 品牌銷售　GPS衛星導航／行車紀錄器／運動休閒手錶／配件／週邊商品\n＊產品介紹 \n＊顧客服務 \n＊庫存管理\n＊整潔維護",
+        "title": "Garmin 科技生活體驗館－(八德)門市人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 36,000元~60,000元",
+        "industry": {
+          "id": 250216,
+          "name": "電子通訊╱電腦週邊零售業"
+        },
+        "workCity": {
+          "id": 100101,
+          "name": "台北市中正區"
+        },
+        "recruitCount": 1,
+        "mrtId": 110514,
+        "mrtTime": 303,
+        "mrtNear": 360,
+        "benefits": [
+          "1005",
+          "1010",
+          "1014",
+          "1017",
+          "1024"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "Garmin 科技生活體驗館－(八德)門市人員",
+          "description": "GARMIN 品牌銷售　GPS衛星導航／行車紀錄器／運動休閒手錶／配件／週邊商品\n＊產品介紹 \n＊顧客服務 \n＊庫存管理\n＊整潔維護"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:00:00",
+        "jobId": 132086538,
+        "companyId": 72429252,
+        "companyName": "卷卷有限公司",
+        "require": {
+          "drivingLicense": [
+            "1"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "接受顧客詢問或主動提供諮商建議給顧客\n陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n向顧客說明貨品的性質、特徵、品質與價格\n向客戶顯示商品的優點，以協助顧客選擇\n在成交後，包裝商品、收取款項、交付商品、開發票或收據，完成交易手續\n在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表",
+        "title": "台中清水門市銷售人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,590元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100926,
+          "name": "台中市清水區"
+        },
+        "recruitCount": 11,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "台中清水門市銷售人員",
+          "description": "接受顧客詢問或主動提供諮商建議給顧客\n陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n向顧客說明貨品的性質、特徵、品質與價格\n向客戶顯示商品的優點，以協助顧客選擇\n在成交後，包裝商品、收取款項、交付商品、開發票或收據，完成交易手續\n在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:10:00",
+        "jobId": 132040162,
+        "companyId": 117198099,
+        "companyName": "四寶貝美食團購有限公司",
+        "require": {
+          "drivingLicense": [
+            "64"
+          ],
+          "certificates": [],
+          "experience": "4",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "160100",
+            "100100",
+            "100200"
+          ]
+        },
+        "description": "著重在門市取貨、進貨\n（待人親切是最重要的，我們的出發點都希望客人有個愉快的購物）\n1.每天進貨、盤點\n（商品大多數是生鮮食品有點重，要能搬得動箱子唷）\n（大約需要 1小時-2小時）\n2.查詢團員訂單、前台結帳(大約3-4小時)\n3.通知團員取貨（大約需要 30分鐘-1小時）\n4.私訊回覆（大約需要 30分鐘-1小時）\n（其他小細節會在面試時詳談）\n工作內容會接觸到電腦，使用excel是基本技能\n面試會測試中打速度及快捷鍵(複製、貼上、搜尋)\n5. 主管交辦事項\n6. 需先在四寶貝相關門市訓練2~3個月",
+        "title": "門市人員 (江翠店)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~40,000元",
+        "industry": {
+          "id": 250116,
+          "name": "綜合商品批發代理"
+        },
+        "workCity": {
+          "id": 100203,
+          "name": "新北市板橋區"
+        },
+        "recruitCount": 1,
+        "mrtId": 110509,
+        "mrtTime": 0,
+        "mrtNear": 433,
+        "benefits": [
+          "1001",
+          "1005",
+          "1010",
+          "1017",
+          "1023",
+          "1024",
+          "1026"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "門市人員 (江翠店)",
+          "description": "著重在門市取貨、進貨\n（待人親切是最重要的，我們的出發點都希望客人有個愉快的購物）\n1.每天進貨、盤點\n（商品大多數是生鮮食品有點重，要能搬得動箱子唷）\n（大約需要 1小時-2小時）\n2.查詢團員訂單、前台結帳(大約3-4小時)\n3.通知團員取貨（大約需要 30分鐘-1小時）\n4.私訊回覆（大約需要 30分鐘-1小時）\n（其他小細節會在面試時詳談）\n工作內容會接觸到電腦，使用excel是基本技能\n面試會測試中打速度及快捷鍵(複製、貼上、搜尋)\n5. 主管交辦事項\n6. 需先在四寶貝相關門市訓練2~3個月"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:00:00",
+        "jobId": 132086539,
+        "companyId": 72429252,
+        "companyName": "卷卷有限公司",
+        "require": {
+          "drivingLicense": [
+            "1"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "接受顧客詢問或主動提供諮商建議給顧客\n陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n向顧客說明貨品的性質、特徵、品質與價格\n向客戶顯示商品的優點，以協助顧客選擇\n在成交後，包裝商品、收取款項、交付商品、開發票或收據，完成交易手續\n在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表",
+        "title": "台中北屯門市銷售人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,590元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100906,
+          "name": "台中市北屯區"
+        },
+        "recruitCount": 10,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "台中北屯門市銷售人員",
+          "description": "接受顧客詢問或主動提供諮商建議給顧客\n陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n向顧客說明貨品的性質、特徵、品質與價格\n向客戶顯示商品的優點，以協助顧客選擇\n在成交後，包裝商品、收取款項、交付商品、開發票或收據，完成交易手續\n在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:10:00",
+        "jobId": 103770365,
+        "companyId": 6248,
+        "companyName": "糖村 (笠豐食品有限公司)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "喜歡甜點、享受與人互動的你，歡迎加入糖村團隊！\n我們正在尋找對銷售服務有熱情、願意學習、細心負責的你，擔任現場銷售夥伴！\n\n~工作內容~\n1.接待顧客，介紹糖村經典商品，提供親切服務。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.協助商品進貨、入庫與銷售及庫存管理。\n4.商品包裝、陳列與促銷品更換。\n5.執行庫存盤點、電腦行政作業等工作。\n6.協助維持店鋪整潔、營造良好購物環境。\n7.節慶期間支援專案活動（如：電話開發、報價、送樣等）。\n\n\n• 具備服務熱誠與主動積極的態度\n• 樂於學習，能配合假日與彈性排班\n• 喜歡與人互動、有銷售或門市經驗更佳\n• 能細心完成包裝、陳列等工作內容\n\n※完整教育訓練計畫與穩定升遷管道\n＜幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發",
+        "title": "【糖村-台北瑞光店】門市兼職人員",
+        "role": [
+          "2"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "時薪 190元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100110,
+          "name": "台北市內湖區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 2,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【糖村-台北瑞光店】門市兼職人員",
+          "description": "喜歡甜點、享受與人互動的你，歡迎加入糖村團隊！\n我們正在尋找對銷售服務有熱情、願意學習、細心負責的你，擔任現場銷售夥伴！\n\n~工作內容~\n1.接待顧客，介紹糖村經典商品，提供親切服務。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.協助商品進貨、入庫與銷售及庫存管理。\n4.商品包裝、陳列與促銷品更換。\n5.執行庫存盤點、電腦行政作業等工作。\n6.協助維持店鋪整潔、營造良好購物環境。\n7.節慶期間支援專案活動（如：電話開發、報價、送樣等）。\n\n\n• 具備服務熱誠與主動積極的態度\n• 樂於學習，能配合假日與彈性排班\n• 喜歡與人互動、有銷售或門市經驗更佳\n• 能細心完成包裝、陳列等工作內容\n\n※完整教育訓練計畫與穩定升遷管道\n＜幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發"
+        }
+      },
+      {
+        "updateAt": "2025/07/27 00:10:00",
+        "jobId": 132009129,
+        "companyId": 69601638,
+        "companyName": "金車生物科技股份有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "職務內容：\n\t•\t提供親切且專業的顧客服務，解答商品相關問題。\n\t•\t負責商品銷售、推薦及顧客結帳服務。\n\t•\t維持門市整潔、陳列商品及庫存管理。\n\t•\t處理顧客需求，提升購物體驗與滿意度。\n\t•\t協助店內活動推廣，增加品牌曝光度。\n\n職位要求：\n\t•\t具備良好的溝通能力，熱愛服務業，親切有耐心。\n\t•\t具備銷售經驗者佳，無經驗可培訓。\n\t•\t能適應輪班及假日排班，具高度責任感。\n\t•\t具備團隊合作精神，能與同事良好協作。\n\n我們提供：\n\t•\t穩定薪資+獎金制度。\n\t•\t員工折扣優惠，讓你更了解品牌與商品。\n\t•\t友善工作環境與專業培訓，助你提升職場競爭力。\n\t•\t享有勞健保、年假、各類獎金與福利制度。",
+        "title": "金車生物科技★礁溪門市人員★日班8:00-17:00★礁溪場",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,600元~35,000元",
+        "industry": {
+          "id": 190101,
+          "name": "農藝╱園藝相關"
+        },
+        "workCity": {
+          "id": 100403,
+          "name": "宜蘭縣礁溪鄉"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16,
+          134217728
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "金車生物科技★礁溪門市人員★日班8:00-17:00★礁溪場",
+          "description": "職務內容：\n\t•\t提供親切且專業的顧客服務，解答商品相關問題。\n\t•\t負責商品銷售、推薦及顧客結帳服務。\n\t•\t維持門市整潔、陳列商品及庫存管理。\n\t•\t處理顧客需求，提升購物體驗與滿意度。\n\t•\t協助店內活動推廣，增加品牌曝光度。\n\n職位要求：\n\t•\t具備良好的溝通能力，熱愛服務業，親切有耐心。\n\t•\t具備銷售經驗者佳，無經驗可培訓。\n\t•\t能適應輪班及假日排班，具高度責任感。\n\t•\t具備團隊合作精神，能與同事良好協作。\n\n我們提供：\n\t•\t穩定薪資+獎金制度。\n\t•\t員工折扣優惠，讓你更了解品牌與商品。\n\t•\t友善工作環境與專業培訓，助你提升職場競爭力。\n\t•\t享有勞健保、年假、各類獎金與福利制度。"
+        }
+      },
+      {
+        "updateAt": "2025/07/14 13:40:47",
+        "jobId": 130157790,
+        "companyId": 50921958,
+        "companyName": "億進寢具企業有限公司(總公司)",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "2024年2月11日開始『億進寢具』在不景氣環境下及考慮員工工作與生活平衡，全面調整『縮短營業時間』及『提升薪資待遇』!!!\n\n✨全台直營連鎖店正持續擴展中~目前已有44家直營門市!!!積極招募熱情、願意學習、願意自我挑戰、具有企圖心，想為自己人生創造高薪收入，對銷售有興趣的夥伴們，加入我們『億進寢具』成為幸福億家人。✨\n\n✨本公司重視員工教育訓練與客戶服務，提供完善的教育訓練制度及專業的學習培訓環境，經勞動部發展署TTQS人才發展品質管理系統(企業機構版)評核，榮獲銅牌肯定!✨\n\n✨我們非常重視員工健康生活，提供多元運動項目、減重比賽等活動，連續2年榮獲教育部體育署辦理職工運動活動及聘用運動人才之表揚企業!✨\n\n【工作內容】\n1.商品陳列及換檔等工作。\n2.商品進出貨、銷售管理、庫存管理。\n3.介紹及銷售公司之商品與服務。\n4.門市環境清潔與維護。\n5.配合公司人力調度與配置(工作排班)、人員工作指導與教育訓練。\n6.從事門市營運必要之工作其他公司交辦之事項。\n\n【履歷投遞說明】\n1.履歷請填寫完整。\n2.初步須審查履歷，若未合格者恕無另行通知。",
+        "title": "門市銷售專員／台南安南店",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 35,033元~60,000元",
+        "industry": {
+          "id": 110305,
+          "name": "其他紡織製品製造"
+        },
+        "workCity": {
+          "id": 101606,
+          "name": "台南市安南區"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1005",
+          "1006",
+          "1010",
+          "1014"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "門市銷售專員／台南安南店",
+          "description": "2024年2月11日開始『億進寢具』在不景氣環境下及考慮員工工作與生活平衡，全面調整『縮短營業時間』及『提升薪資待遇』!!!\n\n✨全台直營連鎖店正持續擴展中~目前已有44家直營門市!!!積極招募熱情、願意學習、願意自我挑戰、具有企圖心，想為自己人生創造高薪收入，對銷售有興趣的夥伴們，加入我們『億進寢具』成為幸福億家人。✨\n\n✨本公司重視員工教育訓練與客戶服務，提供完善的教育訓練制度及專業的學習培訓環境，經勞動部發展署TTQS人才發展品質管理系統(企業機構版)評核，榮獲銅牌肯定!✨\n\n✨我們非常重視員工健康生活，提供多元運動項目、減重比賽等活動，連續2年榮獲教育部體育署辦理職工運動活動及聘用運動人才之表揚企業!✨\n\n【工作內容】\n1.商品陳列及換檔等工作。\n2.商品進出貨、銷售管理、庫存管理。\n3.介紹及銷售公司之商品與服務。\n4.門市環境清潔與維護。\n5.配合公司人力調度與配置(工作排班)、人員工作指導與教育訓練。\n6.從事門市營運必要之工作其他公司交辦之事項。\n\n【履歷投遞說明】\n1.履歷請填寫完整。\n2.初步須審查履歷，若未合格者恕無另行通知。"
+        }
+      },
+      {
+        "updateAt": "2025/07/31 00:00:00",
+        "jobId": 92234280,
+        "companyId": 73463474,
+        "companyName": "崑山玩具精品",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "我們是一家專注於玩具銷售的專業門市。我們的主要服務對象涵蓋各年齡層的顧客，並提供各類具創意與教育意義的玩具。致力打造一個讓顧客感受到快樂與興趣的購物環境。\n我們誠摯邀請熱愛玩具、擁有服務熱忱的伙伴加入我們，一起為顧客帶來美好的購物體驗。\n\n\n工作內容：\n1. 商品的陳列與擺放，確保商品依照陳列標準分類，可吸引顧客目光。\n2. 維護營業場地的清潔與舒適，包括定時巡檢與環境整理。\n3. 提供專業的產品與價格諮詢，向顧客解釋商品特性及用途。\n4. 操作櫃檯收銀機進行收銀作業，包括結帳、發票及現金管理。\n5. 主動與顧客互動，熱情解答問題，增強顧客購物的滿意度。\n6. 快速學習玩具產品知識，能準確地介紹新品及促銷資訊。\n7. 協助庫存管理，包括商品上架、補貨與庫存數據維護。\n8. 支援促銷活動的佈置與執行，包含活動區域設置、商品介紹。\n\n【注意事項】\n有時間觀念，不遲到\n注重禮儀\n\n【親洽面試】\n預約好時間，到店洽詢店長\n敬請重視求職禮儀!並請記得攜帶履歷!\n\n\n【薪資面議】\n依照工作能力經驗而定及入職後調整\n\n\n我們正在尋找注重細節、善於溝通且充滿熱誠的您加入我們，與我們一起成為業界中的佼佼者，共同為顧客提供愉快的購物體驗！立即投遞履歷，我們期待您的加入！",
+        "title": "★左營店★ 門市人員/有經驗者佳/親洽優先",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,590元以上",
+        "industry": {
+          "id": 111602,
+          "name": "玩具相關"
+        },
+        "workCity": {
+          "id": 101811,
+          "name": "高雄市左營區"
+        },
+        "recruitCount": 3,
+        "mrtId": 280114,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "★左營店★ 門市人員/有經驗者佳/親洽優先",
+          "description": "我們是一家專注於玩具銷售的專業門市。我們的主要服務對象涵蓋各年齡層的顧客，並提供各類具創意與教育意義的玩具。致力打造一個讓顧客感受到快樂與興趣的購物環境。\n我們誠摯邀請熱愛玩具、擁有服務熱忱的伙伴加入我們，一起為顧客帶來美好的購物體驗。\n\n\n工作內容：\n1. 商品的陳列與擺放，確保商品依照陳列標準分類，可吸引顧客目光。\n2. 維護營業場地的清潔與舒適，包括定時巡檢與環境整理。\n3. 提供專業的產品與價格諮詢，向顧客解釋商品特性及用途。\n4. 操作櫃檯收銀機進行收銀作業，包括結帳、發票及現金管理。\n5. 主動與顧客互動，熱情解答問題，增強顧客購物的滿意度。\n6. 快速學習玩具產品知識，能準確地介紹新品及促銷資訊。\n7. 協助庫存管理，包括商品上架、補貨與庫存數據維護。\n8. 支援促銷活動的佈置與執行，包含活動區域設置、商品介紹。\n\n【注意事項】\n有時間觀念，不遲到\n注重禮儀\n\n【親洽面試】\n預約好時間，到店洽詢店長\n敬請重視求職禮儀!並請記得攜帶履歷!\n\n\n【薪資面議】\n依照工作能力經驗而定及入職後調整\n\n\n我們正在尋找注重細節、善於溝通且充滿熱誠的您加入我們，與我們一起成為業界中的佼佼者，共同為顧客提供愉快的購物體驗！立即投遞履歷，我們期待您的加入！"
+        }
+      },
+      {
+        "updateAt": "2025/07/31 00:10:00",
+        "jobId": 130431473,
+        "companyId": 490216,
+        "companyName": "三井資訊股份有限公司",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "本公司擴大營業，廣邀人才，提供絕佳的『升遷』機會！提供保障薪資+優渥的銷售獎金+完善的員工褔利 + 完整的訓練發展 + 絕佳的『升遷』機會。『時勢造英雄』，歡迎您加入，一起共創未來。\n【工作內容】: \n1.羅技商品銷售與陳列管理。\n2.客戶服務與管理 。\n3.門市營運作業 。\n4.營運幹部培訓。\n5.偶爾須配合支援資訊展等活動。\n6.業績獎金另計。\n7.月休9~10天。\n8.本門市預計三月開幕，故報到後會先至鄰近門市受訓。",
+        "title": "門市服務銷售專員【羅技南港lalaport旗艦館】",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 31,590元~55,000元",
+        "industry": {
+          "id": 250216,
+          "name": "電子通訊╱電腦週邊零售業"
+        },
+        "workCity": {
+          "id": 100111,
+          "name": "台北市南港區"
+        },
+        "recruitCount": 1,
+        "mrtId": 110123,
+        "mrtTime": 377,
+        "mrtNear": 464,
+        "benefits": [
+          "1005",
+          "1006",
+          "1014",
+          "1019",
+          "1024"
+        ],
+        "companyTags": [
+          16,
+          134217728
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "門市服務銷售專員【羅技南港lalaport旗艦館】",
+          "description": "本公司擴大營業，廣邀人才，提供絕佳的『升遷』機會！提供保障薪資+優渥的銷售獎金+完善的員工褔利 + 完整的訓練發展 + 絕佳的『升遷』機會。『時勢造英雄』，歡迎您加入，一起共創未來。\n【工作內容】: \n1.羅技商品銷售與陳列管理。\n2.客戶服務與管理 。\n3.門市營運作業 。\n4.營運幹部培訓。\n5.偶爾須配合支援資訊展等活動。\n6.業績獎金另計。\n7.月休9~10天。\n8.本門市預計三月開幕，故報到後會先至鄰近門市受訓。"
+        }
+      },
+      {
+        "updateAt": "2025/07/31 01:00:33",
+        "jobId": 78431188,
+        "companyId": 70672475,
+        "companyName": "嘉鑫科技有限公司",
+        "require": {
+          "drivingLicense": [
+            "65"
+          ],
+          "certificates": [],
+          "experience": "1",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1. 負責智慧型手機及相關通訊商品的銷售，清楚介紹功能與規格特性。  \n2. 提供門號資費方案規劃，依客戶需求設計最適合的通訊方案。  \n3. 接待顧客，協助解答電話諮詢，處理調貨與產品設定服務。  \n4. 負責商品進貨入庫檢查，定期執行銷售與庫存管理。  \n5. 負責通訊商品的包裝作業、商品陳列及促銷品的更新更換。  \n6. 維護門市內外環境整潔，提升顧客購物體驗。  \n7. 執行銷售數據分析，制定改善策略以達成門市業績目標。  \n8. 參與定期培訓與會議，深化專業知識並提升服務品質。",
+        "title": "【 嘉新電腦通訊埔里門市】通訊門市人員/儲備幹部 (薪資30000~65000)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~65,000元",
+        "industry": {
+          "id": 250216,
+          "name": "電子通訊╱電腦週邊零售業"
+        },
+        "workCity": {
+          "id": 101105,
+          "name": "南投縣埔里鎮"
+        },
+        "recruitCount": 4,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1005",
+          "1014",
+          "1019",
+          "1024"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【 嘉新電腦通訊埔里門市】通訊門市人員/儲備幹部 (薪資30000~65000)",
+          "description": "1. 負責智慧型手機及相關通訊商品的銷售，清楚介紹功能與規格特性。  \n2. 提供門號資費方案規劃，依客戶需求設計最適合的通訊方案。  \n3. 接待顧客，協助解答電話諮詢，處理調貨與產品設定服務。  \n4. 負責商品進貨入庫檢查，定期執行銷售與庫存管理。  \n5. 負責通訊商品的包裝作業、商品陳列及促銷品的更新更換。  \n6. 維護門市內外環境整潔，提升顧客購物體驗。  \n7. 執行銷售數據分析，制定改善策略以達成門市業績目標。  \n8. 參與定期培訓與會議，深化專業知識並提升服務品質。"
+        }
+      },
+      {
+        "updateAt": "2025/07/31 00:10:00",
+        "jobId": 113056625,
+        "companyId": 73207520,
+        "companyName": "統一超商(玉泓企業社)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1. 負責連鎖系列直營店或分店內督導及協調所屬人員之日常工作及營運。\n2. 於專櫃、賣場或門市裡提供商品介紹及銷售服務。\n3. 本類人員處理客戶訂單、查詢及處理一般性客戶投訴事宜、門市經營等人員。",
+        "title": "(代天府門市)正職人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,590元~30,000元",
+        "industry": {
+          "id": 250218,
+          "name": "其他零售業"
+        },
+        "workCity": {
+          "id": 101624,
+          "name": "台南市北門區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "(代天府門市)正職人員",
+          "description": "1. 負責連鎖系列直營店或分店內督導及協調所屬人員之日常工作及營運。\n2. 於專櫃、賣場或門市裡提供商品介紹及銷售服務。\n3. 本類人員處理客戶訂單、查詢及處理一般性客戶投訴事宜、門市經營等人員。"
+        }
+      },
+      {
+        "updateAt": "2025/07/31 00:10:00",
+        "jobId": 98638344,
+        "companyId": 73217699,
+        "companyName": "百吉玩具有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "🎮誠徵夜市遊戲攤位儲備幹部🎮\n               （男女不拘)\n🔴地點：高雄市區（瑞豐夜市）\n\n🟡上班時間：\n星期二、四、五  17:00-01:00\n星期六、日          16:00-01:00\n每日8小時、加班費另計\n\n🔴工作內容：擺攤、招呼客人、收攤、等等...\n\n❮薪資❯\n•底薪  薪資:$30000~$40000\n\n❮獎金❯  (其他獎金另外加給‼️)\n•全勤獎金:$2000\n•職位津貼:依職位進行加給\n•團體業績獎金:依團體整體業績,每月進行分紅。\n•個人業績獎金:依個人負責攤位業績,每月進行分紅。\n•勞保、健保補貼\n\n\n🟡意者請洽👉林先生 0921063975 \n\n🔴意者請洽👉陳先生 0981442561\n\n盡量用Line聯繫、以免沒回覆到各位\n（電話聯絡或加LINE的、請用電話搜尋👆同上方電話）\n\n本公司正在擴大招募人才、對於挑戰高薪這邊是個好地方、只要您肯學習、只要您夠積極、只要您夠努力💪、還是您肯吃苦、又或著是您另有其他過人之處、歡迎你們來加入我們的團隊。\n\n公司有提供非常好的學習環境、訓練流程、及地表最強團隊、歡迎👏想轉換跑道看看的新鮮人！！！",
+        "title": "【儲備幹部】遊戲攤位人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~40,000元",
+        "industry": {
+          "id": 210102,
+          "name": "休閒服務"
+        },
+        "workCity": {
+          "id": 101811,
+          "name": "高雄市左營區"
+        },
+        "recruitCount": 1,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "【儲備幹部】遊戲攤位人員",
+          "description": "🎮誠徵夜市遊戲攤位儲備幹部🎮\n               （男女不拘)\n🔴地點：高雄市區（瑞豐夜市）\n\n🟡上班時間：\n星期二、四、五  17:00-01:00\n星期六、日          16:00-01:00\n每日8小時、加班費另計\n\n🔴工作內容：擺攤、招呼客人、收攤、等等...\n\n❮薪資❯\n•底薪  薪資:$30000~$40000\n\n❮獎金❯  (其他獎金另外加給‼️)\n•全勤獎金:$2000\n•職位津貼:依職位進行加給\n•團體業績獎金:依團體整體業績,每月進行分紅。\n•個人業績獎金:依個人負責攤位業績,每月進行分紅。\n•勞保、健保補貼\n\n\n🟡意者請洽👉林先生 0921063975 \n\n🔴意者請洽👉陳先生 0981442561\n\n盡量用Line聯繫、以免沒回覆到各位\n（電話聯絡或加LINE的、請用電話搜尋👆同上方電話）\n\n本公司正在擴大招募人才、對於挑戰高薪這邊是個好地方、只要您肯學習、只要您夠積極、只要您夠努力💪、還是您肯吃苦、又或著是您另有其他過人之處、歡迎你們來加入我們的團隊。\n\n公司有提供非常好的學習環境、訓練流程、及地表最強團隊、歡迎👏想轉換跑道看看的新鮮人！！！"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 00:10:00",
+        "jobId": 132027113,
+        "companyId": 9780802,
+        "companyName": "耶里食品有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.接待顧客、結帳收銀。\n2.補貨、簡易商品擺設整理。\n3.協助店內日常清潔與運作。\n\n【待遇符勞基法規定】\n勞、健保  等\n\n【員工福利】\n 免費 晚餐天天有，每月可省好幾千。",
+        "title": "[供晚餐]晚班門市 (仁愛本店) 請電洽2705-2578",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100105,
+          "name": "台北市大安區"
+        },
+        "recruitCount": 0,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1005"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "[供晚餐]晚班門市 (仁愛本店) 請電洽2705-2578",
+          "description": "1.接待顧客、結帳收銀。\n2.補貨、簡易商品擺設整理。\n3.協助店內日常清潔與運作。\n\n【待遇符勞基法規定】\n勞、健保  等\n\n【員工福利】\n 免費 晚餐天天有，每月可省好幾千。"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 00:10:00",
+        "jobId": 78421167,
+        "companyId": 69601638,
+        "companyName": "金車生物科技股份有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            1,
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "職務內容：\n\t•\t提供親切且專業的顧客服務，解答商品相關問題。\n\t•\t負責商品銷售、推薦及顧客結帳服務。\n\t•\t維持門市整潔、陳列商品及庫存管理。\n\t•\t處理顧客需求，提升購物體驗與滿意度。\n\t•\t協助店內活動推廣，增加品牌曝光度。\n\n職位要求：\n\t•\t具備良好的溝通能力，熱愛服務業，親切有耐心。\n\t•\t具備銷售經驗者佳，無經驗可培訓。\n\t•\t能適應輪班及假日排班，具高度責任感。\n\t•\t具備團隊合作精神，能與同事良好協作。\n\n我們提供：\n\t•\t穩定薪資+獎金制度。\n\t•\t員工折扣優惠，讓你更了解品牌與商品。\n\t•\t友善工作環境與專業培訓，助你提升職場競爭力。\n\t•\t享有勞健保、年假、各類獎金與福利制度。",
+        "title": "金車生物科技★水產門市人員★日班8:00-17:00★礁溪場",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,600元~35,000元",
+        "industry": {
+          "id": 190101,
+          "name": "農藝╱園藝相關"
+        },
+        "workCity": {
+          "id": 100403,
+          "name": "宜蘭縣礁溪鄉"
+        },
+        "recruitCount": 4,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16,
+          134217728
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "金車生物科技★水產門市人員★日班8:00-17:00★礁溪場",
+          "description": "職務內容：\n\t•\t提供親切且專業的顧客服務，解答商品相關問題。\n\t•\t負責商品銷售、推薦及顧客結帳服務。\n\t•\t維持門市整潔、陳列商品及庫存管理。\n\t•\t處理顧客需求，提升購物體驗與滿意度。\n\t•\t協助店內活動推廣，增加品牌曝光度。\n\n職位要求：\n\t•\t具備良好的溝通能力，熱愛服務業，親切有耐心。\n\t•\t具備銷售經驗者佳，無經驗可培訓。\n\t•\t能適應輪班及假日排班，具高度責任感。\n\t•\t具備團隊合作精神，能與同事良好協作。\n\n我們提供：\n\t•\t穩定薪資+獎金制度。\n\t•\t員工折扣優惠，讓你更了解品牌與商品。\n\t•\t友善工作環境與專業培訓，助你提升職場競爭力。\n\t•\t享有勞健保、年假、各類獎金與福利制度。"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 00:00:00",
+        "jobId": 132087785,
+        "companyId": 73541456,
+        "companyName": "鑫富航企業有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "3",
+          "grades": [
+            2,
+            8,
+            16
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.介紹品牌及銷售商品\n2.顧客接待及提供需求服務(如：調貨、包裝及退換貨處理、諮詢等)\n3.商品收銀、進貨、庫存管理\n4.商品包裝、陳列及促銷品換檔\n5.維持店櫃周遭整潔",
+        "title": "百貨專櫃人員 (天母大葉高島屋)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 28,590元~80,000元",
+        "industry": {
+          "id": 250214,
+          "name": "百貨相關"
+        },
+        "workCity": {
+          "id": 100108,
+          "name": "台北市士林區"
+        },
+        "recruitCount": 0,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1010"
+        ],
+        "companyTags": [],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "百貨專櫃人員 (天母大葉高島屋)",
+          "description": "1.介紹品牌及銷售商品\n2.顧客接待及提供需求服務(如：調貨、包裝及退換貨處理、諮詢等)\n3.商品收銀、進貨、庫存管理\n4.商品包裝、陳列及促銷品換檔\n5.維持店櫃周遭整潔"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 00:10:00",
+        "jobId": 78471984,
+        "companyId": 6248,
+        "companyName": "糖村 (笠豐食品有限公司)",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "3",
+          "grades": [],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.門市服務: 對台灣顧客貼心、外國旅客熱情! \n2.介紹銷售: 常客、熟客、外國客，哪個是他們最喜歡的?\n用專業知識與經驗match客人需要的! \n我們不是銷售員，我們是客人專業的消費顧問!\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n店舖經營管理、人事溝通技巧、商圈店舖開發",
+        "title": "【糖村-信義A8】專櫃正職人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          2
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 33,000元~35,000元",
+        "industry": {
+          "id": 220204,
+          "name": "麵包店╱點心烘焙店"
+        },
+        "workCity": {
+          "id": 100107,
+          "name": "台北市信義區"
+        },
+        "recruitCount": 3,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1001",
+          "1005",
+          "1006"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": true,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "【糖村-信義A8】專櫃正職人員",
+          "description": "1.門市服務: 對台灣顧客貼心、外國旅客熱情! \n2.介紹銷售: 常客、熟客、外國客，哪個是他們最喜歡的?\n用專業知識與經驗match客人需要的! \n我們不是銷售員，我們是客人專業的消費顧問!\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n店舖經營管理、人事溝通技巧、商圈店舖開發"
+        }
+      }
+    ],
+    "fromOffset": 0
+  },
+  "recommendJobs": {
+    "hits": [
+      {
+        "updateAt": "2025/07/27 00:10:00",
+        "jobId": 75808167,
+        "companyId": 68754471,
+        "companyName": "高北牛乳大王",
+        "require": {
+          "drivingLicense": [
+            "2"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1. 接受顧客詢問或主動提供諮商建議給顧客\n2. 陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n3. 向顧客說明貨品的性質、特徵、品質與價格\n4. 在成交後，包裝商品、收取款項、交付商品，完成交易手續\n5. 在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n6. POS系統收銀機操作、結帳\n7. 每日填寫工作報表。\n8. 需不定期回總公司接受教育訓練課程。\n9. 視公司需求支援面銷活動。",
+        "title": "行動餐車部晚班客服正職 高北牛乳大王",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          0
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 30,000元~36,000元",
+        "industry": {
+          "id": 220202,
+          "name": "飲料店"
+        },
+        "workCity": {
+          "id": 101208,
+          "name": "彰化縣和美鎮"
+        },
+        "recruitCount": 0,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "1003",
+          "1004",
+          "1006",
+          "1019",
+          "1024"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": false,
+        "highlight": {
+          "title": "行動餐車部晚班客服正職 高北牛乳大王",
+          "description": "1. 接受顧客詢問或主動提供諮商建議給顧客\n2. 陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n3. 向顧客說明貨品的性質、特徵、品質與價格\n4. 在成交後，包裝商品、收取款項、交付商品，完成交易手續\n5. 在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n6. POS系統收銀機操作、結帳\n7. 每日填寫工作報表。\n8. 需不定期回總公司接受教育訓練課程。\n9. 視公司需求支援面銷活動。"
+        }
+      },
+      {
+        "updateAt": "2025/07/29 09:55:13",
+        "jobId": 132050507,
+        "companyId": 73519128,
+        "companyName": "沛思彩虹行銷有限公司",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            1,
+            2,
+            8,
+            16,
+            32
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "1.3C配件、微家電、耳機，各式手機貼膜銷售,無經驗可教導培訓\n2.店面環境整潔\n3.協助店長交辦事宜。\n4.銷售獎金另計\n\n*表現良好或對此產業有高度興趣者可培訓為儲備店長*\n*我們有多家分店,需可配合支援北部分店*",
+        "title": "＜桃園新光影城＞手機貼膜/3C產品門市人員(無經驗可培訓)",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          2
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 34,000元以上",
+        "industry": {
+          "id": 250114,
+          "name": "電子通訊╱電腦週邊批發"
+        },
+        "workCity": {
+          "id": 100501,
+          "name": "桃園市中壢區"
+        },
+        "recruitCount": 5,
+        "mrtId": 150118,
+        "mrtTime": 0,
+        "mrtNear": 331,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "＜桃園新光影城＞手機貼膜/3C產品門市人員(無經驗可培訓)",
+          "description": "1.3C配件、微家電、耳機，各式手機貼膜銷售,無經驗可教導培訓\n2.店面環境整潔\n3.協助店長交辦事宜。\n4.銷售獎金另計\n\n*表現良好或對此產業有高度興趣者可培訓為儲備店長*\n*我們有多家分店,需可配合支援北部分店*"
+        }
+      },
+      {
+        "updateAt": "2025/07/30 00:10:00",
+        "jobId": 92137968,
+        "companyId": 73075810,
+        "companyName": "冠宏通信行",
+        "require": {
+          "drivingLicense": [
+            "0"
+          ],
+          "certificates": [],
+          "experience": "0",
+          "grades": [
+            2,
+            8,
+            16,
+            32,
+            64
+          ],
+          "majors": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "description": "【門市服務、門市銷售及電信業務推廣】 \n\n1. 電信門市、遠傳電信門號申辦、通訊商品(配件)、門市銷售服務 \n2. 提供顧客之接待與需求服務 \n3. 月薪35000元 . 另有個人及團隊獎金 . 平均月收入5萬 . 不倒扣底薪  \n4. 月排休9天 . 團隊內自己討論排休 . 可排連休 . 可排假日 \n5. 明確晉升制度依照個人能力及成績取得晉升 \n6. 無經驗可 \n*有一年以上電信系統店或通訊行門市銷售經驗者薪資另議公司來進行面談！〝",
+        "title": "遠傳電信 北港大同 銷售人員",
+        "role": [
+          "1"
+        ],
+        "remind": [
+          2
+        ],
+        "replyInDays": 0,
+        "salary": "月薪 35,000元~50,000元",
+        "industry": {
+          "id": 100201,
+          "name": "電信相關"
+        },
+        "workCity": {
+          "id": 101316,
+          "name": "雲林縣北港鎮"
+        },
+        "recruitCount": 2,
+        "mrtId": 0,
+        "mrtTime": 0,
+        "mrtNear": 0,
+        "benefits": [
+          "0"
+        ],
+        "companyTags": [
+          16
+        ],
+        "isHappiness": false,
+        "internship": [
+          1
+        ],
+        "jobType": 1,
+        "bookmarked": false,
+        "hasMedias": false,
+        "isTop": false,
+        "hasCompanyLogo": true,
+        "highlight": {
+          "title": "遠傳電信 北港大同 銷售人員",
+          "description": "【門市服務、門市銷售及電信業務推廣】 \n\n1. 電信門市、遠傳電信門號申辦、通訊商品(配件)、門市銷售服務 \n2. 提供顧客之接待與需求服務 \n3. 月薪35000元 . 另有個人及團隊獎金 . 平均月收入5萬 . 不倒扣底薪  \n4. 月排休9天 . 團隊內自己討論排休 . 可排連休 . 可排假日 \n5. 明確晉升制度依照個人能力及成績取得晉升 \n6. 無經驗可 \n*有一年以上電信系統店或通訊行門市銷售經驗者薪資另議公司來進行面談！〝"
+        }
+      }
+    ]
+  },
+  "seo": {
+    "canonicalLink": "https://www.1111.com.tw/search/job?page=2&d0=120400",
+    "nextLink": "https://www.1111.com.tw/search/job?page=3&d0=120400",
+    "title": "「門市銷售」職缺 - 2025年7月熱門工作機會｜1111人力銀行",
+    "keyword": "門市銷售,找工作,工作,求職,搜尋工作,查詢工作,職缺,工作機會",
+    "description": "(2025/7/31)－(41528) 個工作職缺機會｜(門市人員【金好運投注站】、門市人員【寶御食品有限公司(宝泉)】、銷售員假日班【花間集養生事業有限公司】、門市人員【四寶貝美食團購有限公司】、正職營業人員（鳳山店）【旺來昌實業股份有限公司】)....等。1111提供全台最齊全的工作職缺及求職網路平台服務，更多找工作職缺請上1111。",
+    "imageUrl": "https://www.1111.com.tw/talents/MicroBlogging/images/facebook_banner01.jpg",
+    "ldJson": {
+      "@context": "https://schema.org/",
+      "@type": "CollectionPage",
+      "name": "1111人力銀行 - 職位搜尋結果",
+      "description": "搜尋結果頁面，顯示與關鍵字相關的職位列表。",
+      "url": "https://www.1111.com.tw/search/job",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "item": {
+              "title": "【糖村-台中福雅店】門市正職人員",
+              "hiringOrganization": {
+                "@type": "Organization",
+                "name": "糖村"
+              },
+              "jobLocation": {
+                "@type": "Place",
+                "name": "台中市"
+              },
+              "datePosted": "2022/3/21",
+              "@type": "JobPosting",
+              "url": "https://www.1111.com.tw/job/98706131",
+              "description": "1.負責介紹及銷售門市商品。\n2.提供顧客之接待與需求服務。\n（如：電話諮詢、調貨、修改、包裝及退換貨處理）\n3.結帳包裝、陳列及促銷品換檔工作\n4.進貨庫存、補貨上架、陳列擺設\n5.執行庫存盤點、電腦行政作業等工作\n6.維持店鋪環境整潔\n7.可配合店鋪輪調尤佳\n\n幹部＞五大組別工作規劃執行[排班、訓練、訂貨、客服、維修]\n＜主管＞店舖經營管理、人事溝通技巧、商圈店舖開發"
+            },
+            "@type": "ListItem",
+            "position": 1
+          },
+          {
+            "item": {
+              "title": "全家便利商店-加盟店【民善店】大夜班正職人員",
+              "hiringOrganization": {
+                "@type": "Organization",
+                "name": "全家便利商店"
+              },
+              "jobLocation": {
+                "@type": "Place",
+                "name": "台北市"
+              },
+              "datePosted": "2018/9/26",
+              "@type": "JobPosting",
+              "url": "https://www.1111.com.tw/job/85120237",
+              "description": "1.櫃檯收銀\n2.賣場清潔、商品補貨\n3.機台清潔"
+            },
+            "@type": "ListItem",
+            "position": 2
+          },
+          {
+            "item": {
+              "title": "銷售員假日班",
+              "hiringOrganization": {
+                "@type": "Organization",
+                "name": "花間集養生事業有限公司"
+              },
+              "jobLocation": {
+                "@type": "Place",
+                "name": "新北市"
+              },
+              "datePosted": "2025/5/21",
+              "@type": "JobPosting",
+              "url": "https://www.1111.com.tw/job/130198445",
+              "description": "1.熟悉欲銷售之產品、公司規章作業流程\n2.接受顧客詢問或主動提供諮商建議給顧客\n3.陳列商品、清潔櫥窗、維持營業場所的整潔與美觀\n4.向顧客說明貨品的性質、特徵、品質與價格\n5.在當天結束營業前，統計銷售情形、盤點貨品存量及撰寫當日業務報表\n\n星期六、日(10:30-21:30)\n午餐及晚餐各用餐一小時\n享勞健保及勞退、 日薪高2000元以上\n\n(需輪蘆洲及重新家樂福)\n\n*如您想進一步了解詳細工作內容，應徵方式請先加入LINE ID:flower22683268 \n加入完成後請傳訊息給我，你要應徵的門市店名，我們先以在LINE方式先做簡易面試~"
+            },
+            "@type": "ListItem",
+            "position": 3
+          }
+        ]
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.1111.com.tw/search/job?ks={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "@keywords": [
+        "門市銷售",
+        "找工作",
+        "工作",
+        "求職",
+        "搜尋工作",
+        "查詢工作",
+        "職缺",
+        "工作機會"
+      ]
+    }
+  },
+  "query": null
+}

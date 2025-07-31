@@ -7,7 +7,7 @@
 - **清晰性 (Clarity)**：程式碼首先是寫給人看的，其次才是給機器執行的。優先選擇清晰、易於理解的寫法，避免過度炫技或使用晦澀的語法。
 - **單一職責 (Single Responsibility)**：每個模組、每個類別、每個函式都應該只有一個明確的職責。這使得程式碼更容易測試、重用和維護。
 - **穩定性 (Robustness)**：應用程式應具備容錯能力，並透過**嚴格的測試**來確保其穩定性。對於外部依賴（如資料庫、訊息佇列），必須有適當的重試和錯誤處理機制。
-- **配置外部化 (Externalized Configuration)**：程式碼本身不應包含任何環境特定的設定（如密碼、主機位址）。所有設定都應透過外部設定檔管理。
+- **配置外部化 (Externalized Configuration)**：程式碼本身不應包含任何環境特定的設定（如密碼、主機位址）。所有設定應透過外部設定檔管理。
 
 ---
 
@@ -26,14 +26,14 @@
     uv init
     ```
 
-2.  **啟動基礎服務**:
+2.  **啟動基礎服務**: 
     ```bash
     # 啟動 MySQL 和 RabbitMQ 服務
     docker-compose -f mysql-network.yml up -d
     docker-compose -f rabbitmq-network.yml up -d
     ```
 
-3.  **建立虛擬環境並安裝依賴**:
+3.  **建立虛擬環境並安裝依賴**: 
     ```bash
     # 建立 .venv 虛擬環境
     uv venv
@@ -45,7 +45,7 @@
     uv pip install -r requirements.txt
     ```
 
-3.  **設定環境變數**:
+3.  **設定環境變數**: 
     複製 `local.ini.example` (如果有的話) 為 `local.ini`，並根據本地開發需求修改。`APP_ENV` 環境變數用於切換不同的設定區塊。
 
 ---
@@ -103,22 +103,18 @@
 
 本專案高度重視程式碼品質與穩定性，因此測試是開發流程中不可或缺的一環。所有程式碼在提交前都必須經過適當的測試。
 
-### 5.1. 測試類型與目的
+### 5.1. 本地測試 (Local Testing)
 
--   **單元測試 (Unit Tests)**：
-    -   **目的**：驗證程式碼中最小可測試單元（如函式、方法）的行為是否符合預期。
-    -   **特點**：隔離外部依賴（透過 Mocking），確保測試的快速、可靠和可重複性。
-    -   **範圍**：針對核心業務邏輯、數據處理、轉換函式等。
+為了方便在本地開發環境中快速驗證 `task` 的功能，我們採用了基於環境變數的測試模式。
 
--   **整合測試 (Integration Tests)**：
-    -   **目的**：驗證不同模組或服務之間協同工作的正確性，以及與外部系統（如資料庫、訊息佇列、外部 API）的互動是否正常。
-    -   **特點**：通常需要啟動部分或全部依賴服務。
-    -   **範圍**：資料庫操作、API 客戶端、任務分派與執行流程等。
-
--   **端到端測試 (End-to-End Tests)**：
-    -   **目的**：模擬真實用戶場景，驗證整個系統從輸入到輸出的完整流程是否正確。
-    -   **特點**：通常在接近生產的環境中運行，涉及所有組件。
-    -   **範圍**：從 Producer 啟動到數據最終存入資料庫的完整爬取流程。
+- **核心機制**: 透過在執行腳本前設定 `CRAWLER_DB_NAME` 環境變數，可以讓應用程式連線到指定的測試資料庫（例如 `test_db`），而不是 `local.ini` 中設定的預設資料庫。
+- **標準實踐**: 在每個 `task_*.py` 檔案的頂部，都加入了以下標準化的程式碼區塊：
+  ```python
+  import os
+  if __name__ == "__main__":
+      os.environ['CRAWLER_DB_NAME'] = 'test_db'
+  ```
+- **如何運作**: 當你使用 `python -m crawler.project_xxx.task_yyy` 執行一個 `task` 檔案時，這個區塊會被觸發，從而確保所有後續的資料庫操作都發生在 `test_db` 中。這使得本地測試既簡單又安全，完全不會影響到正式的開發資料庫。
 
 ### 5.2. 測試工具
 
@@ -137,67 +133,74 @@
     python -m pytest tests/path/to/your_test_file.py
     ```
 3.  **測試覆蓋率**：鼓勵提高測試覆蓋率，但更重要的是測試的品質和有效性。
-4.  **測試環境**：單元測試應盡可能在隔離的環境中運行，不依賴外部服務。整合測試和端到端測試則需要適當的環境配置。
 
 ---
 
 ## 6. 資料庫互動 (Database Interaction)
 
-本專案**強制使用 Pydantic 模型**來定義和處理所有與資料庫互動的資料結構，以確保資料的類型安全、一致性與自動驗證。
+本專案的資料庫互動遵循清晰的結構化原則，以確保程式碼的可維護性和資料的完整性。
 
-### 5.1. ORM 與 Session 管理
+### 6.1. 模組職責
+
+- **`connection.py`**: 唯一的資料庫連線管理模組。它會根據 `CRAWLER_DB_NAME` 環境變數自動判斷應連線至正式資料庫還是測試資料庫。所有資料庫 Session 的取得都必須透過此模組的 `get_session()`。
+- **`models.py`**: 只包含 SQLAlchemy 的 ORM 模型定義（例如 `Job`, `Url` 等），負責定義資料庫的資料表結構。
+- **`schemas.py`**: 只包含 Pydantic 的資料驗證模型（例如 `JobPydantic`, `UrlPydantic`），負責定義應用程式內部流動的資料結構，並提供資料驗證。
+- **`repository.py`**: 資料庫操作的唯一入口（Repository Pattern）。所有對資料庫的 CRUD (Create, Read, Update, Delete) 操作都應封裝在此模組的函式中。
+
+### 6.2. ORM 與 Session 管理
 
 -   **使用 `get_session`**: 所有對資料庫的讀寫操作，都必須透過 `crawler.database.connection.get_session` 的上下文管理器來完成。
     ```python
     from crawler.database.connection import get_session
-    from crawler.database.models import MyDataPydantic # 假設這是你的 Pydantic 模型
+    from crawler.database.models import MyORMModel
+    from crawler.database.schemas import MyPydanticModel
 
     with get_session() as session:
         # 從資料庫讀取資料後，應立即轉換為 Pydantic 模型
         orm_object = session.query(MyORMModel).first()
         if orm_object:
-            pydantic_instance = MyDataPydantic.model_validate(orm_object)
+            pydantic_instance = MyPydanticModel.model_validate(orm_object)
             # 現在你可以安全地使用 pydantic_instance
 
         # 寫入資料庫時，應使用 Pydantic 模型定義的資料
-        new_data = MyDataPydantic(field1="value1", field2="value2")
+        new_data = MyPydanticModel(field1="value1", field2="value2")
         session.add(MyORMModel(**new_data.model_dump())) # 將 Pydantic 轉換為 ORM 可接受的格式
         # session.commit() 和 session.rollback() 會由 get_session 自動處理
     ```
+-   **`tb_jobs` 唯一約束**: `tb_jobs` 表格現在包含 `(source_platform, url)` 的唯一約束。這確保了對於同一平台和 URL 的職缺，資料庫中只會保留一筆最新記錄，避免重複數據。當插入重複的 `(source_platform, url)` 組合時，現有記錄將會被更新。
 -   **禁止直接使用 `engine.execute()`**: 除非是像 `initialize_database` 這樣的一次性管理腳本，否則業務邏輯中應避免直接使用 `engine`。
--   **Pydantic 的優勢**: 
-    -   **類型安全**: 明確定義資料類型，減少運行時錯誤。
-    -   **資料驗證**: 自動驗證輸入資料是否符合預期結構和類型。
-    -   **清晰的資料結構**: 讓程式碼更易於理解和維護。
-    -   **與 API 整合**: Pydantic 模型可以輕鬆地用於定義 RESTful API 的請求和響應模型。
 
-### 5.2. 爬取狀態生命週期 (Crawl Status Lifecycle)
+### 6.3. 爬取狀態生命週期 (Crawl Status Lifecycle)
 
 為了確保任務不被重複抓取且具備重試能力，URL 的爬取狀態遵循以下生命週期：
 
 1.  **`PENDING`**:
     -   **定義**: URL 已被收集，等待 Producer 分發。這是 URL 的初始狀態。
-    -   **觸發**: `producer_category_104` 或 `producer_urls_104` 首次將 URL 存入資料庫時。
+    -   **觸發**: `producer_category_*` 或 `producer_urls_*` 首次將 URL 存入資料庫時。
 
 2.  **`QUEUED`**:
     -   **定義**: Producer 已從資料庫讀取此 URL，並準備將其作為任務發送到訊息佇列 (RabbitMQ)。
-    -   **觸發**: `producer_jobs_104` 讀取到 `PENDING` 或 `FAILED` 的 URL 後，會**立即**將其狀態更新為 `QUEUED`，以防止其他 Producer 實例重複選取。
+    -   **觸發**: `producer_jobs_*` 讀取到 `PENDING` 或 `FAILED` 的 URL 後，會**立即**將其狀態更新為 `QUEUED`，以防止其他 Producer 實例重複選取。
 
 3.  **`PROCESSING`**:
     -   **定義**: Worker 已從訊息佇列接收到任務，正在進行資料抓取和處理。
-    -   **觸發**: `worker.py` 中的 `fetch_url_data_104` 任務開始執行時，會將 URL 狀態更新為 `PROCESSING`。
+    -   **觸發**: `worker.py` 中的 `fetch_url_data_*` 任務開始執行時，會將 URL 狀態更新為 `PROCESSING`。
 
 4.  **`SUCCESS`**:
     -   **定義**: Worker 已成功完成資料抓取和儲存。
-    -   **觸發**: `fetch_url_data_104` 任務成功執行完畢。
+    -   **觸發**: `fetch_url_data_*` 任務成功執行完畢。
 
 5.  **`FAILED`**:
     -   **定義**: Worker 在處理過程中遇到錯誤 (例如 API 請求失敗、資料驗證錯誤)。
-    -   **觸發**: `fetch_url_data_104` 任務執行期間發生異常。失敗的任務將在未來的某個時間點由 Producer 重新選取並分發。
+    -   **觸發**: `fetch_url_data_*` 任務執行期間發生異常。失敗的任務將在未來的某個時間點由 Producer 重新選取並分發。
 
 這個狀態機能夠確保系統的穩定性和資料處理的原子性。
 
-### 5.3. 透過 Pandas 直接連線資料庫 (僅限讀取或特定用途)
+### 6.4. 地理編碼處理 (Geocoding Processing)
+
+地理編碼任務現在是獨立於職缺資料抓取和儲存流程的。這意味著 `task_jobs_*.py` 任務不再直接觸發地理編碼。你需要另外建立一個任務來處理地理編碼，例如一個定時任務，它會從資料庫中讀取尚未進行地理編碼的職缺，然後呼叫 `geocode_job_location` 進行處理。
+
+### 6.5. 透過 Pandas 直接連線資料庫 (僅限讀取或特定用途)
 
 在某些特定場景下，例如進行資料分析或快速查詢時，你可能希望直接透過 Pandas 連線到資料庫。此時，你可以使用 `sqlalchemy` 的 `create_engine` 搭配專案的設定來建立連接。
 
@@ -248,13 +251,31 @@
 
 ---
 
-## 6. 執行爬蟲 (Running the Crawler)
+## 7. 執行爬蟲 (Running the Crawler)
 
 為了確保 Python 的 `import` 路徑正確，應從專案根目錄使用 `-m` 參數來執行模組。
 
 - **啟動 Producer**:
   ```bash
+   # 啟動 104 爬蟲的 Producer
    python -m crawler.project_104.producer_category_104
+   python -m crawler.project_104.producer_urls_104
+   python -m crawler.project_104.producer_jobs_104
+
+   # 啟動 1111 爬蟲的 Producer
+   python -m crawler.project_1111.producer_category_1111
+   python -m crawler.project_1111.producer_urls_1111
+   python -m crawler.project_1111.producer_jobs_1111
+
+   # 啟動 CakeResume 爬蟲的 Producer
+   python -m crawler.project_cakeresume.producer_category_cakeresume
+   python -m crawler.project_cakeresume.producer_urls_cakeresume
+   python -m crawler.project_cakeresume.producer_jobs_cakeresume
+
+   # 啟動 yes123 爬蟲的 Producer
+   python -m crawler.project_yes123.producer_category_yes123
+   python -m crawler.project_yes123.producer_urls_yes123
+   python -m crawler.project_yes123.producer_jobs_yes123
   ```
 - **啟動 Worker**:
   ```bash
@@ -263,22 +284,22 @@
 
 ---
 
-## 7. 程式碼風格與檢查 (Linting & Formatting)
+## 8. 程式碼風格與檢查 (Linting & Formatting)
 
 為了確保程式碼的一致性、可讀性和品質，本專案強制執行自動化的程式碼風格檢查和格式化。
 
-### 7.1. 為什麼需要程式碼風格與檢查？
+### 8.1. 為什麼需要程式碼風格與檢查？
 
 -   **提高可讀性**：統一的風格讓所有開發者更容易閱讀和理解程式碼。
 -   **減少錯誤**：Linter 可以捕捉潛在的錯誤、不一致的行為和不良的程式碼實踐。
 -   **加速開發**：減少程式碼審查中關於風格的討論，讓開發者專注於業務邏輯。
 -   **自動化**：透過工具自動執行，減少人工干預。
 
-### 7.2. 推薦工具
+### 8.2. 推薦工具
 
 -   **`ruff` (Linter & Formatter)**: 一個極速的 Python Linter 和 Formatter，旨在取代 `Flake8`, `isort`, `pylint`, `black` 等多個工具，提供統一的程式碼檢查和格式化體驗。
 
-### 7.3. 安裝與使用
+### 8.3. 安裝與使用
 
 請確保你的虛擬環境已啟用。
 
@@ -321,7 +342,7 @@
         ```
         `ruff` 可以自動修復大部分簡單的問題。
 
-### 7.4. 開發流程整合
+### 8.4. 開發流程整合
 
 強烈建議在提交程式碼前執行 `ruff format .` 和 `ruff check . --fix`。
 
