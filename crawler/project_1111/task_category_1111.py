@@ -1,8 +1,8 @@
-import os
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 import structlog
 from crawler.worker import app

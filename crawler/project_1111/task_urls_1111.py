@@ -1,11 +1,13 @@
-import os
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
+
 
 import structlog
 from collections import deque
+from typing import Set, List
 from crawler.worker import app
 from crawler.database.schemas import (
     SourcePlatform,
@@ -17,6 +19,8 @@ from crawler.database.repository import (
     upsert_url_categories,
     upsert_jobs,
     get_all_categories_for_platform,
+    get_all_crawled_category_ids_pandas,
+    get_stale_crawled_category_ids_pandas,
 )
 from crawler.project_1111.client_1111 import fetch_job_urls_from_1111_api
 from crawler.project_1111.parser_apidata_1111 import parse_job_list_json_to_pydantic
@@ -126,6 +130,7 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
             upsert_jobs(current_batch_jobs)
             upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
             upsert_url_categories(current_batch_url_categories)
+            
             current_batch_jobs.clear()
             current_batch_urls.clear()
             current_batch_url_categories.clear()
@@ -168,17 +173,29 @@ if __name__ == "__main__":
     initialize_database()
     # --- End Database Initialization ---
 
-    job_category_lists = get_all_categories_for_platform(SourcePlatform.PLATFORM_1111)
-    
-    # Only process the first category for local testing
-    if job_category_lists:
-        test_category = job_category_lists[1] # Changed from [1] to [0]
-        
-        logger.info("Testing with category:", job_category=test_category.model_dump())
+    n_days = 7  # Define n_days for local testing
+    url_limit = 100000
 
-        url_limit = 20
-        total_urls_collected = crawl_and_store_1111_category_urls(test_category.model_dump(), url_limit=url_limit) # Changed url_limit to 20
-        
-        logger.info("Total URLs collected:", count=total_urls_collected)
+    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_1111)
+    all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
+    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111)
+    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111, n_days)
+    categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
+    categories_to_dispatch = [
+        cat for cat in all_categories_pydantic 
+        if cat.source_category_id in categories_to_dispatch_ids
+    ]
+
+
+    if categories_to_dispatch:
+        # categories_to_process_single = [categories_to_dispatch[0]]
+
+        for job_category in categories_to_dispatch:
+            logger.info(
+                "Dispatching crawl_and_store_1111_category_urls task for local testing.",
+                job_category_code=job_category.source_category_id,
+                url_limit=url_limit,
+            )
+            crawl_and_store_1111_category_urls(job_category.model_dump(), url_limit=url_limit)
     else:
-        logger.info("No categories found to process for testing.")
+        logger.info("No categories found to dispatch for testing.")

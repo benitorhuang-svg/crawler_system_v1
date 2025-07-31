@@ -13,13 +13,11 @@ from crawler.database.schemas import (
     SourcePlatform,
     UrlCategoryPydantic,
     CategorySourcePydantic,
-    CrawlStatus,
 )
 from crawler.database.repository import (
     upsert_urls,
     upsert_url_categories,
     upsert_jobs,
-    mark_urls_as_crawled,
     get_all_categories_for_platform,
     get_all_crawled_category_ids_pandas,
     get_stale_crawled_category_ids_pandas,
@@ -147,7 +145,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
             upsert_jobs(current_batch_jobs)
             upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
             upsert_url_categories(current_batch_url_categories)
-            mark_urls_as_crawled({CrawlStatus.SUCCESS: current_batch_urls})
+            
             current_batch_jobs.clear()
             current_batch_urls.clear()
             current_batch_url_categories.clear()
@@ -190,7 +188,7 @@ if __name__ == "__main__":
     # --- End Database Initialization ---
 
     n_days = 7  # Define n_days for local testing
-    url_limit = 20
+    url_limit = 1000000
 
     all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
     all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
@@ -204,6 +202,8 @@ if __name__ == "__main__":
 
     # Only process the first category for local testing
     if categories_to_dispatch:
+        # categories_to_process_single = [categories_to_dispatch[0]]
+        
         for job_category in categories_to_dispatch:
             logger.info(
                 "Dispatching crawl_and_store_category_urls task for local testing.",

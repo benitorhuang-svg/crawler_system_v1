@@ -33,7 +33,7 @@ def _generic_upsert(
 ) -> int:
     """
     通用的 UPSERT 函式，用於將數據同步到資料庫。
-    如果記錄已存在，則更新指定欄位；否則插入新記錄。
+    如果記錄已存在則更新指定欄位；否則插入新記錄。
     """
     if not data_list:
         return 0
@@ -230,6 +230,11 @@ def upsert_jobs(jobs: List[JobPydantic]) -> None:
         for job in jobs
     ]
 
+    # --- DEBUG PRINT --- START
+    for job_dict in job_dicts_to_upsert:
+        logger.info("Job dict before upsert", job_id=job_dict.get("source_job_id"), salary_type=job_dict.get("salary_type"))
+    # --- DEBUG PRINT --- END
+
     # 動態生成更新欄位列表，排除主鍵
     update_cols = [
         column.name for column in Job.__table__.columns if not column.primary_key
@@ -337,6 +342,3 @@ def get_stale_crawled_category_ids_pandas(platform: SourcePlatform, n_days: int)
         )
         df = pd.read_sql(query, session.bind)
         return set(df["source_category_id"].tolist())
-
-
-

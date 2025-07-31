@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import Optional, Tuple
+from typing import Optional
 import structlog
 from bs4 import BeautifulSoup
 
@@ -12,6 +12,7 @@ from crawler.database.schemas import (
     SalaryType,
 )
 from crawler.project_1111.config_1111 import JOB_DETAIL_BASE_URL_1111
+from crawler.utils.salary_parser import parse_salary_text # Import the new parser
 
 logger = structlog.get_logger(__name__)
 
@@ -43,82 +44,59 @@ EDUCATION_MAPPING_1111 = {
     64: "博士",
 }
 
+# Removed the old parse_salary function
 
-def parse_salary(
-    salary_text: str,
-) -> Tuple[Optional[int], Optional[int], Optional[SalaryType]]:
-    salary_min, salary_max, salary_type = None, None, None
+def derive_salary_type(salary_text: str, salary_min: Optional[int], job_type: Optional[JobType]) -> Optional[SalaryType]:
+    logger.debug("Deriving salary type", salary_text=salary_text, salary_min=salary_min, job_type=job_type)
     text = salary_text.replace(",", "").replace(" ", "").lower()
 
-    # Handle "面議（經常性薪資達4萬元或以上"
-    match_negotiable_with_min = re.search(r"面議\(經常性薪資達(\d+)元或以上\)", text)
-    if match_negotiable_with_min:
-        salary_min = int(match_negotiable_with_min.group(1))
-        salary_type = SalaryType.MONTHLY # Assuming monthly for this case
-        return salary_min, None, salary_type
+    # Priority 1: Explicit keywords
+    if "月薪" in text:
+        logger.debug("Derived: MONTHLY (keyword)")
+        return SalaryType.MONTHLY
+    elif "時薪" in text:
+        logger.debug("Derived: HOURLY (keyword)")
+        return SalaryType.HOURLY
+    elif "年薪" in text:
+        logger.debug("Derived: YEARLY (keyword)")
+        return SalaryType.YEARLY
+    elif "日薪" in text:
+        logger.debug("Derived: DAILY (keyword)")
+        return SalaryType.DAILY
+    elif "論件計酬" in text:
+        logger.debug("Derived: BY_CASE (keyword)")
+        return SalaryType.BY_CASE
+    
+    # Priority 2: "面議" combined with "萬" (implying monthly)
+    # This handles "面議（經常性薪資達4萬元或以上）" -> 月薪
+    if "面議" in text and "萬" in text:
+        logger.debug("Derived: MONTHLY (negotiable + wan)")
+        return SalaryType.MONTHLY # Assuming "萬" in "面議" context implies monthly
 
-    # Monthly Salary
-    match_monthly = re.search(r"月薪(\d+)(?:元)?(?:[至~])?(\d+)?元?", text)
-    if match_monthly:
-        salary_type = SalaryType.MONTHLY
-        salary_min = int(match_monthly.group(1))
-        if match_monthly.group(2):
-            salary_max = int(match_monthly.group(2))
-        elif "以上" in text:
-            salary_max = None # No upper bound
-        else:
-            salary_max = salary_min # Single value
-        return salary_min, salary_max, salary_type
+    # Priority 3: If job_type is FULL_TIME, assume MONTHLY
+    if job_type == JobType.FULL_TIME:
+        logger.debug("Derived: MONTHLY (full-time job type)")
+        return SalaryType.MONTHLY
 
-    # Hourly Salary
-    match_hourly = re.search(r"時薪(\d+)(?:元)?(?:[至~])?(\d+)?元?", text)
-    if match_hourly:
-        salary_type = SalaryType.HOURLY
-        salary_min = int(match_hourly.group(1))
-        if match_hourly.group(2):
-            salary_max = int(match_hourly.group(2))
-        else:
-            salary_max = salary_min
-        return salary_min, salary_max, salary_type
-
-    # Yearly Salary
-    match_yearly = re.search(r"年薪(\d+)萬(?:[至~])?(\d+)?萬?", text)
-    if match_yearly:
-        salary_type = SalaryType.YEARLY
-        salary_min = int(match_yearly.group(1)) * 10000
-        if match_yearly.group(2):
-            salary_max = int(match_yearly.group(2)) * 10000
-        else:
-            salary_max = None
-        return salary_min, salary_max, salary_type
-
-    # Daily Salary
-    match_daily = re.search(r"日薪(\d+)元", text)
-    if match_daily:
-        salary_type = SalaryType.DAILY
-        salary_min = int(match_daily.group(1))
-        salary_max = int(match_daily.group(1))
-        return salary_min, salary_max, salary_type
-
-    # Other types
-    if "論件計酬" in text:
-        salary_type = SalaryType.BY_CASE
-        return None, None, salary_type
+    # Priority 4: General "面議"
     if "面議" in text:
-        salary_type = SalaryType.NEGOTIABLE
-        return None, None, SalaryType.NEGOTIABLE
-
-    # Fallback logic for salary type
-    if salary_min is not None and salary_type is None:
-        if salary_min < 20000:
-            salary_type = SalaryType.HOURLY
+        logger.debug("Derived: NEGOTIABLE (general negotiable)")
+        return SalaryType.NEGOTIABLE
+    
+    # Priority 5: Numerical inference based on salary_min (if no keyword found)
+    if salary_min is not None:
+        if salary_min < 2000: # Adjusted threshold for hourly
+            logger.debug("Derived: HOURLY (numerical)")
+            return SalaryType.HOURLY
         elif salary_min > 200000:
-            salary_type = SalaryType.YEARLY
+            logger.debug("Derived: YEARLY (numerical)")
+            return SalaryType.YEARLY
         else:
-            salary_type = SalaryType.MONTHLY
+            logger.debug("Derived: MONTHLY (numerical)")
+            return SalaryType.MONTHLY # Default to monthly for typical ranges
 
-    return salary_min, salary_max, salary_type
-
+    logger.debug("Derived: None (no match)")
+    return None
 
 def parse_job_list_json_to_pydantic(job_item: dict) -> Optional[JobPydantic]:
     """
@@ -149,11 +127,15 @@ def parse_job_list_json_to_pydantic(job_item: dict) -> Optional[JobPydantic]:
                 )
 
         salary_text = job_item.get("salary", "")
-        salary_min, salary_max, salary_type = parse_salary(salary_text)
-
+        # Derive job_type first, as it's needed for derive_salary_type
         job_type_int = job_item.get("jobType")
         job_type_str = JOB_TYPE_INT_TO_STR_MAPPING_1111.get(job_type_int)
         job_type = JOB_TYPE_MAPPING_1111.get(job_type_str) if job_type_str else None
+
+        # Use the new parse_salary_text from salary_parser.py
+        salary_min, salary_max = parse_salary_text(salary_text)
+        # Derive salary_type using the new function, passing job_type
+        salary_type = derive_salary_type(salary_text, salary_min, job_type)
 
         experience_required_text = job_item.get("require", {}).get("experience")
         if experience_required_text == "0":
@@ -298,10 +280,15 @@ def parse_job_detail_html_to_pydantic(
                             separator="\n", strip=True
                         )
 
-        salary_min, salary_max, salary_type = parse_salary(salary_text or "")
+        # Derive job_type first, as it's needed for derive_salary_type
         job_type = JOB_TYPE_MAPPING_1111.get(job_type_str)
         if job_type is None:
             job_type = JobType.OTHER
+
+        # Use the new parse_salary_text from salary_parser.py
+        salary_min, salary_max = parse_salary_text(salary_text or "")
+        # Derive salary_type using the new function, passing job_type
+        salary_type = derive_salary_type(salary_text or "", salary_min, job_type)
 
         if experience_required_text is None:
             experience_required_text = "不拘"
