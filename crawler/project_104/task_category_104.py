@@ -6,12 +6,16 @@
 
 
 import structlog
+
 from crawler.worker import app
+from crawler.database import connection as db_connection
+from crawler.database import repository
+from crawler.database.connection import initialize_database
 from crawler.database.schemas import SourcePlatform
-from crawler.project_104.config_104 import HEADERS_104, JOB_CAT_URL_104
 from crawler.project_104.client_104 import (
     fetch_category_data_from_104_api,
 )
+from crawler.project_104.config_104 import HEADERS_104, JOB_CAT_URL_104
 
 logger = structlog.get_logger(__name__)
 
@@ -36,8 +40,6 @@ def flatten_jobcat_recursive(node_list, parent_no=None):
 
 @app.task()
 def fetch_url_data_104(url_JobCat):
-    import crawler.database.repository as repository
-    from crawler.database import connection as db_connection
     
     logger.info("Current database connection", db_url=str(db_connection.get_engine().url))
     logger.info("Starting category data fetch and sync.", url=url_JobCat)
@@ -99,10 +101,7 @@ def fetch_url_data_104(url_JobCat):
 if __name__ == "__main__":
     # python -m crawler.project_104.task_category_104
     
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
     logger.info("Dispatching fetch_url_data_104 task for local testing.", url=JOB_CAT_URL_104)
     fetch_url_data_104(JOB_CAT_URL_104)

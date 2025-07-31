@@ -1,14 +1,18 @@
-# import os
-# # --- Local Test Environment Setup ---
-# if __name__ == "__main__":
-#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# # --- End Local Test Environment Setup ---
+import os
+# --- Local Test Environment Setup ---
+if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# --- End Local Test Environment Setup ---
+
 
 import structlog
+
 from crawler.worker import app
+from crawler.database.connection import initialize_database
+import crawler.database.repository as repository
 from crawler.database.schemas import SourcePlatform
-from crawler.project_1111.config_1111 import HEADERS_1111, JOB_CAT_URL_1111
 from crawler.project_1111.client_1111 import fetch_category_data_from_1111_api
+from crawler.project_1111.config_1111 import HEADERS_1111, JOB_CAT_URL_1111
 
 logger = structlog.get_logger(__name__)
 
@@ -28,7 +32,6 @@ def flatten_jobcat_recursive(node_list):
 
 @app.task()
 def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
-    import crawler.database.repository as repository
     logger.info("Starting 1111 category data fetch and sync.", url=url_JobCat)
 
     try:
@@ -91,10 +94,7 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
 if __name__ == "__main__":
     # python -m crawler.project_1111.task_category_1111
     
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
     logger.info("Dispatching fetch_and_sync_1111_categories task for local testing.", url=JOB_CAT_URL_1111)
     fetch_and_sync_1111_categories(JOB_CAT_URL_1111)

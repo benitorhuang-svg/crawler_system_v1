@@ -1,18 +1,21 @@
 import os
-import structlog
-
 # --- Local Test Environment Setup ---
 if __name__ == "__main__":
     os.environ['CRAWLER_DB_NAME'] = 'test_db'
 # --- End Local Test Environment Setup ---
 
+
+import structlog
+
 from crawler.worker import app
+from crawler.database import connection as db_connection
+from crawler.database import repository
+from crawler.database.connection import initialize_database
 from crawler.database.schemas import SourcePlatform
-from crawler.database.repository import get_source_categories, sync_source_categories
-from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
 from crawler.project_cakeresume.client_cakeresume import (
     fetch_cakeresume_category_data,
 )
+from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
 
 logger = structlog.get_logger(__name__)
 
@@ -47,11 +50,12 @@ def flatten_cakeresume_categories(data):
 
 
 @app.task()
-def fetch_and_sync_cakeresume_categories(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
+def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
+    logger.info("Current database connection", db_url=str(db_connection.get_engine().url))
     logger.info("Starting CakeResume category data fetch and sync.", url=url_JobCat)
 
     try:
-        existing_categories = get_source_categories(SourcePlatform.PLATFORM_CAKERESUME)
+        existing_categories = repository.get_source_categories(SourcePlatform.PLATFORM_CAKERESUME)
 
         jobcat_data = fetch_cakeresume_category_data(url_JobCat)
         if jobcat_data is None:
@@ -62,12 +66,13 @@ def fetch_and_sync_cakeresume_categories(url_JobCat: str = JOB_CAT_URL_CAKERESUM
 
         if not existing_categories:
             logger.info("CakeResume category database is empty. Performing initial bulk sync.", total_api_categories=len(flattened_data))
-            sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, flattened_data)
+            repository.sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, flattened_data)
             return
 
         api_categories_set = {
             (d["source_category_id"], d["source_category_name"], d["parent_source_id"])
             for d in flattened_data
+            if d.get("parent_source_id")
         }
         db_categories_set = {
             (
@@ -90,11 +95,12 @@ def fetch_and_sync_cakeresume_categories(url_JobCat: str = JOB_CAT_URL_CAKERESUM
                 }
                 for cat_id, name, parent_id in categories_to_sync_set
             ]
+            categories_to_sync.sort(key=lambda x: x['source_category_id'])
             logger.info(
                 "Found new or updated CakeResume categories to sync.",
                 count=len(categories_to_sync),
             )
-            sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, categories_to_sync)
+            repository.sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, categories_to_sync)
         else:
             logger.info("No new or updated CakeResume categories to sync.", existing_categories_count=len(existing_categories), api_categories_count=len(flattened_data))
 
@@ -103,12 +109,9 @@ def fetch_and_sync_cakeresume_categories(url_JobCat: str = JOB_CAT_URL_CAKERESUM
 
 
 if __name__ == "__main__":
-    # To run this script for local testing, execute:
     # python -m crawler.project_cakeresume.task_category_cakeresume
-    # This will automatically use the 'test_db' as configured at the top of the script.
-
-    from crawler.database.connection import initialize_database
+    
     initialize_database()
 
-    logger.info("Dispatching fetch_and_sync_cakeresume_categories task for local testing.", url=JOB_CAT_URL_CAKERESUME)
-    fetch_and_sync_cakeresume_categories(JOB_CAT_URL_CAKERESUME)
+    logger.info("Dispatching fetch_url_data_cakeresume task for local testing.", url=JOB_CAT_URL_CAKERESUME)
+    fetch_url_data_cakeresume(JOB_CAT_URL_CAKERESUME)
