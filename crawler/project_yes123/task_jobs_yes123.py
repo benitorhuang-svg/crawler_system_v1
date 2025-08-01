@@ -1,4 +1,5 @@
 import os
+# python -m crawler.project_yes123.task_jobs_yes123
 # --- Local Test Environment Setup ---
 if __name__ == "__main__":
     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -12,6 +13,7 @@ from bs4 import BeautifulSoup
 
 from crawler.worker import app
 from crawler.database.schemas import CrawlStatus, SourcePlatform, JobPydantic, JobStatus, JobType, SalaryType
+from crawler.database.connection import initialize_database
 from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_urls_by_crawl_status
 from crawler.project_yes123.client_yes123 import fetch_yes123_job_data
 from crawler.logging_config import configure_logging
@@ -107,8 +109,11 @@ def parse_yes123_job_data_to_pydantic(html_content: str, url: str) -> Optional[J
         # This part needs careful mapping from the notebook's parsing logic
 
         # Title
-        title_element = soup.select_one('#content > div.job_content > div.job_title > h1')
+        title_element = soup.select_one('h1#limit_word_count')
         title = title_element.get_text(strip=True) if title_element else None
+        if not title:
+            logger.warning("Job title not found or is empty.", url=url, job_id=job_id)
+            return None
 
         # Company Name and URL
         company_name_element = soup.select_one('#content > div.job_content > div.job_title > div.comp_name > a')
@@ -249,12 +254,7 @@ def fetch_url_data_yes123(url: str) -> Optional[dict]:
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_yes123.task_jobs_yes123
-    
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
     urls_to_process = get_urls_by_crawl_status(
