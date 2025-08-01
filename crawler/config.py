@@ -36,7 +36,7 @@ MYSQL_ACCOUNT = config_section.get("MYSQL_ACCOUNT", "root")
 MYSQL_ROOT_PASSWORD = config_section.get("MYSQL_ROOT_PASSWORD", "root_password")
 MYSQL_PASSWORD = config_section.get("MYSQL_PASSWORD", "root_password")
 MYSQL_DATABASE = os.environ.get('CRAWLER_DB_NAME') or config_section.get("MYSQL_DATABASE", "crawler_db")
-LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO").upper()
+LOG_LEVEL = config_section.get("LOG_LEVEL", "DEBUG").upper()
 LOG_FORMATTER = config_section.get("LOG_FORMATTER", "json").lower()
 
 PRODUCER_BATCH_SIZE = int(config_section.get("PRODUCER_BATCH_SIZE", "100"))
@@ -45,7 +45,7 @@ PRODUCER_DISPATCH_INTERVAL_SECONDS = float(
 )
 
 URL_CRAWLER_REQUEST_TIMEOUT_SECONDS = int(
-    config_section.get("URL_CRAWLER_REQUEST_TIMEOUT_SECONDS", "20")
+    config_section.get("URL_CRAWLER_REQUEST_TIMEOUT_SECONDS", "30")
 )
 URL_CRAWLER_UPLOAD_BATCH_SIZE = int(
     config_section.get("URL_CRAWLER_UPLOAD_BATCH_SIZE", "30")

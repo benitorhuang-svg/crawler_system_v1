@@ -66,7 +66,7 @@ def setup_logging(sender, **kwargs):
 
         # 配置標準 logging 的 formatter 和 handler
         formatter = structlog.stdlib.ProcessorFormatter(
-            processor=structlog.dev.ConsoleRenderer(),
+            processor=structlog.dev.ConsoleRenderer(level=getattr(logging, LOG_LEVEL, logging.INFO)),
             foreign_pre_chain=[
                 structlog.stdlib.add_logger_name,
                 structlog.stdlib.add_log_level,
@@ -75,6 +75,7 @@ def setup_logging(sender, **kwargs):
 
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(formatter)
+        handler.setLevel(getattr(logging, LOG_LEVEL, logging.INFO)) # Set handler level
 
         # 配置 root logger
         root_logger = logging.getLogger()

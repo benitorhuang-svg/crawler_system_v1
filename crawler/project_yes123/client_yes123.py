@@ -66,12 +66,15 @@ def _make_web_request(
             verify=verify,
         )
         response.raise_for_status()  # Raises HTTPError for bad responses (4xx or 5xx)
-        return response.text
+        
     except requests.exceptions.RequestException as e:
         logger.error(
             "Network error during web request.",
             url=url,
-            error=e,
+            error_type=type(e).__name__,
+            error_message=str(e),
+            status_code=response.status_code if 'response' in locals() else 'N/A',
+            response_content=response.text if 'response' in locals() else 'N/A',
             exc_info=True,
             **log_context,
         )
@@ -98,7 +101,7 @@ def yes123_url(
     KEYWORDS: str = "",
     CATEGORY: str = "",
     ORDER: str = "new",
-    PAGE_NUM: int = 1,
+    STRREC: int = 0, # Changed from PAGE_NUM to STRREC
 ) -> str:
     """
     這個函數會根據給定的關鍵字、類別、排序和頁碼參數，
@@ -108,44 +111,24 @@ def yes123_url(
     KEYWORDS (str): 職缺的關鍵字。
     CATEGORY (str): 職缺的類別代碼。
     ORDER (str, optional): 排序方式。預設為 "new" (最新)。
-    PAGE_NUM (int, optional): 指定的頁碼。預設為 1。
+    STRREC (int, optional): 指定的起始記錄數 (offset)。預設為 0。
 
     返回:
     str: 生成的 yes123 求職網址。
     """
     base_url = JOB_LISTING_BASE_URL_YES123
     params = {
-        "p": PAGE_NUM,
+        "strrec": STRREC, # Changed from "p" to "strrec"
         "s_key": KEYWORDS,
-        "job_kind": CATEGORY,
-        "order": ORDER,
+        "find_work_mode1": CATEGORY, # Changed from "job_kind" to "find_work_mode1"
+        "order_by": ORDER, # Changed from "order" to "order_by"
+        "order_ascend": "desc", # Added based on example URLs
+        "search_from": "joblist", # Added based on example URLs
     }
     query_string = urllib.parse.urlencode(params)
     return f"{base_url}?{query_string}"
 
-def fetch_yes123_job_urls(
-    KEYWORDS: str = "",
-    CATEGORY: str = "",
-    ORDER: str = "new",
-    PAGE_NUM: int = 1,
-) -> Optional[str]: # Returns HTML content of the job listing page
-    """
-    從 yes123 獲取職缺 URL 列表的原始數據 (HTML 內容)。
-    """
-    url = yes123_url(KEYWORDS, CATEGORY, ORDER, PAGE_NUM)
-    return _make_web_request(
-        "GET",
-        url,
-        headers=HEADERS_YES123,
-        timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
-        verify=False,
-        log_context={
-            "api_type": "yes123_job_urls",
-            "keywords": KEYWORDS,
-            "category": CATEGORY,
-            "page": PAGE_NUM,
-        },
-    )
+
 
 def fetch_yes123_job_data(job_url: str) -> Optional[str]: # Returns HTML content of the job detail page
     """

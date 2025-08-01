@@ -1,4 +1,5 @@
 # import os
+# # python -m crawler.project_104.task_urls_104
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -14,6 +15,7 @@ from crawler.database.schemas import (
     UrlCategoryPydantic,
     CategorySourcePydantic,
 )
+from crawler.database.connection import initialize_database
 from crawler.database.repository import (
     upsert_urls,
     upsert_url_categories,
@@ -152,7 +154,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
 
         total_jobs = len(global_job_url_set)
         recent_counts.append(total_jobs)
-        if len(recent_counts) == recent_counts.maxlen and len(set(recent_counts)) == 1:
+        if len(recent_counts) == recent_counts.maxlen and len(set(recent_counts)) == 3:
             logger.info(
                 "No new data found consecutively. Ending task early.",
                 job_category_code=job_category_code,
@@ -180,14 +182,9 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_104.task_urls_104
-    
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
-    n_days = 7  # Define n_days for local testing
+    n_days = 1  # Define n_days for local testing
     url_limit = 1000000
 
     all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)

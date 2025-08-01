@@ -1,9 +1,11 @@
 import os
+# # python -m crawler.project_1111.task_jobs_1111
 # --- Local Test Environment Setup ---
 if __name__ == "__main__":
     os.environ['CRAWLER_DB_NAME'] = 'test_db'
 # --- End Local Test Environment Setup ---
 
+    
 import structlog
 from typing import Optional
 from crawler.worker import app
@@ -11,6 +13,7 @@ from crawler.database.schemas import CrawlStatus, SourcePlatform
 from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_urls_by_crawl_status
 from crawler.project_1111.client_1111 import fetch_job_data_from_1111_web
 from crawler.project_1111.parser_apidata_1111 import parse_job_detail_html_to_pydantic
+from crawler.database.connection import initialize_database
 from crawler.logging_config import configure_logging
 
 configure_logging()
@@ -76,11 +79,6 @@ def fetch_url_data_1111(url: str) -> Optional[dict]:
 
 
 if __name__ == "__main__":
-    # To run this script for local testing, execute:
-    # python -m crawler.project_1111.task_jobs_1111
-    # This will automatically use the 'test_db' as configured at the top of the script.
-
-    from crawler.database.connection import initialize_database
     initialize_database()
 
     PRODUCER_BATCH_SIZE = 20 # Changed from 10 to 20

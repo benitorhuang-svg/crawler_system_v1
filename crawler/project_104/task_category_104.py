@@ -1,4 +1,5 @@
 # import os
+# #  python -m crawler.project_104.task_category_104
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -107,9 +108,6 @@ def fetch_url_data_104(url_JobCat):
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_104.task_category_104
-    
     initialize_database()
-
     logger.info("Dispatching fetch_url_data_104 task for local testing.", url=JOB_CAT_URL_104)
     fetch_url_data_104(JOB_CAT_URL_104)

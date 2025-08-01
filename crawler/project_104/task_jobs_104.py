@@ -1,4 +1,5 @@
 # import os
+# # python -m crawler.project_104.task_jobs_104  
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -12,6 +13,7 @@ from crawler.database.schemas import CrawlStatus, SourcePlatform
 from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_urls_by_crawl_status
 from crawler.project_104.client_104 import fetch_job_data_from_104_api
 from crawler.project_104.parser_apidata_104 import parse_job_item_to_pydantic
+from crawler.database.connection import initialize_database
 from crawler.logging_config import configure_logging
 
 configure_logging()
@@ -81,12 +83,7 @@ def fetch_url_data_104(url: str) -> Optional[dict]:
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_104.task_jobs_104
-
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
     PRODUCER_BATCH_SIZE = 20 # Changed from 10 to 20
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]

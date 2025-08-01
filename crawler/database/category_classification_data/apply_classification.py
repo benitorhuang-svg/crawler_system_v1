@@ -40,52 +40,50 @@ MAPPING = {
     for platform_name, platform_map in _raw_mapping.items()
 }
 
-# def main():
-#     logger.info("Initializing database connection...")
-#     initialize_database()
-#     logger.info("Database initialized.")
+def apply_category_classification(platform: SourcePlatform):
+    logger.info(f"Applying classification for platform: {platform.value}")
 
-#     # 1. 插入新的大項目歸類 (This step is removed to prevent data deletion)
-#     # logger.info("Inserting major classification categories...")
-#     # sync_source_categories(SourcePlatform.PLATFORM_104, MAJOR_CATEGORIES)
-#     # logger.info("Major classification categories inserted.")
+    major_category_ids = {cat["source_category_id"] for cat in MAJOR_CATEGORIES}
 
-#     # 2. 更新現有頂層分類的父 ID
-#     platforms_to_process = [
-#         SourcePlatform.PLATFORM_104,
-#         SourcePlatform.PLATFORM_1111,
-#         SourcePlatform.PLATFORM_CAKERESUME,
-#         SourcePlatform.PLATFORM_YES123,
-#     ]
+    root_categories = get_root_categories(platform)
+    
+    for category in root_categories:
+        # Skip updating the major categories themselves
+        if category.source_category_id in major_category_ids:
+            continue
 
-#     major_category_ids = {cat["source_category_id"] for cat in MAJOR_CATEGORIES}
+        original_category_name = category.source_category_name.strip()
+        new_parent_id = MAPPING[platform].get(original_category_name)
 
-#     for platform in platforms_to_process:
-#         logger.info(f"Processing platform: {platform.value}")
-#         root_categories = get_root_categories(platform)
-        
-#         for category in root_categories:
-#             # Skip updating the major categories themselves
-#             if category.source_category_id in major_category_ids:
-#                 continue
+        if new_parent_id:
+            logger.info(
+                f"Updating parent_source_id for {platform.value} - {original_category_name} to {new_parent_id}"
+            )
+            update_category_parent_id(
+                platform,
+                category.source_category_id,
+                new_parent_id
+            )
+        else:
+            logger.warning(
+                f"No mapping found for {platform.value} - {original_category_name}. Skipping update."
+            )
+    logger.info(f"Classification application complete for {platform.value}.")
 
-#             original_category_name = category.source_category_name.strip()
-#             new_parent_id = MAPPING[platform].get(original_category_name)
 
-#             if new_parent_id:
-#                 logger.info(
-#                     f"Updating parent_source_id for {platform.value} - {original_category_name} to {new_parent_id}"
-#                 )
-#                 update_category_parent_id(
-#                     platform,
-#                     category.source_category_id,
-#                     new_parent_id
-#                 )
-#             else:
-#                 logger.warning(
-#                     f"No mapping found for {platform.value} - {original_category_name}. Skipping update."
-#                 )
-#     logger.info("Classification application complete.")
+if __name__ == "__main__":
+    # This block is for standalone execution of classification for all platforms
+    # It will initialize the database and apply classification for all defined platforms.
+    logger.info("Initializing database connection for standalone classification application...")
+    initialize_database()
+    logger.info("Database initialized.")
 
-# if __name__ == "__main__":
-#     main()
+    platforms_to_process = [
+        SourcePlatform.PLATFORM_104,
+        SourcePlatform.PLATFORM_1111,
+        SourcePlatform.PLATFORM_CAKERESUME,
+        SourcePlatform.PLATFORM_YES123,
+    ]
+
+    for platform in platforms_to_process:
+        apply_category_classification(platform)

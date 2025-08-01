@@ -1,4 +1,5 @@
 # import os
+# # python -m crawler.project_1111.task_urls_1111
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -6,9 +7,11 @@
 
 
 import structlog
+
 from collections import deque
 from typing import Set, List
 from crawler.worker import app
+from crawler.database.connection import initialize_database
 from crawler.database.schemas import (
     SourcePlatform,
     UrlCategoryPydantic,
@@ -166,12 +169,7 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_1111.task_urls_1111
-    
-    # --- Database Initialization for Local Test ---
-    from crawler.database.connection import initialize_database
     initialize_database()
-    # --- End Database Initialization ---
 
     n_days = 7  # Define n_days for local testing
     url_limit = 100000

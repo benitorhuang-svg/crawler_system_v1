@@ -71,7 +71,6 @@ def _make_web_request(
     except requests.exceptions.RequestException as e:
         logger.error(
             "Network error during web request.",
-            url=url,
             error=e,
             exc_info=True,
             **log_context,
@@ -87,26 +86,45 @@ def _make_web_request(
         )
         return None
 
+def fetch_cakeresume_category_page_html(
+    url: str = JOB_CAT_URL_CAKERESUME, headers: Dict[str, str] = HEADERS_CAKERESUME
+) -> Optional[str]:
+    """
+    從 CakeResume 獲取職務分類頁面的原始 HTML 內容。
+    """
+    return _make_web_request("GET", url, headers=headers, log_context={"api_type": "cakeresume_category_page_html"})
+
+def extract_next_data_json_from_html(html_content: str) -> Optional[Dict[str, Any]]:
+    """
+    從 HTML 內容中提取 __NEXT_DATA__ script 標籤的 JSON 內容。
+    """
+    if not html_content:
+        return None
+    
+    soup = BeautifulSoup(html_content, 'html.parser')
+    data_script = soup.find('script', id='__NEXT_DATA__')
+
+    if data_script and data_script.string:
+        try:
+            return json.loads(data_script.string)
+        except (json.JSONDecodeError, KeyError) as e:
+            logger.error("Failed to parse JSON data from __NEXT_DATA__ script.", error=e, exc_info=True)
+            return None
+    return None
+
 def fetch_cakeresume_category_data(
     url: str = JOB_CAT_URL_CAKERESUME, headers: Dict[str, str] = HEADERS_CAKERESUME
 ) -> Optional[Dict[str, Any]]:
     """
-    從 CakeResume 獲取職務分類的原始數據。
+    從 CakeResume 獲取職務分類的原始數據 (主要為 sector 資料)。
     """
-    html_content = _make_web_request("GET", url, headers=headers, log_context={"api_type": "cakeresume_category_data"})
+    html_content = fetch_cakeresume_category_page_html(url, headers)
     if html_content:
-        soup = BeautifulSoup(html_content, 'html.parser')
-        data_script = soup.find('script', id='__NEXT_DATA__')
-
-        if data_script and data_script.string:
-            try:
-                data = json.loads(data_script.string)
-                # The relevant data is nested under props.pageProps._nextI18Next.initialI18nStore.zh-TW.sector
-                i18n_store_zh_tw_sector = data.get('props', {}).get('pageProps', {}).get('_nextI18Next', {}).get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {})
-                return {'initialI18nStore': {'zh-TW': {'sector': i18n_store_zh_tw_sector}}}
-            except (json.JSONDecodeError, KeyError) as e:
-                logger.error("Failed to parse CakeResume category JSON data from __NEXT_DATA__ script.", error=e, exc_info=True)
-                return None
+        data = extract_next_data_json_from_html(html_content)
+        if data:
+            # The relevant data is nested under props.pageProps._nextI18Next.initialI18nStore.zh-TW.sector
+            i18n_store_zh_tw_sector = data.get('props', {}).get('pageProps', {}).get('_nextI18Next', {}).get('initialI18nStore', {}).get('zh-TW', {}).get('sector', {})
+            return {'initialI18nStore': {'zh-TW': {'sector': i18n_store_zh_tw_sector}}}
     return None
 
 def cake_me_url(KEYWORDS: str, CATEGORY: str, ORDER: Optional[str] = None) -> str:

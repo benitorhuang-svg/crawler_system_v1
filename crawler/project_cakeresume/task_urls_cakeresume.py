@@ -1,17 +1,28 @@
 import os
-import structlog
-from collections import deque
-from bs4 import BeautifulSoup
-
+# python -m crawler.project_cakeresume.task_urls_cakeresume
 # --- Local Test Environment Setup ---
 if __name__ == "__main__":
     os.environ['CRAWLER_DB_NAME'] = 'test_db'
 # --- End Local Test Environment Setup ---
 
+
+import structlog
+from collections import deque
+from bs4 import BeautifulSoup
+from typing import Set, List # Added for type hints
+
+
 from crawler.worker import app
 from crawler.database.schemas import SourcePlatform, UrlCategoryPydantic, CategorySourcePydantic
-from crawler.database.repository import upsert_urls, upsert_url_categories, get_all_categories_for_platform
+from crawler.database.repository import (
+    upsert_urls,
+    upsert_url_categories,
+    get_all_categories_for_platform,
+    get_all_crawled_category_ids_pandas, # Added for 104 template
+    get_stale_crawled_category_ids_pandas, # Added for 104 template
+)
 from crawler.project_cakeresume.client_cakeresume import fetch_cakeresume_job_urls
+from crawler.database.connection import initialize_database
 from crawler.config import (
     URL_CRAWLER_UPLOAD_BATCH_SIZE,
 )
@@ -29,6 +40,13 @@ def crawl_and_store_cakeresume_category_urls(job_category: dict, url_limit: int 
     Celery task: Iterates through all pages of a specified CakeResume job category, fetches job URLs,
     and stores them in the database.
     """
+    _crawl_and_store_cakeresume_category_urls_core(job_category, url_limit)
+
+def _crawl_and_store_cakeresume_category_urls_core(job_category: dict, url_limit: int = 0) -> None:
+    """
+    Core function: Iterates through all pages of a specified CakeResume job category, fetches job URLs,
+    and stores them in the database in batches.
+    """
     job_category = CategorySourcePydantic.model_validate(job_category)
     job_category_code = job_category.source_category_id
     global_job_url_set = set()
@@ -37,7 +55,7 @@ def crawl_and_store_cakeresume_category_urls(job_category: dict, url_limit: int 
     recent_counts = deque(maxlen=4)
 
     current_page = 0
-    max_page = 1
+    max_page = 100000
 
     logger.info(
         "Task started: crawling CakeResume job category URLs.", job_category_code=job_category_code, url_limit=url_limit
@@ -142,15 +160,31 @@ def crawl_and_store_cakeresume_category_urls(job_category: dict, url_limit: int 
 
 
 if __name__ == "__main__":
-    # To run this script for local testing, execute:
-    # python -m crawler.project_cakeresume.task_urls_cakeresume
-    # This will automatically use the 'test_db' as configured at the top of the script.
-
-    from crawler.database.connection import initialize_database
     initialize_database()
 
-    job_category_lists = get_all_categories_for_platform(SourcePlatform.PLATFORM_CAKERESUME)
+    n_days = 1  # Define n_days for local testing
+    url_limit = 1000000 # Set a high limit for full crawling during local testing
 
-    for job_category in job_category_lists:
-        logger.info("Dispatching crawl_and_store_cakeresume_category_urls task for local testing.", job_category_code=job_category.source_category_id)
-        crawl_and_store_cakeresume_category_urls(job_category.model_dump())
+    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_CAKERESUME)
+    all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
+    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_CAKERESUME)
+    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_CAKERESUME, n_days)
+    categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
+    categories_to_dispatch = [
+        cat for cat in all_categories_pydantic 
+        if cat.source_category_id in categories_to_dispatch_ids
+    ]
+
+    # Only process the first category for local testing
+    if categories_to_dispatch:
+        # categories_to_process_single = [categories_to_dispatch[0]] # Uncomment to process only the first category
+        
+        for job_category in categories_to_dispatch:
+            logger.info(
+                "Dispatching crawl_and_store_cakeresume_category_urls task for local testing.",
+                job_category_code=job_category.source_category_id,
+                url_limit=url_limit,
+            )
+            crawl_and_store_cakeresume_category_urls(job_category.model_dump(), url_limit=url_limit)
+    else:
+        logger.info("No categories found to dispatch for testing.")

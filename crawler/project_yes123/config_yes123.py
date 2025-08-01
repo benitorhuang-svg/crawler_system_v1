@@ -14,5 +14,5 @@ HEADERS_YES123 = {
     "Referer": "https://www.yes123.com.tw",
 }
 
-URL_CRAWLER_PAGE_SIZE_YES123 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_YES123", "20"))
+URL_CRAWLER_PAGE_SIZE_YES123 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_YES123", "100"))
 URL_CRAWLER_ORDER_BY_YES123 = config_section.get("URL_CRAWLER_ORDER_BY_YES123", "new") # "new" or other options

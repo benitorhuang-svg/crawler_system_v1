@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional, Set
 from datetime import datetime, timezone, timedelta
 import pandas as pd
 
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 from sqlalchemy.dialects.mysql import insert
 from sqlalchemy.orm import DeclarativeBase
 
@@ -56,10 +56,15 @@ def _generic_upsert(
         return result.rowcount # 返回受影響的行數
 
 
-
-
-
-
+def clear_urls_and_categories() -> None:
+    """
+    清空 tb_urls 和 tb_url_categories 資料表。
+    """
+    with get_session() as session:
+        session.execute(delete(UrlCategory))
+        session.execute(delete(Url))
+        session.commit()
+        logger.info("已清空 tb_urls 和 tb_url_categories 資料表。")
 
 
 def sync_source_categories(
@@ -135,12 +140,16 @@ def get_all_categories_for_platform(
 
 def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
     """
-    Synchronizes a list of URLs for a given platform with the database.
+    Synchronizes a list of URLs for a given platform with the database。
     Performs an UPSERT operation. URLs are marked as ACTIVE and PENDING.
     """
     if not urls:
         logger.info("No URLs to upsert.", platform=platform.value)
         return
+
+    from crawler.database.connection import get_db_name
+    db_name = get_db_name()
+    logger.info("Attempting to upsert URLs.", platform=platform.value, count=len(urls), db=db_name)
 
     now = datetime.now(timezone.utc)
     url_models_to_upsert = [
@@ -148,7 +157,7 @@ def upsert_urls(platform: SourcePlatform, urls: List[str]) -> None:
             "source_url": url,
             "source": platform,
             "status": JobStatus.ACTIVE.value,
-            "details_crawl_status": CrawlStatus.PENDING.value,
+            "details_crawl_status": CrawlStatus.QUEUED.value,
             "crawled_at": now,
             "updated_at": now,
         }
@@ -277,6 +286,10 @@ def upsert_url_categories(url_category_data: List[Dict[str, Any]]) -> None:
     if not url_category_data:
         logger.info("No URL category data to upsert.")
         return
+
+    from crawler.database.connection import get_db_name
+    db_name = get_db_name()
+    logger.info("Attempting to upsert URL categories.", count=len(url_category_data), db=db_name)
 
     affected_rows = _generic_upsert(UrlCategory, url_category_data, []) # UrlCategory has composite primary key, no update columns needed for UPSERT
 

@@ -1,4 +1,5 @@
 # import os
+# # python -m crawler.project_1111.task_category_1111
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -106,9 +107,6 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
 
 
 if __name__ == "__main__":
-    # python -m crawler.project_1111.task_category_1111
-    
     initialize_database()
-
     logger.info("Dispatching fetch_and_sync_1111_categories task for local testing.", url=JOB_CAT_URL_1111)
     fetch_and_sync_1111_categories(JOB_CAT_URL_1111)

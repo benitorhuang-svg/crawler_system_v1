@@ -1,254 +1,203 @@
-import os
-# python -m crawler.project_yes123.task_jobs_yes123
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+# import os
+# # python -m crawler.project_yes123.task_jobs_yes123
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 import structlog
-from typing import Optional
-import re
-from datetime import datetime
+from typing import Optional, Dict
 from bs4 import BeautifulSoup
+from datetime import datetime, timezone
+import re
+from urllib.parse import urljoin
+
+import requests
+import urllib3
 
 from crawler.worker import app
-from crawler.database.schemas import CrawlStatus, SourcePlatform, JobPydantic, JobStatus, JobType, SalaryType
+from crawler.database.schemas import (
+    CrawlStatus,
+    SourcePlatform,
+    JobStatus,
+    JobPydantic,
+    JobType,
+)
 from crawler.database.connection import initialize_database
-from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_urls_by_crawl_status
-from crawler.project_yes123.client_yes123 import fetch_yes123_job_data
+from crawler.database.repository import (
+    get_urls_by_crawl_status,
+    upsert_jobs,
+    mark_urls_as_crawled,
+)
+from crawler.utils.salary_parser import parse_salary_text
+from crawler.project_yes123.config_yes123 import HEADERS_YES123
 from crawler.logging_config import configure_logging
 
 configure_logging()
+
+# Constants
+BASE_URL = "https://www.yes123.com.tw"
+DEFAULT_TIMEOUT = 15
+
 logger = structlog.get_logger(__name__)
 
-# yes123 的工作類型到我們內部 JobType Enum 的映射
-# 根據 notebook 中的 '工作性質' 欄位
-JOB_TYPE_MAPPING_YES123 = {
-    "全職": JobType.FULL_TIME,
-    "兼職": JobType.PART_TIME,
-    "派遣": JobType.CONTRACT,
-    "工讀": JobType.INTERNSHIP, # Assuming工讀 is internship
-    "約聘": JobType.TEMPORARY,
-    "其他": JobType.OTHER, # Added for cases where job_type is None
-}
 
-
-def parse_salary(
-    salary_text: str,
-) -> (Optional[int], Optional[int], Optional[SalaryType]):
-    salary_min, salary_max, salary_type = None, None, None
-    text = salary_text.replace(",", "").lower()
-
-    # 月薪
-    match_monthly = re.search(r"月薪([0-9,]+)(?:元)?(?:[至~])?([0-9,]+)?元?", text) or re.search(
-        r"月薪([0-9,]+)元以上", text
-    )
-    if match_monthly:
-        salary_type = SalaryType.MONTHLY
-        salary_min = int(match_monthly.group(1).replace(",", ""))
-        if match_monthly.group(2):
-            salary_max = int(match_monthly.group(2).replace(",", ""))
-        return salary_min, salary_max, salary_type
-
-    # 年薪
-    match_yearly = re.search(r"年薪([0-9,]+)萬(?:[至~])?([0-9,]+)?萬?", text) or re.search(
-        r"年薪([0-9,]+)萬以上", text
-    )
-    if match_yearly:
-        salary_type = SalaryType.YEARLY
-        salary_min = int(match_yearly.group(1).replace(",", "")) * 10000
-        if match_yearly.group(2):
-            salary_max = int(match_yearly.group(2).replace(",", "")) * 10000
-        return salary_min, salary_max, salary_type
-
-    # 時薪
-    match_hourly = re.search(r"時薪([0-9,]+)元", text)
-    if match_hourly:
-        salary_type = SalaryType.HOURLY
-        salary_min = int(match_hourly.group(1).replace(",", ""))
-        salary_max = int(match_hourly.group(1).replace(",", ""))
-        return salary_min, salary_max, salary_type
-
-    # 日薪
-    match_daily = re.search(r"日薪([0-9,]+)元", text)
-    if match_daily:
-        salary_type = SalaryType.DAILY
-        salary_min = int(match_daily.group(1).replace(",", ""))
-        salary_max = int(match_daily.group(1).replace(",", ""))
-        return salary_min, salary_max, salary_type
-
-    # 論件計酬
-    if "論件計酬" in text:
-        salary_type = SalaryType.BY_CASE
-        return None, None, salary_type
-
-    # 面議
-    if "面議" in text:
-        salary_type = SalaryType.NEGOTIABLE
-        return None, None, salary_type
-
-    return salary_min, salary_max, salary_type
-
-
-def parse_yes123_job_data_to_pydantic(html_content: str, url: str) -> Optional[JobPydantic]:
+def fetch_yes123_job_data(job_url: str, headers: dict, timeout: int = DEFAULT_TIMEOUT) -> Optional[dict]:
     """
-    從 yes123 職缺頁面的 HTML 內容解析並轉換為 JobPydantic 物件。
+    Fetches and scrapes detailed information from a given yes123 job URL.
     """
     try:
-        # yes123 的 job_id 通常是 URL 中的 p_id 參數
-        job_id_match = re.search(r'p_id=(\d+)', url)
-        job_id = job_id_match.group(1) if job_id_match else None
+        response = requests.get(job_url, headers=headers, timeout=timeout, verify=False)
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        response.raise_for_status()
 
-        if not job_id:
-            logger.error("Failed to extract job_id from URL for parsing.", url=url)
+        if "此工作機會已關閉" in response.text or "您要找的頁面不存在" in response.text:
             return None
 
-        soup = BeautifulSoup(html_content, 'html.parser')
+        soup = BeautifulSoup(response.text, "html.parser")
+        scraped_data = {"職缺網址": job_url}
+        
+        header_block = soup.select_one("div.box_job_header_center")
+        if header_block:
+            title_tag = header_block.select_one("h1")
+            scraped_data["職缺名稱"] = title_tag.get_text(strip=True) if title_tag else "N/A"
+            company_tag = header_block.select_one("a.link_text_black")
+            scraped_data["公司名稱"] = company_tag.get_text(strip=True) if company_tag else "N/A"
+            if company_tag and "href" in company_tag.attrs:
+                scraped_data["公司網址"] = urljoin(BASE_URL, company_tag["href"])
+            else:
+                scraped_data["公司網址"] = "N/A"
 
-        # --- Extracting data based on yes123_人力銀行_crawl.ipynb ---
-        # This part needs careful mapping from the notebook's parsing logic
+        posted_at_tag = soup.find(string=re.compile(r"職缺更新："))
+        if posted_at_tag:
+            posted_at_text = posted_at_tag.get_text(strip=True).replace("職缺更新：", "")
+            if "今天" in posted_at_text:
+                scraped_data["發布日期"] = datetime.now(timezone.utc)
+            else:
+                try:
+                    current_year = datetime.now(timezone.utc).year
+                    posted_at_date = datetime.strptime(f"{current_year}.{posted_at_text}", "%Y.%m.%d").replace(tzinfo=timezone.utc)
+                    scraped_data["發布日期"] = posted_at_date
+                except ValueError:
+                    try:
+                        posted_at_date = datetime.strptime(posted_at_text, "%Y.%m.%d").replace(tzinfo=timezone.utc)
+                        scraped_data["發布日期"] = posted_at_date
+                    except ValueError:
+                        scraped_data["發布日期"] = None
+        else:
+            scraped_data["發布日期"] = None
 
-        # Title
-        title_element = soup.select_one('h1#limit_word_count')
-        title = title_element.get_text(strip=True) if title_element else None
-        if not title:
-            logger.warning("Job title not found or is empty.", url=url, job_id=job_id)
-            return None
+        for section in soup.select("div.job_explain"):
+            section_title_tag = section.select_one("h3")
+            if not section_title_tag:
+                continue
+            section_title = section_title_tag.get_text(strip=True)
 
-        # Company Name and URL
-        company_name_element = soup.select_one('#content > div.job_content > div.job_title > div.comp_name > a')
-        company_name = company_name_element.get_text(strip=True) if company_name_element else None
-        company_url = company_name_element['href'] if company_name_element and 'href' in company_name_element.attrs else None
-        # yes123 doesn't seem to have a direct company_source_id in the detail page HTML
-        company_source_id = None
+            if section_title in ["徵才說明", "工作條件", "企業福利", "技能與求職專長"]:
+                for item in section.select("ul > li"):
+                    key_tag = item.select_one("span.left_title")
+                    value_tag = item.select_one("span.right_main")
+                    if key_tag and value_tag:
+                        key = key_tag.get_text(strip=True).replace("：", "")
+                        value = value_tag.get_text(strip=True, separator="\n")
+                        scraped_data.setdefault(key, "")
+                        scraped_data[key] += f"\n(補充) {value}" if scraped_data[key] else value
 
-        # Job Details Table (工作條件)
-        job_detail_table = soup.select_one('#content > div.job_content > div.job_detail > div.job_detail_content > div.job_detail_table')
-        job_detail_map = {}
-        if job_detail_table:
-            for row in job_detail_table.find_all('tr'):
-                th = row.find('th')
-                td = row.find('td')
-                if th and td:
-                    key = th.get_text(strip=True)
-                    value = td.get_text(strip=True)
-                    job_detail_map[key] = value
+        return scraped_data
 
-        # Description (工作內容)
-        description_element = soup.select_one('#content > div.job_content > div.job_detail > div.job_detail_content > div:nth-child(1) > div.job_detail_content_text')
-        description = description_element.get_text(separator='\n', strip=True) if description_element else None
-
-        # 補充 description: 如果 description 為空，嘗試從其他地方獲取
-        if not description:
-            # 嘗試從其他可能的元素中提取描述，例如 job_detail_map 中的某些鍵
-            # 這裡需要根據 yes123 網頁的實際結構來判斷
-            # 這裡的 job_detail_map 已經在上面初始化並填充，所以可以使用
-            description = job_detail_map.get('工作內容') or job_detail_map.get('職務說明')
-
-        # Extracting from job_detail_map
-        salary_text = job_detail_map.get('薪資待遇')
-        salary_min, salary_max, salary_type = parse_salary(salary_text or "")
-
-        job_type_str = job_detail_map.get('工作性質')
-        job_type = JOB_TYPE_MAPPING_YES123.get(job_type_str) if job_type_str else None
-        if job_type is None:
-            job_type = JobType.OTHER # Default to OTHER if not mapped
-
-        location_text = job_detail_map.get('工作地點')
-        experience_required_text = job_detail_map.get('工作經驗')
-        education_required_text = job_detail_map.get('學歷要求')
-
-        # 將 None 轉換為 "不拘"
-        if experience_required_text is None:
-            experience_required_text = "不拘"
-        if education_required_text is None:
-            education_required_text = "不拘"
-
-        # Posted At (發佈日期)
-        posted_at = None
-        posted_at_text = job_detail_map.get('刊登日期')
-        if posted_at_text:
-            try:
-                # Assuming format like '2025/07/30'
-                posted_at = datetime.strptime(posted_at_text, "%Y/%m/%d")
-            except ValueError:
-                logger.warning("Could not parse posted_at date format.", posted_at_text=posted_at_text, job_id=job_id)
-
-        job_pydantic_data = JobPydantic(
-            source_platform=SourcePlatform.PLATFORM_YES123,
-            source_job_id=job_id,
-            url=url,
-            status=JobStatus.ACTIVE,
-            title=title,
-            description=description,
-            job_type=job_type,
-            location_text=location_text,
-            posted_at=posted_at,
-            salary_text=salary_text,
-            salary_min=salary_min,
-            salary_max=salary_max,
-            salary_type=salary_type,
-            experience_required_text=experience_required_text,
-            education_required_text=education_required_text,
-            company_source_id=company_source_id,
-            company_name=company_name,
-            company_url=company_url,
-        )
-        return job_pydantic_data
-
+    except requests.exceptions.RequestException as e:
+        logger.error("Failed to fetch yes123 job data.", url=job_url, error=e)
+        return None
     except Exception as e:
-        logger.error(
-            "Unexpected error when parsing yes123 job HTML to Pydantic.",
-            error=e,
-            url=url,
-            exc_info=True,
+        logger.error("An unexpected error occurred during scraping.", url=job_url, error=e, exc_info=True)
+        return None
+
+
+def _parse_job_type(job_nature_text: Optional[str]) -> JobType:
+    """Maps job nature text to JobType enum."""
+    if not job_nature_text:
+        return JobType.OTHER
+    if "全職" in job_nature_text:
+        return JobType.FULL_TIME
+    if "兼職" in job_nature_text:
+        return JobType.PART_TIME
+    if "工讀" in job_nature_text:
+        return JobType.INTERNSHIP
+    return JobType.OTHER
+
+
+def parse_job_details_to_pydantic(job_data: Dict[str, any], url: str) -> Optional[JobPydantic]:
+    """
+    Parses the scraped job data dictionary and converts it into a JobPydantic object.
+    """
+    try:
+        job_id = None
+        if "job_id=" in url:
+            job_id = url.split("job_id=")[-1]
+        elif "p_id=" in url:
+            job_id = url.split("p_id=")[-1].split("&")[0]
+
+        salary_text = job_data.get("薪資待遇", "")
+        min_salary, max_salary, salary_type = parse_salary_text(salary_text)
+
+        education_required_text = job_data.get("學歷要求", "") or "不拘"
+        experience_required_text = job_data.get("工作經驗", "") or "不拘"
+
+        return JobPydantic(
+            source_platform=SourcePlatform.PLATFORM_YES123,
+            source_job_id=job_id if job_id else url,
+            url=job_data.get("職缺網址", url),
+            status=JobStatus.ACTIVE,
+            title=job_data.get("職缺名稱", ""),
+            description=job_data.get("工作內容", ""),
+            salary_text=salary_text,
+            salary_min=min_salary,
+            salary_max=max_salary,
+            salary_type=salary_type,
+            location_text=job_data.get("工作地點", ""),
+            education_required_text=education_required_text,
+            experience_required_text=experience_required_text,
+            company_name=job_data.get("公司名稱", ""),
+            company_url=job_data.get("公司網址", ""),
+            posted_at=job_data.get("發布日期"),
+            job_type=_parse_job_type(job_data.get("工作性質")),
         )
+    except Exception as e:
+        logger.error("Failed to parse job data to Pydantic.", error=e, job_data=job_data, url=url, exc_info=True)
         return None
 
 
 @app.task()
 def fetch_url_data_yes123(url: str) -> Optional[dict]:
+    """
+    Celery task: Fetches detailed job info from a URL, parses, stores it, and marks the URL status.
+    """
     job_id = None
     try:
-        job_id_match = re.search(r'p_id=(\d+)', url)
-        job_id = job_id_match.group(1) if job_id_match else None
+        if "job_id=" in url:
+            job_id = url.split("job_id=")[-1]
+        elif "p_id=" in url:
+            job_id = url.split("p_id=")[-1].split("&")[0]
 
-        if not job_id:
-            logger.error("Failed to extract job_id from URL.", url=url)
+        job_data = fetch_yes123_job_data(url, HEADERS_YES123)
+        if not job_data:
+            logger.warning("Failed to fetch job data or job is closed.", job_id=job_id, url=url)
             mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
             return None
 
-        html_content = fetch_yes123_job_data(url)
-        if html_content is None:
-            logger.error("Failed to fetch job data from yes123 web.", job_id=job_id, url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
-            return None
-
-        job_pydantic_data = parse_yes123_job_data_to_pydantic(html_content, url)
-
+        job_pydantic_data = parse_job_details_to_pydantic(job_data, url)
         if not job_pydantic_data:
-            logger.error(
-                "Failed to parse job data to Pydantic.",
-                job_id=job_id,
-                url=url,
-            )
+            logger.error("Failed to parse job data.", job_id=job_id, url=url)
             mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
             return None
 
         upsert_jobs([job_pydantic_data])
-
         logger.info("Job parsed and upserted successfully.", job_id=job_id, url=url)
         mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]})
         return job_pydantic_data.model_dump()
 
     except Exception as e:
-        logger.error(
-            "Unexpected error when processing yes123 job data.",
-            error=e,
-            job_id=job_id if 'job_id' in locals() else "N/A",
-            url=url,
-            exc_info=True,
-        )
+        logger.error("Unexpected error processing URL.", error=e, job_id=job_id, url=url, exc_info=True)
         mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
         return None
 
@@ -256,12 +205,21 @@ def fetch_url_data_yes123(url: str) -> Optional[dict]:
 if __name__ == "__main__":
     initialize_database()
 
+    PRODUCER_BATCH_SIZE = 20000000
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
+
+    logger.info("Fetching URLs to process for local testing.", statuses=statuses_to_fetch, limit=PRODUCER_BATCH_SIZE)
+
     urls_to_process = get_urls_by_crawl_status(
         platform=SourcePlatform.PLATFORM_YES123,
         statuses=statuses_to_fetch,
-        limit=10,
+        limit=PRODUCER_BATCH_SIZE,
     )
-    for url in urls_to_process:
-        logger.info("Starting to process URL from the database.", url=url)
-        fetch_url_data_yes123(url)
+
+    if urls_to_process:
+        logger.info(f"Found {len(urls_to_process)} URLs to process.")
+        for url in urls_to_process:
+            logger.info(f"Processing URL: {url}")
+            fetch_url_data_yes123(url)
+    else:
+        logger.info("No URLs found to process for testing.")
