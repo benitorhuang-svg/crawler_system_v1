@@ -9,7 +9,7 @@
 import structlog
 from collections import deque
 from bs4 import BeautifulSoup
-from typing import Set, List # Added for type hints
+from typing import Set, List, Dict
 
 
 from crawler.worker import app
@@ -37,126 +37,153 @@ logger = structlog.get_logger(__name__)
 @app.task
 def crawl_and_store_cakeresume_category_urls(job_category: dict, url_limit: int = 0) -> None:
     """
-    Celery task: Iterates through all pages of a specified CakeResume job category, fetches job URLs,
-    and stores them in the database.
+    Celery task: 迭代指定 CakeResume 工作分類的所有頁面，獲取職缺 URL，並將其存儲到資料庫。
     """
-    _crawl_and_store_cakeresume_category_urls_core(job_category, url_limit)
-
-def _crawl_and_store_cakeresume_category_urls_core(job_category: dict, url_limit: int = 0) -> None:
-    """
-    Core function: Iterates through all pages of a specified CakeResume job category, fetches job URLs,
-    and stores them in the database in batches.
-    """
-    job_category = CategorySourcePydantic.model_validate(job_category)
-    job_category_code = job_category.source_category_id
-    global_job_url_set = set()
-    current_batch_urls = []
-    current_batch_url_categories = []
-    recent_counts = deque(maxlen=4)
-
-    current_page = 0
-    max_page = 100000
-
-    logger.info(
-        "Task started: crawling CakeResume job category URLs.", job_category_code=job_category_code, url_limit=url_limit
-    )
-
-    while True:
-        if url_limit > 0 and len(global_job_url_set) >= url_limit:
-            logger.info("URL limit reached. Ending task early.", job_category_code=job_category_code, url_limit=url_limit, collected_urls=len(global_job_url_set))
-            break
-
-        if current_page % 5 == 0:
-            logger.info(
-                "Current page being processed.",
-                page=current_page,
-                job_category_code=job_category_code,
-            )
-
-        html_content = fetch_cakeresume_job_urls(
-            KEYWORDS="",
-            CATEGORY=job_category_code,
-            ORDER=URL_CRAWLER_ORDER_BY_CAKERESUME,
-            PAGE_NUM=current_page,
+    try:
+        crawler = CakeResumeCrawler(job_category, url_limit)
+        crawler.run()
+    except Exception as e:
+        logger.error(
+            "An unexpected error occurred during the crawling task.",
+            job_category=job_category,
+            error=str(e),
+            exc_info=True
         )
 
-        if html_content is None:
-            logger.error(
-                "Failed to retrieve job URLs from CakeResume.",
-                page=current_page,
-                job_category_code=job_category_code,
-            )
-            break
+class CakeResumeCrawler:
+    """
+    將爬蟲的狀態和邏輯封裝在此類中，以提高程式碼的可讀性和可維護性。
+    """
+    def __init__(self, job_category: Dict, url_limit: int = 0):
+        self.job_category = CategorySourcePydantic.model_validate(job_category)
+        self.job_category_code = self.job_category.source_category_id
+        self.url_limit = url_limit
+        self.global_job_url_set: Set[str] = set()
+        self.current_batch_urls: List[str] = []
+        self.current_batch_url_categories: List[Dict] = []
+        self.recent_counts = deque(maxlen=4)
+        self.current_page = 1
 
-        soup = BeautifulSoup(html_content, 'html.parser')
-        job_urls_on_page = soup.find_all('a', class_='JobSearchItem_jobTitle__bu6yO')
+        logger.info(
+            "Crawler initialized for CakeResume job category.",
+            job_category_code=self.job_category_code,
+            url_limit=self.url_limit
+        )
 
-        if not job_urls_on_page:
-            logger.info("No more job URLs found for this category and page.", page=current_page, job_category_code=job_category_code)
-            break
-
-        for job_url_item in job_urls_on_page:
-            job_link_suffix = job_url_item.get('href')
-            if job_link_suffix:
-                full_job_link = f"{JOB_DETAIL_BASE_URL_CAKERESUME}{job_link_suffix}"
-                if full_job_link not in global_job_url_set:
-                    global_job_url_set.add(full_job_link)
-                    current_batch_urls.append(full_job_link)
-                current_batch_url_categories.append(
-                    UrlCategoryPydantic(
-                        source_url=full_job_link,
-                        source_category_id=job_category_code,
-                    ).model_dump()
+    def run(self) -> None:
+        """
+        執行爬蟲任務的主函式。
+        """
+        while True:
+            if 0 < self.url_limit <= len(self.global_job_url_set):
+                logger.info(
+                    "URL limit reached. Ending task early.",
+                    collected_urls=len(self.global_job_url_set)
+                )
+                break
+            
+            if self.current_page % 5 == 0 or self.current_page == 1:
+                 logger.info(
+                    "Current page being processed.",
+                    page=self.current_page,
+                    job_category_code=self.job_category_code,
                 )
 
-        pagination_items = soup.find_all('a', class_='Pagination_itemNumber___enNq')
-        if pagination_items:
-            try:
-                max_page = int(pagination_items[-1].text)
-            except ValueError:
-                logger.warning("Could not parse max_page from pagination items.", job_category_code=job_category_code)
-
-        if len(current_batch_urls) >= URL_CRAWLER_UPLOAD_BATCH_SIZE:
-            logger.info(
-                "Batch upload size reached. Starting URL and URL-Category upload.",
-                count=len(current_batch_urls),
-                job_category_code=job_category_code,
+            html_content = fetch_cakeresume_job_urls(
+                KEYWORDS="",
+                CATEGORY=self.job_category_code,
+                ORDER=URL_CRAWLER_ORDER_BY_CAKERESUME,
+                PAGE_NUM=self.current_page,
             )
-            upsert_urls(SourcePlatform.PLATFORM_CAKERESUME, current_batch_urls)
-            upsert_url_categories(current_batch_url_categories)
-            current_batch_urls.clear()
-            current_batch_url_categories.clear()
 
-        total_jobs = len(global_job_url_set)
-        recent_counts.append(total_jobs)
-        if len(recent_counts) == recent_counts.maxlen and len(set(recent_counts)) == 1:
-            logger.info(
-                "No new data found consecutively. Ending task early.",
-                max_len=recent_counts.maxlen,
-                job_category_code=job_category_code,
+            if not html_content:
+                logger.info(
+                    "No content retrieved, indicating end of pages.",
+                    page=self.current_page,
+                    job_category_code=self.job_category_code,
+                )
+                break
+            
+            soup = BeautifulSoup(html_content, 'html.parser')
+            
+            job_urls_on_page = self._parse_job_urls(soup)
+            if not job_urls_on_page:
+                logger.info("No job URLs found on page, indicating end of pages.", page=self.current_page, job_category_code=self.job_category_code)
+                break
+
+            new_urls_found = self._process_urls(job_urls_on_page)
+            if not new_urls_found and len(self.global_job_url_set) > 0:
+                logger.info("No new unique URLs found on this page. Ending task.", page=self.current_page, job_category_code=self.job_category_code)
+                break
+
+            if self._check_for_stagnation():
+                break
+
+            self.current_page += 1
+
+        self._flush_batch_to_db()
+        logger.info("Crawling task finished for job category.", job_category_code=self.job_category_code)
+
+    def _parse_job_urls(self, soup: BeautifulSoup) -> List[str]:
+        """從 HTML 中解析出職缺的 URL 列表。"""
+        job_links = soup.find_all('a', class_='JobSearchItem_jobTitle__bu6yO')
+        urls = []
+        for link in job_links:
+            href = link.get('href')
+            if href:
+                if href.startswith('http'):
+                    full_url = href
+                else:
+                    full_url = f"{JOB_DETAIL_BASE_URL_CAKERESUME}{href}"
+                urls.append(full_url)
+        return urls
+    
+    def _process_urls(self, urls: List[str]) -> bool:
+        """處理新抓取的 URL，並在需要時將其寫入資料庫。"""
+        new_urls_added = False
+        for url in urls:
+            if url not in self.global_job_url_set:
+                new_urls_added = True
+                self.global_job_url_set.add(url)
+                self.current_batch_urls.append(url)
+            
+            self.current_batch_url_categories.append(
+                UrlCategoryPydantic(
+                    source_url=url,
+                    source_category_id=self.job_category_code,
+                ).model_dump()
             )
-            break
 
-        current_page += 1
-        if current_page > max_page:
-            logger.info("Reached max page. Ending task.", current_page=current_page, max_page=max_page, job_category_code=job_category_code)
-            break
+        if len(self.current_batch_urls) >= URL_CRAWLER_UPLOAD_BATCH_SIZE:
+            self._flush_batch_to_db()
+            
+        return new_urls_added
 
-    if current_batch_urls:
+    def _flush_batch_to_db(self) -> None:
+        """將累積的批次資料寫入資料庫。"""
+        if not self.current_batch_urls:
+            return
+
         logger.info(
-            "Task completed. Storing remaining raw job URLs to database.",
-            count=len(current_batch_urls),
-            job_category_code=job_category_code,
+            f"Storing batch of {len(self.current_batch_urls)} URLs and "
+            f"{len(self.current_batch_url_categories)} URL-category relations to database."
         )
-        upsert_urls(SourcePlatform.PLATFORM_CAKERESUME, current_batch_urls)
-        upsert_url_categories(current_batch_url_categories)
-    else:
-        logger.info(
-            "Task completed. No URLs collected, skipping database storage.",
-            job_category_code=job_category_code,
-        )
+        upsert_urls(SourcePlatform.PLATFORM_CAKERESUME, self.current_batch_urls)
+        upsert_url_categories(self.current_batch_url_categories)
+        self.current_batch_urls.clear()
+        self.current_batch_url_categories.clear()
 
-    logger.info("Task execution finished.", job_category_code=job_category_code)
+    def _check_for_stagnation(self) -> bool:
+        """檢查是否連續多頁沒有抓到新的職缺。"""
+        total_jobs = len(self.global_job_url_set)
+        self.recent_counts.append(total_jobs)
+        if len(self.recent_counts) == self.recent_counts.maxlen and len(set(self.recent_counts)) == 1 and total_jobs > 0:
+            logger.info(
+                "No new data found for the last few pages. Ending task early.",
+                max_len=self.recent_counts.maxlen
+            )
+            return True
+        return False
 
 
 if __name__ == "__main__":

@@ -5,9 +5,15 @@ from typing import Any, Dict, Optional
 
 import requests
 import structlog
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from bs4 import BeautifulSoup
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from tenacity import (
+    RetryCallState,
+    retry,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from crawler.config import (
     URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
@@ -17,8 +23,8 @@ from crawler.config import (
 from crawler.logging_config import configure_logging
 from crawler.project_cakeresume.config_cakeresume import (
     HEADERS_CAKERESUME,
-    JOB_LISTING_BASE_URL_CAKERESUME,
     JOB_CAT_URL_CAKERESUME,
+    JOB_LISTING_BASE_URL_CAKERESUME,
 )
 
 # Suppress only the single InsecureRequestWarning from urllib3 needed
@@ -29,10 +35,21 @@ configure_logging()
 logger = structlog.get_logger(__name__)
 
 
+def log_before_retry(retry_state: "RetryCallState") -> None:
+    """Log before retrying a request, showing attempt number and wait time."""
+    logger.warning(
+        "Request failed, retrying...",
+        attempt=retry_state.attempt_number,
+        wait_seconds=retry_state.next_action.sleep,
+        error=retry_state.outcome.exception(),
+    )
+
+
 @retry(
-    stop=stop_after_attempt(5),
-    wait=wait_exponential(multiplier=1, min=4, max=10),
+    stop=stop_after_attempt(7),
+    wait=wait_exponential(multiplier=1, min=4, max=30),
     retry=retry_if_exception_type(requests.exceptions.RequestException),
+    before_sleep=log_before_retry,
     reraise=True,
 )
 def _make_web_request(
@@ -43,7 +60,7 @@ def _make_web_request(
     timeout: int = 10,
     verify: bool = True,
     log_context: Optional[Dict[str, Any]] = None,
-) -> Optional[str]: # Return HTML content as string
+) -> Optional[str]:  # Return HTML content as string
     """
     通用的網頁請求函式，處理隨機延遲、請求發送、和錯誤處理。
     """
@@ -69,6 +86,20 @@ def _make_web_request(
         response.raise_for_status()  # Raises HTTPError for bad responses (4xx or 5xx)
         return response.text
     except requests.exceptions.RequestException as e:
+        # If it's a 404 error, it might mean the category has no jobs.
+        # Log a warning and return None so the caller can handle it without retrying.
+        if (
+            isinstance(e, requests.exceptions.HTTPError)
+            and e.response.status_code == 404
+        ):
+            logger.warning(
+                "HTTP 404 Not Found for URL. This might indicate an empty category.",
+                url=url,
+                **log_context,
+            )
+            return None
+
+        # For other network errors, log an error and re-raise to trigger tenacity retry.
         logger.error(
             "Network error during web request.",
             error=e,
