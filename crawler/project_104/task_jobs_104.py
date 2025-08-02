@@ -14,9 +14,7 @@ from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_u
 from crawler.project_104.client_104 import fetch_job_data_from_104_api
 from crawler.project_104.parser_apidata_104 import parse_job_item_to_pydantic
 from crawler.database.connection import initialize_database
-from crawler.logging_config import configure_logging
 
-configure_logging()
 logger = structlog.get_logger(__name__)
 
 
@@ -85,7 +83,7 @@ def fetch_url_data_104(url: str) -> Optional[dict]:
 if __name__ == "__main__":
     initialize_database()
 
-    PRODUCER_BATCH_SIZE = 20 # Changed from 10 to 20
+    PRODUCER_BATCH_SIZE = 20000000 # Changed from 10 to 20
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
     
     logger.info("Fetching URLs to process for local testing.", statuses=statuses_to_fetch, limit=PRODUCER_BATCH_SIZE)
@@ -97,9 +95,9 @@ if __name__ == "__main__":
     )
 
     if urls_to_process:
-        logger.info(f"Found {len(urls_to_process)} URLs to process.")
+        logger.info("Found URLs to process.", count=len(urls_to_process))
         for url in urls_to_process:
-            logger.info(f"Processing URL: {url}")
+            logger.info("Processing URL.", url=url)
             fetch_url_data_104(url)
     else:
         logger.info("No URLs found to process for testing.")

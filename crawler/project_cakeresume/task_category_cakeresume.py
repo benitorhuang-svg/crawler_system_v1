@@ -81,7 +81,7 @@ def parse_next_data_for_i18n_categories(html_content: str) -> List[Dict[str, Any
                 else:
                     logger.warning(f"Found orphan sub-category '{full_id}' with no matching parent '{parent_id}'. Skipping.")
 
-    logger.info(f"Successfully extracted {len(flat_list)} categories from __NEXT_DATA__.")
+    logger.info("Successfully extracted categories from __NEXT_DATA__.", count=len(flat_list))
     return flat_list
 
 

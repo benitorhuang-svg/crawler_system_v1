@@ -184,7 +184,7 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
 if __name__ == "__main__":
     initialize_database()
 
-    n_days = 1  # Define n_days for local testing
+    n_days = 7  # Define n_days for local testing
     url_limit = 1000000
 
     all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)

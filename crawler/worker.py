@@ -28,6 +28,15 @@ app = Celery(
         "crawler.project_104.task_category_104",
         "crawler.project_104.task_jobs_104",
         "crawler.project_104.task_urls_104",
+        "crawler.project_cakeresume.task_category_cakeresume",
+        "crawler.project_cakeresume.task_jobs_cakeresume",
+        "crawler.project_cakeresume.task_urls_cakeresume",
+        "crawler.project_1111.task_category_1111",
+        "crawler.project_1111.task_jobs_1111",
+        "crawler.project_1111.task_urls_1111",
+        "crawler.project_yes123.task_category_yes123",
+        "crawler.project_yes123.task_jobs_yes123",
+        "crawler.project_yes123.task_urls_yes123",
     ],
     # Configure broker connection settings for robustness
     broker_connection_retry_on_startup=True,
@@ -94,4 +103,19 @@ app.conf.task_routes = {
         "queue": "producer_urls_104"
     },
     "crawler.project_104.task_category_104.fetch_url_data_104": {"queue": "producer_category_104"},
+    "crawler.project_cakeresume.task_jobs_cakeresume.fetch_url_data_cakeresume": {"queue": "producer_jobs_cakeresume"},
+    "crawler.project_cakeresume.task_urls_cakeresume.crawl_and_store_cakeresume_category_urls": {
+        "queue": "producer_urls_cakeresume"
+    },
+    "crawler.project_cakeresume.task_category_cakeresume.fetch_url_data_cakeresume": {"queue": "producer_category_cakeresume"},
+    "crawler.project_1111.task_jobs_1111.fetch_url_data_1111": {"queue": "producer_jobs_1111"},
+    "crawler.project_1111.task_urls_1111.crawl_and_store_1111_category_urls": {
+        "queue": "producer_urls_1111"
+    },
+    "crawler.project_1111.task_category_1111.fetch_url_data_1111": {"queue": "producer_category_1111"},
+    "crawler.project_yes123.task_jobs_yes123.fetch_url_data_yes123": {"queue": "producer_jobs_yes123"},
+    "crawler.project_yes123.task_urls_yes123.crawl_and_store_yes123_category_urls": {
+        "queue": "producer_urls_yes123"
+    },
+    "crawler.project_yes123.task_category_yes123.fetch_url_data_yes123": {"queue": "producer_category_yes123"},
 }

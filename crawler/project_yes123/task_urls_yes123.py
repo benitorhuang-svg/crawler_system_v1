@@ -252,7 +252,7 @@ if __name__ == "__main__":
     initialize_database()
 
 
-    n_days = 0  # Define n_days for local testing
+    n_days = 7  # Define n_days for local testing
     url_limit = 1000000 # Set a high limit for full crawling during local testing
 
     all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_YES123)

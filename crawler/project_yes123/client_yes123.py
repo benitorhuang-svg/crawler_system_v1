@@ -3,7 +3,6 @@ import time
 from typing import Any, Dict, Optional
 
 import requests
-import structlog
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 import urllib.parse
@@ -13,6 +12,10 @@ from crawler.config import (
     URL_CRAWLER_SLEEP_MAX_SECONDS,
     URL_CRAWLER_SLEEP_MIN_SECONDS,
 )
+import traceback
+
+import structlog
+
 from crawler.logging_config import configure_logging
 from crawler.project_yes123.config_yes123 import (
     HEADERS_YES123,
@@ -28,6 +31,11 @@ configure_logging()
 logger = structlog.get_logger(__name__)
 
 
+# 使用 tenacity 庫來處理請求重試邏輯
+# stop_after_attempt(5): 最多重試 5 次
+# wait_exponential(multiplier=1, min=4, max=10): 每次重試等待時間呈指數增長，從 4 秒到 10 秒
+# retry_if_exception_type(requests.exceptions.RequestException): 僅在發生 requests.exceptions.RequestException 異常時重試
+# reraise=True: 重試次數用盡後，如果仍然失敗，則重新拋出最後一個異常
 @retry(
     stop=stop_after_attempt(5),
     wait=wait_exponential(multiplier=1, min=4, max=10),
@@ -66,28 +74,16 @@ def _make_web_request(
             verify=verify,
         )
         response.raise_for_status()  # Raises HTTPError for bad responses (4xx or 5xx)
+        return response.text
         
-    except requests.exceptions.RequestException as e:
-        logger.error(
-            "Network error during web request.",
-            url=url,
-            error_type=type(e).__name__,
-            error_message=str(e),
-            status_code=response.status_code if 'response' in locals() else 'N/A',
-            response_content=response.text if 'response' in locals() else 'N/A',
-            exc_info=True,
-            **log_context,
-        )
+    except requests.exceptions.RequestException:
+        logger.error(f"Network error during web request: {url}")
+        traceback.print_exc()
         raise  # Re-raise the exception to trigger tenacity retry
-    except Exception as e:
-        logger.error(
-            "Unexpected error during web request.",
-            url=url,
-            error=e,
-            exc_info=True,
-            **log_context,
-        )
-        return None
+    except Exception:
+        logger.error(f"Unexpected error during web request: {url}")
+        traceback.print_exc()
+        raise # Re-raise the exception to see full traceback
 
 def fetch_yes123_category_data(
     url: str = JOB_CAT_URL_YES123, headers: Dict[str, str] = HEADERS_YES123

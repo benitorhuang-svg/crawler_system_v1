@@ -31,9 +31,9 @@ from crawler.database.repository import (
 )
 from crawler.utils.salary_parser import parse_salary_text
 from crawler.project_yes123.config_yes123 import HEADERS_YES123
-from crawler.logging_config import configure_logging
 
-configure_logging()
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 # Constants
 BASE_URL = "https://www.yes123.com.tw"
@@ -205,7 +205,7 @@ def fetch_url_data_yes123(url: str) -> Optional[dict]:
 if __name__ == "__main__":
     initialize_database()
 
-    PRODUCER_BATCH_SIZE = 20000000
+    PRODUCER_BATCH_SIZE = 20000000000000
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
 
     logger.info("Fetching URLs to process for local testing.", statuses=statuses_to_fetch, limit=PRODUCER_BATCH_SIZE)
@@ -217,9 +217,9 @@ if __name__ == "__main__":
     )
 
     if urls_to_process:
-        logger.info(f"Found {len(urls_to_process)} URLs to process.")
+        logger.info("Found URLs to process.", count=len(urls_to_process))
         for url in urls_to_process:
-            logger.info(f"Processing URL: {url}")
+            logger.info("Processing URL.", url=url)
             fetch_url_data_yes123(url)
     else:
         logger.info("No URLs found to process for testing.")

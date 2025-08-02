@@ -5,8 +5,9 @@
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
 # # --- End Local Test Environment Setup ---
 
-import structlog
 import json
+
+import structlog
 
 from crawler.database import connection as db_connection
 from crawler.database import repository

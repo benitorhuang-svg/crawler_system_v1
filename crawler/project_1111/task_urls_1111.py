@@ -8,8 +8,9 @@
 
 import structlog
 
-from collections import deque
-from typing import Set, List
+from typing import Set, List, Optional, Dict
+import concurrent.futures
+
 from crawler.worker import app
 from crawler.database.connection import initialize_database
 from crawler.database.schemas import (
@@ -34,14 +35,58 @@ from crawler.project_1111.config_1111 import (
     URL_CRAWLER_ORDER_BY_1111,
 )
 
+# Define concurrency level for fetching pages
+CONCURRENCY_LEVEL = 100 # Can be moved to config.py if needed
+
 logger = structlog.get_logger(__name__)
+
+
+def _fetch_and_parse_single_page(job_category_code: str, page_num: int) -> Optional[List[Dict]]:
+    """
+    Fetches job items for a single page from the 1111 API and parses them.
+    Returns a list of job item dictionaries or None if an error occurs or no items are found.
+    """
+    api_response = fetch_job_urls_from_1111_api(
+        KEYWORDS="",
+        CATEGORY=job_category_code,
+        ORDER=URL_CRAWLER_ORDER_BY_1111,
+        PAGE_NUM=page_num,
+    )
+
+    if api_response is None:
+        logger.error(
+            "Failed to retrieve data from 1111 API for single page.",
+            page=page_num,
+            job_category_code=job_category_code,
+        )
+        return None
+
+    job_items = api_response.get("result", {}).get("hits", [])
+    if not isinstance(job_items, list):
+        logger.error(
+            "API response 'result.hits' format is incorrect or missing for single page.",
+            page=page_num,
+            job_category_code=job_category_code,
+            api_data_type=type(job_items),
+        )
+        return None
+
+    if not job_items:
+        logger.debug(
+            "No job items found on single page.",
+            page=page_num,
+            job_category_code=job_category_code,
+        )
+        return None
+    
+    return job_items
 
 
 @app.task
 def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -> int:
     """
     Celery task: Iterates through all pages of a specified 1111 job category, fetches job URLs
-    and preliminary data, and stores them in the database in batches.
+    and preliminary data, and stores them in the database in batches using concurrent fetching.
     """
     job_category = CategorySourcePydantic.model_validate(job_category)
     job_category_code = job_category.source_category_id
@@ -50,104 +95,144 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
     current_batch_jobs = []
     current_batch_urls = []
     current_batch_url_categories = []
-    recent_counts = deque(maxlen=4)
 
-    current_page = 1
     logger.info(
         "Task started: crawling 1111 job category URLs and data.",
         job_category_code=job_category_code,
         url_limit=url_limit,
     )
 
-    while True:
-        if url_limit > 0 and len(global_job_url_set) >= url_limit:
-            logger.info(
-                "URL limit reached. Ending task early.",
-                job_category_code=job_category_code,
-                url_limit=url_limit,
-                collected_urls=len(global_job_url_set),
-            )
-            break
+    # Step 1: Fetch the first page synchronously to get totalPage
+    first_page_job_items = _fetch_and_parse_single_page(job_category_code, 1)
+    
+    if first_page_job_items is None:
+        logger.error(
+            "Failed to fetch first page, cannot proceed with crawling.",
+            job_category_code=job_category_code,
+        )
+        return 0
 
-        if current_page % 5 == 1:
+    # Get totalPage from the first page's API response
+    # Re-fetch API response for page 1 to get pagination data
+    api_response_first_page = fetch_job_urls_from_1111_api(
+        KEYWORDS="",
+        CATEGORY=job_category_code,
+        ORDER=URL_CRAWLER_ORDER_BY_1111,
+        PAGE_NUM=1,
+    )
+    total_pages = 1 # Default to 1 page if totalPage not found
+    if api_response_first_page:
+        pagination_data = api_response_first_page.get("result", {}).get("pagination", {})
+        if "totalPage" in pagination_data:
+            total_pages = pagination_data["totalPage"]
             logger.info(
-                "Current page being processed.",
-                page=current_page,
+                "Total pages discovered from API.",
                 job_category_code=job_category_code,
+                total_pages=total_pages,
+            )
+    
+    # Process first page items
+    for job_item in first_page_job_items:
+        job_pydantic = parse_job_list_json_to_pydantic(job_item)
+        if job_pydantic and job_pydantic.url:
+            if job_pydantic.url not in global_job_url_set:
+                global_job_url_set.add(job_pydantic.url)
+                current_batch_jobs.append(job_pydantic)
+                current_batch_urls.append(job_pydantic.url)
+            
+            current_batch_url_categories.append(
+                UrlCategoryPydantic(
+                    source_url=job_pydantic.url,
+                    source_category_id=job_category_code,
+                ).model_dump()
             )
 
-        api_response = fetch_job_urls_from_1111_api(
-            KEYWORDS="",
-            CATEGORY=job_category_code,
-            ORDER=URL_CRAWLER_ORDER_BY_1111,
-            PAGE_NUM=current_page,
+    # Step 2: Use ThreadPoolExecutor for concurrent fetching of remaining pages
+    pages_to_fetch = range(2, total_pages + 1) # Start from page 2
+    if url_limit > 0:
+        # Estimate how many pages are needed to reach url_limit
+        # Assuming each page has URL_CRAWLER_UPLOAD_BATCH_SIZE items (approx)
+        estimated_pages_for_limit = (url_limit - len(global_job_url_set)) // URL_CRAWLER_UPLOAD_BATCH_SIZE + 2
+        pages_to_fetch = range(2, min(total_pages + 1, estimated_pages_for_limit))
+        logger.info(
+            "Adjusting pages to fetch based on URL limit.",
+            job_category_code=job_category_code,
+            url_limit=url_limit,
+            estimated_pages=len(pages_to_fetch),
         )
 
-        if api_response is None:
-            logger.error(
-                "Failed to retrieve data from 1111 API.",
-                page=current_page,
-                job_category_code=job_category_code,
-            )
-            break
+    with concurrent.futures.ThreadPoolExecutor(max_workers=CONCURRENCY_LEVEL) as executor:
+        future_to_page = {
+            executor.submit(_fetch_and_parse_single_page, job_category_code, page_num): page_num
+            for page_num in pages_to_fetch
+            if (url_limit == 0 or len(global_job_url_set) < url_limit) # Only submit if limit not reached
+        }
 
-        job_items = api_response.get("result", {}).get("hits", [])
-        if not isinstance(job_items, list):
-            logger.error(
-                "API response 'result.hits' format is incorrect or missing.",
-                page=current_page,
-                job_category_code=job_category_code,
-                api_data_type=type(job_items),
-            )
-            break
-
-        if not job_items:
-            logger.info(
-                "No more job items found. Ending task.",
-                page=current_page,
-                job_category_code=job_category_code,
-            )
-            break
-
-        for job_item in job_items:
-            job_pydantic = parse_job_list_json_to_pydantic(job_item)
-            if job_pydantic and job_pydantic.url:
-                if job_pydantic.url not in global_job_url_set:
-                    global_job_url_set.add(job_pydantic.url)
-                    current_batch_jobs.append(job_pydantic)
-                    current_batch_urls.append(job_pydantic.url)
+        for future in concurrent.futures.as_completed(future_to_page):
+            page_num = future_to_page[future]
+            try:
+                job_items_on_page = future.result()
+                if job_items_on_page:
+                    logger.debug(
+                        "Successfully fetched and parsed page.",
+                        page=page_num,
+                        job_category_code=job_category_code,
+                        items_count=len(job_items_on_page),
+                    )
+                    for job_item in job_items_on_page:
+                        job_pydantic = parse_job_list_json_to_pydantic(job_item)
+                        if job_pydantic and job_pydantic.url:
+                            if job_pydantic.url not in global_job_url_set:
+                                global_job_url_set.add(job_pydantic.url)
+                                current_batch_jobs.append(job_pydantic)
+                                current_batch_urls.append(job_pydantic.url)
+                            
+                            current_batch_url_categories.append(
+                                UrlCategoryPydantic(
+                                    source_url=job_pydantic.url,
+                                    source_category_id=job_category_code,
+                                ).model_dump()
+                            )
                 
-                current_batch_url_categories.append(
-                    UrlCategoryPydantic(
-                        source_url=job_pydantic.url,
-                        source_category_id=job_category_code,
-                    ).model_dump()
+                # Check if batch size reached after processing each page's items
+                if len(current_batch_urls) >= URL_CRAWLER_UPLOAD_BATCH_SIZE:
+                    logger.info(
+                        "Batch upload size reached. Starting data upload.",
+                        count=len(current_batch_urls),
+                        job_category_code=job_category_code,
+                    )
+                    upsert_jobs(current_batch_jobs)
+                    upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
+                    upsert_url_categories(current_batch_url_categories)
+                    
+                    current_batch_jobs.clear()
+                    current_batch_urls.clear()
+                    current_batch_url_categories.clear()
+                
+                # Check URL limit again after processing a page
+                if url_limit > 0 and len(global_job_url_set) >= url_limit:
+                    logger.info(
+                        "URL limit reached during concurrent fetching. Stopping further submissions.",
+                        job_category_code=job_category_code,
+                        url_limit=url_limit,
+                        collected_urls=len(global_job_url_set),
+                    )
+                    # Cancel remaining futures if limit is reached
+                    for remaining_future in future_to_page:
+                        if not remaining_future.done():
+                            remaining_future.cancel()
+                    break # Break from the as_completed loop
+
+            except concurrent.futures.CancelledError:
+                logger.info("Future was cancelled due to URL limit being reached.", page=page_num)
+            except Exception as exc:
+                logger.error(
+                    "Page generation failed.",
+                    page=page_num,
+                    job_category_code=job_category_code,
+                    error=exc,
+                    exc_info=True,
                 )
-
-        if len(current_batch_urls) >= URL_CRAWLER_UPLOAD_BATCH_SIZE:
-            logger.info(
-                "Batch upload size reached. Starting data upload.",
-                count=len(current_batch_urls),
-                job_category_code=job_category_code,
-            )
-            upsert_jobs(current_batch_jobs)
-            upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
-            upsert_url_categories(current_batch_url_categories)
-            
-            current_batch_jobs.clear()
-            current_batch_urls.clear()
-            current_batch_url_categories.clear()
-
-        total_jobs = len(global_job_url_set)
-        recent_counts.append(total_jobs)
-        if len(recent_counts) == recent_counts.maxlen and len(set(recent_counts)) == 1:
-            logger.info(
-                "No new data found consecutively. Ending task early.",
-                job_category_code=job_category_code,
-            )
-            break
-
-        current_page += 1
 
     if current_batch_urls:
         logger.info(
@@ -164,7 +249,7 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
             job_category_code=job_category_code,
         )
 
-    logger.info("Task execution finished.", job_category_code=job_category_code)
+    logger.info("Task execution finished.", job_category_code=job_category_code, total_collected=len(global_job_url_set))
     return len(global_job_url_set)
 
 

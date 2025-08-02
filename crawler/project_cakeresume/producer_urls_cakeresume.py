@@ -14,20 +14,9 @@ all_cakeresume_categories = get_all_categories_for_platform(SourcePlatform.PLATF
 
 if all_cakeresume_categories:
     logger.info("Found categories for PLATFORM_CAKERESUME.", count=len(all_cakeresume_categories))
-    root_categories = [
-        cat for cat in all_cakeresume_categories if cat.parent_source_id is None
-    ]
-
-    if root_categories:
-        logger.info(
-            "Found root categories for PLATFORM_CAKERESUME.", count=len(root_categories)
-        )
-
-        for category_info in root_categories:
-            category_id: str = category_info.source_category_id
-            logger.info("分發 URL 抓取任務", category_id=category_id)
-            crawl_and_store_cakeresume_category_urls.delay(category_info.model_dump())
-    else:
-        logger.info("No root categories found for PLATFORM_CAKERESUME.")
+    for category_info in all_cakeresume_categories:
+        category_id: str = category_info.source_category_id
+        logger.info("分發 URL 抓取任務", category_id=category_id)
+        crawl_and_store_cakeresume_category_urls.delay(category_info.model_dump())
 else:
     logger.info("No categories found for PLATFORM_CAKERESUME.")

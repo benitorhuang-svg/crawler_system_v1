@@ -8,3 +8,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Local configuration and temporary files
+.env
+local.ini
+next_data.json
+temp_job_page.html

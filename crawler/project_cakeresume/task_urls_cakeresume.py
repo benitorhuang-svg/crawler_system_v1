@@ -5,12 +5,11 @@
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
 # # --- End Local Test Environment Setup ---
 
-
+import json
 import structlog
 from collections import deque
 from bs4 import BeautifulSoup
 from typing import Set, List, Dict
-
 
 from crawler.worker import app
 from crawler.database.schemas import SourcePlatform, UrlCategoryPydantic, CategorySourcePydantic
@@ -18,8 +17,8 @@ from crawler.database.repository import (
     upsert_urls,
     upsert_url_categories,
     get_all_categories_for_platform,
-    get_all_crawled_category_ids_pandas, # Added for 104 template
-    get_stale_crawled_category_ids_pandas, # Added for 104 template
+    get_all_crawled_category_ids_pandas,
+    get_stale_crawled_category_ids_pandas,
 )
 from crawler.project_cakeresume.client_cakeresume import fetch_cakeresume_job_urls
 from crawler.database.connection import initialize_database
@@ -126,8 +125,23 @@ class CakeResumeCrawler:
 
     def _parse_job_urls(self, soup: BeautifulSoup) -> List[str]:
         """從 HTML 中解析出職缺的 URL 列表。"""
-        job_links = soup.find_all('a', class_='JobSearchItem_jobTitle__bu6yO')
         urls = []
+        
+        next_data_script = soup.find('script', id='__NEXT_DATA__')
+        if next_data_script:
+            try:
+                data = json.loads(next_data_script.string)
+                results = data.get('props', {}).get('pageProps', {}).get('serverState', {}).get('initialResults', {}).get('Job', {}).get('results', [{}])[0].get('hits', [])
+                for job in results:
+                    if 'path' in job and 'page' in job and 'path' in job['page']:
+                        full_url = f"{JOB_DETAIL_BASE_URL_CAKERESUME}/companies/{job['page']['path']}/jobs/{job['path']}"
+                        urls.append(full_url)
+                if urls:
+                    return urls
+            except (json.JSONDecodeError, KeyError) as e:
+                logger.warning("Could not parse __NEXT_DATA__ JSON or key not found.", error=str(e))
+
+        job_links = soup.find_all('a', class_='JobSearchItem_jobTitle__bu6yO')
         for link in job_links:
             href = link.get('href')
             if href:
@@ -165,8 +179,9 @@ class CakeResumeCrawler:
             return
 
         logger.info(
-            f"Storing batch of {len(self.current_batch_urls)} URLs and "
-            f"{len(self.current_batch_url_categories)} URL-category relations to database."
+            "Storing batch of URLs and URL-category relations to database.",
+            url_count=len(self.current_batch_urls),
+            category_relation_count=len(self.current_batch_url_categories),
         )
         upsert_urls(SourcePlatform.PLATFORM_CAKERESUME, self.current_batch_urls)
         upsert_url_categories(self.current_batch_url_categories)
@@ -189,8 +204,8 @@ class CakeResumeCrawler:
 if __name__ == "__main__":
     initialize_database()
 
-    n_days = 1  # Define n_days for local testing
-    url_limit = 1000000 # Set a high limit for full crawling during local testing
+    n_days = 7
+    url_limit = 1000000
 
     all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_CAKERESUME)
     all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
@@ -202,10 +217,7 @@ if __name__ == "__main__":
         if cat.source_category_id in categories_to_dispatch_ids
     ]
 
-    # Only process the first category for local testing
     if categories_to_dispatch:
-        # categories_to_process_single = [categories_to_dispatch[0]] # Uncomment to process only the first category
-        
         for job_category in categories_to_dispatch:
             logger.info(
                 "Dispatching crawl_and_store_cakeresume_category_urls task for local testing.",

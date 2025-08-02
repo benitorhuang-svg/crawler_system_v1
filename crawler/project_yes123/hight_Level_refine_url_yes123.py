@@ -154,14 +154,14 @@ def task_start_yes123_crawl_chain(job_category: dict):
 def _run_local_test():
     """執行本地測試的函式。"""
     initialize_database()
-    N_DAYS = 1
+    n_days = 7
     
     logger.info("本地測試開始：獲取需要處理的職缺類別...")
     # (這部分的邏輯與之前相同)
     all_categories: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_YES123)
     all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories}
     crawled_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_YES123)
-    stale_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_YES123, N_DAYS)
+    stale_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_YES123, n_days)
     dispatch_ids = (all_category_ids - crawled_ids) | stale_ids
     categories_to_dispatch = [cat for cat in all_categories if cat.source_category_id in dispatch_ids]
 
