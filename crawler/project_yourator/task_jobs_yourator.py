@@ -16,61 +16,94 @@ from crawler.database.schemas import CrawlStatus
 from crawler.database.repository import upsert_jobs, mark_urls_as_crawled
 from crawler.project_yourator.client_yourator import fetch_job_data_from_yourator_api
 from crawler.project_yourator.parser_apidata_yourator import parse_job_detail_to_pydantic
+from crawler.config import get_db_name_for_platform
 
 logger = structlog.get_logger(__name__)
 
 
 @app.task()
 def fetch_url_data_yourator(url: str) -> Optional[dict]:
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_YOURATOR.value)
     job_id = None
     try:
         job_id = url.split("/")[-1]
         if not job_id:
-            logger.error("Failed to extract job_id from URL.", url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            logger.error(
+                "Failed to extract job_id from URL.",
+                event="job_id_extraction_failed",
+                url=url,
+                platform=SourcePlatform.PLATFORM_YOURATOR,
+                component="task",
+            )
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
         data = fetch_job_data_from_yourator_api(job_id)
         if data is None:
             logger.error(
-                "Failed to fetch job data from Yourator API.", job_id=job_id, url=url
+                "Failed to fetch job data from Yourator API.",
+                event="fetch_job_data_failed",
+                job_id=job_id,
+                url=url,
+                platform=SourcePlatform.PLATFORM_YOURATOR,
+                component="task",
             )
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
     except Exception as e:
         logger.error(
             "Unexpected error during API call or job ID extraction.",
-            error=e,
+            event="unexpected_api_call_error",
+            error=str(e),
             job_id=job_id,
             url=url,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
             exc_info=True,
         )
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
     job_pydantic_data = parse_job_detail_to_pydantic(data)
 
     if not job_pydantic_data:
-        logger.error("Failed to parse job data.", job_id=job_id, url=url)
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        logger.error(
+            "Failed to parse job data.",
+            event="job_data_parsing_failed",
+            job_id=job_id,
+            url=url,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
+        )
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
     try:
-        upsert_jobs([job_pydantic_data])
-        logger.info("Job parsed and upserted successfully.", job_id=job_id, url=url)
-        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]})
+        upsert_jobs([job_pydantic_data], db_name=db_name)
+        logger.info(
+            "Job parsed and upserted successfully.",
+            event="job_upsert_success",
+            job_id=job_id,
+            url=url,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
+        )
+        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]}, db_name=db_name)
         return job_pydantic_data.model_dump()
 
     except Exception as e:
         logger.error(
             "Unexpected error when upserting job data.",
-            error=e,
+            event="job_upsert_error",
+            error=str(e),
             job_id=job_id,
             url=url,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
             exc_info=True,
         )
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
 
@@ -82,7 +115,14 @@ if __name__ == "__main__":
     PRODUCER_BATCH_SIZE = 20000000 # Changed from 10 to 20
     statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
 
-    logger.info("Fetching URLs to process for local testing.", statuses=statuses_to_fetch, limit=PRODUCER_BATCH_SIZE)
+    logger.info(
+        "Fetching URLs to process for local testing.",
+        event="fetching_urls_for_local_test",
+        statuses=statuses_to_fetch,
+        limit=PRODUCER_BATCH_SIZE,
+        platform=SourcePlatform.PLATFORM_YOURATOR,
+        component="task",
+    )
 
     urls_to_process = get_urls_by_crawl_status(
         platform=SourcePlatform.PLATFORM_YOURATOR,
@@ -91,9 +131,26 @@ if __name__ == "__main__":
     )
 
     if urls_to_process:
-        logger.info("Found URLs to process.", count=len(urls_to_process))
+        logger.info(
+            "Found URLs to process.",
+            event="urls_found_for_processing",
+            count=len(urls_to_process),
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
+        )
         for url in urls_to_process:
-            logger.info("Processing URL.", url=url)
+            logger.info(
+                "Processing URL.",
+                event="processing_url",
+                url=url,
+                platform=SourcePlatform.PLATFORM_YOURATOR,
+                component="task",
+            )
             fetch_url_data_yourator(url)
     else:
-        logger.info("No URLs found to process for testing.")
+        logger.info(
+            "No URLs found to process for testing.",
+            event="no_urls_found_for_testing",
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="task",
+        )

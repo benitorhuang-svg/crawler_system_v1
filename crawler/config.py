@@ -56,3 +56,11 @@ URL_CRAWLER_SLEEP_MIN_SECONDS = float(
 URL_CRAWLER_SLEEP_MAX_SECONDS = float(
     config_section.get("URL_CRAWLER_SLEEP_MAX_SECONDS", "1.5")
 )
+
+def get_db_name_for_platform(platform_enum_value: str) -> str:
+    """
+    Derives the database name from a SourcePlatform enum value.
+    e.g., "platform_104" -> "db_104"
+    """
+    # Remove "platform_" prefix and add "db_" prefix
+    return "db_" + platform_enum_value.replace("platform_", "")

@@ -45,8 +45,11 @@ def parse_job_detail_to_pydantic(job_data: Dict[str, Any]) -> Optional[JobPydant
             except ValueError:
                 logger.warning(
                     "Could not parse posted_at date format from detail API.",
+                    event="parse_date_format_error",
                     created_at=created_at_str,
                     job_id=source_job_id,
+                    platform=SourcePlatform.PLATFORM_YOURATOR,
+                    component="parser",
                 )
 
         salary_text = f"{job_data.get('salary_min')} - {job_data.get('salary_max')} {job_data.get('salary_type')}"
@@ -82,8 +85,11 @@ def parse_job_detail_to_pydantic(job_data: Dict[str, Any]) -> Optional[JobPydant
     except Exception as e:
         logger.error(
             "Unexpected error when parsing Yourator job detail JSON.",
-            error=e,
+            event="unexpected_error_parsing_job_detail",
+            error=str(e),
             job_data=job_data,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="parser",
             exc_info=True,
         )
         return None
@@ -112,8 +118,11 @@ def parse_job_list_to_pydantic(job_item: Dict[str, Any]) -> Optional[JobPydantic
             except ValueError:
                 logger.warning(
                     "Could not parse posted_at date format from list API.",
+                    event="parse_date_format_error",
                     created_at=created_at_str,
                     job_id=source_job_id,
+                    platform=SourcePlatform.PLATFORM_YOURATOR,
+                    component="parser",
                 )
 
         salary_text = f"{job_item.get('salary_min')} - {job_item.get('salary_max')} {job_item.get('salary_type')}"
@@ -149,8 +158,11 @@ def parse_job_list_to_pydantic(job_item: Dict[str, Any]) -> Optional[JobPydantic
     except Exception as e:
         logger.error(
             "Unexpected error when parsing Yourator job list JSON.",
-            error=e,
+            event="unexpected_error_parsing_job_list",
+            error=str(e),
             job_item=job_item,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="parser",
             exc_info=True,
         )
         return None

@@ -14,6 +14,7 @@ from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, get_u
 from crawler.project_1111.client_1111 import fetch_job_data_from_1111_web
 from crawler.project_1111.parser_apidata_1111 import parse_job_detail_html_to_pydantic
 from crawler.database.connection import initialize_database
+from crawler.config import get_db_name_for_platform
 
 logger = structlog.get_logger(__name__)
 
@@ -24,18 +25,19 @@ def fetch_url_data_1111(url: str) -> Optional[dict]:
     Celery task: Fetches detailed information for a single job vacancy from a given URL,
     parses it, stores it in the database, and marks the URL's crawl status.
     """
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_1111.value)
     job_id = None
     try:
         job_id = url.split("/")[-1].split("?")[0]
         if not job_id:
             logger.error("Failed to extract job_id from URL.", url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
         response_data = fetch_job_data_from_1111_web(url)
         if response_data is None or "content" not in response_data:
             logger.error("Failed to fetch job data from 1111 web.", job_id=job_id, url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
         html_content = response_data["content"]
@@ -48,20 +50,20 @@ def fetch_url_data_1111(url: str) -> Optional[dict]:
             url=url,
             exc_info=True,
         )
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
     job_pydantic_data = parse_job_detail_html_to_pydantic(html_content, url)
 
     if not job_pydantic_data:
         logger.error("Failed to parse job data.", job_id=job_id, url=url)
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
     try:
-        upsert_jobs([job_pydantic_data])
+        upsert_jobs([job_pydantic_data], db_name=db_name)
         logger.info("Job parsed and upserted successfully.", job_id=job_id, url=url)
-        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]})
+        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]}, db_name=db_name)
         return job_pydantic_data.model_dump()
 
     except Exception as e:
@@ -72,11 +74,12 @@ def fetch_url_data_1111(url: str) -> Optional[dict]:
             url=url,
             exc_info=True,
         )
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
 
 
 if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
     initialize_database()
 
     PRODUCER_BATCH_SIZE = 20000000 # Changed from 10 to 20

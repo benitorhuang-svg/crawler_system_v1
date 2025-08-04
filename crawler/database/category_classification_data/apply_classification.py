@@ -25,7 +25,7 @@ logger = structlog.get_logger(__name__)
 
 # 15 項大項目歸類定義
 # 從 JSON 檔案載入 MAJOR_CATEGORIES
-_major_categories_file_path = os.path.join(os.path.dirname(__file__), "major_categories.json")
+_major_categories_file_path = os.path.join(os.path.dirname(__file__), "..", "..", "utils", "major_categories.json")
 with open(_major_categories_file_path, 'r', encoding='utf-8') as f:
     MAJOR_CATEGORIES = json.load(f)
 

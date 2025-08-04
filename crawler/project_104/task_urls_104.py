@@ -1,14 +1,14 @@
-# import os
-# # python -m crawler.project_104.task_urls_104
-# # --- Local Test Environment Setup ---
-# if __name__ == "__main__":
-#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# # --- End Local Test Environment Setup ---
+import os
+from typing import Optional, Set, List
+# python -m crawler.project_104.task_urls_104
+# --- Local Test Environment Setup ---
+if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# --- End Local Test Environment Setup ---
 
 
 import structlog
 from collections import deque
-from typing import Set, List
 from crawler.worker import app
 from crawler.database.schemas import (
     SourcePlatform,
@@ -29,6 +29,8 @@ from crawler.project_104.parser_apidata_104 import parse_job_item_to_pydantic
 from crawler.config import (
     URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
     URL_CRAWLER_UPLOAD_BATCH_SIZE,
+    get_db_name_for_platform,
+    MYSQL_DATABASE,
 )
 from crawler.project_104.config_104 import (
     URL_CRAWLER_BASE_URL_104,
@@ -41,13 +43,14 @@ logger = structlog.get_logger(__name__)
 
 
 @app.task
-def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> None:
+def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0, db_name_override: Optional[str] = None) -> None:
     """
     Celery task: Iterates through all pages of a specified job category, fetches job URLs
     and preliminary data, and stores them in the database in batches.
     """
     job_category = CategorySourcePydantic.model_validate(job_category)
     job_category_code = job_category.source_category_id
+    db_name = db_name_override if db_name_override else get_db_name_for_platform(job_category.source_platform.value)
     
     global_job_url_set = set()
     current_batch_jobs = []
@@ -144,9 +147,9 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
                 count=len(current_batch_urls),
                 job_category_code=job_category_code,
             )
-            upsert_jobs(current_batch_jobs)
-            upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
-            upsert_url_categories(current_batch_url_categories)
+            upsert_jobs(current_batch_jobs, db_name=db_name)
+            upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls, db_name=db_name)
+            upsert_url_categories(current_batch_url_categories, db_name=db_name)
             
             current_batch_jobs.clear()
             current_batch_urls.clear()
@@ -169,9 +172,9 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
             count=len(current_batch_urls),
             job_category_code=job_category_code,
         )
-        upsert_jobs(current_batch_jobs)
-        upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls)
-        upsert_url_categories(current_batch_url_categories)
+        upsert_jobs(current_batch_jobs, db_name=db_name)
+        upsert_urls(SourcePlatform.PLATFORM_104, current_batch_urls, db_name=db_name)
+        upsert_url_categories(current_batch_url_categories, db_name=db_name)
     else:
         logger.info(
             "Task completed. No new data collected, skipping database storage.",
@@ -182,20 +185,22 @@ def crawl_and_store_category_urls(job_category: dict, url_limit: int = 0) -> Non
 
 
 if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
     initialize_database()
 
     n_days = 7  # Define n_days for local testing
     url_limit = 1000000
 
-    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104)
+    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_104, db_name=MYSQL_DATABASE)
     all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
-    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104)
-    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104, n_days)
+    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104, db_name=MYSQL_DATABASE)
+    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_104, n_days, db_name=MYSQL_DATABASE)
     categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
     categories_to_dispatch = [
         cat for cat in all_categories_pydantic 
         if cat.source_category_id in categories_to_dispatch_ids
     ]
+    categories_to_dispatch.sort(key=lambda x: x.source_category_id)
 
     # Only process the first category for local testing
     if categories_to_dispatch:

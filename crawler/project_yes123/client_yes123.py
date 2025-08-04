@@ -3,7 +3,6 @@ import time
 from typing import Any, Dict, Optional
 
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 import urllib.parse
 
@@ -24,7 +23,11 @@ from crawler.project_yes123.config_yes123 import (
 )
 
 # Suppress only the single InsecureRequestWarning from urllib3 needed
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import urllib3
+
+from crawler.database.schemas import SourcePlatform
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 configure_logging()
@@ -61,7 +64,14 @@ def _make_web_request(
     sleep_time = random.uniform(
         URL_CRAWLER_SLEEP_MIN_SECONDS, URL_CRAWLER_SLEEP_MAX_SECONDS
     )
-    logger.debug("Sleeping before web request.", duration=sleep_time, **log_context)
+    logger.debug(
+        "Sleeping before web request.",
+        event="sleeping_before_web_request",
+        duration=sleep_time,
+        platform=SourcePlatform.PLATFORM_YES123,
+        component="client",
+        **log_context,
+    )
     time.sleep(sleep_time)
 
     try:
@@ -76,12 +86,30 @@ def _make_web_request(
         response.raise_for_status()  # Raises HTTPError for bad responses (4xx or 5xx)
         return response.text
         
-    except requests.exceptions.RequestException:
-        logger.error(f"Network error during web request: {url}")
+    except requests.exceptions.RequestException as e:
+        logger.error(
+            "Network error during web request.",
+            event="network_error_web_request",
+            url=url,
+            error=str(e),
+            platform=SourcePlatform.PLATFORM_YES123,
+            component="client",
+            exc_info=True,
+            **log_context,
+        )
         traceback.print_exc()
         raise  # Re-raise the exception to trigger tenacity retry
-    except Exception:
-        logger.error(f"Unexpected error during web request: {url}")
+    except Exception as e:
+        logger.error(
+            "Unexpected error during web request.",
+            event="unexpected_web_request_error",
+            url=url,
+            error=str(e),
+            platform=SourcePlatform.PLATFORM_YES123,
+            component="client",
+            exc_info=True,
+            **log_context,
+        )
         traceback.print_exc()
         raise # Re-raise the exception to see full traceback
 

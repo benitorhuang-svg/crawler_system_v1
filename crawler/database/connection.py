@@ -1,4 +1,3 @@
-import os
 import logging
 import structlog
 from contextlib import contextmanager
@@ -18,27 +17,18 @@ from crawler.database.models import Base
 
 logger = structlog.get_logger(__name__)
 metadata = Base.metadata
-_engine = None  # Singleton engine instance
+_engines = {}  # Dictionary to store engine instances per database
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False)
 
 
-def get_db_name() -> str:
-    """
-    Determines the database name to use.
-    It prioritizes the CRAWLER_DB_NAME environment variable for testing purposes.
-    Otherwise, it falls back to the default database name from the config.
-    """
-    return os.environ.get('CRAWLER_DB_NAME', DEFAULT_DB_NAME)
-
-
 @contextmanager
-def get_session():
+def get_session(db_name: str = None):
     """
     Provides a transactional database session via a context manager.
     Handles commit, rollback, and closing automatically.
     """
-    engine = get_engine()  # Ensure engine is initialized
+    engine = get_engine(db_name)  # Ensure engine is initialized for the specific db_name
     SessionLocal.configure(bind=engine)
     session = SessionLocal()
     try:
@@ -52,30 +42,31 @@ def get_session():
         session.close()
 
 
-def get_engine():
+def get_engine(db_name: str = None):
     """
-    Retrieves the SQLAlchemy engine instance, creating it if it doesn't exist.
-    This is a singleton to ensure one engine instance per application lifecycle.
+    Retrieves the SQLAlchemy engine instance for a given database name, creating it if it doesn't exist.
     """
-    global _engine
-    if _engine is None:
+    if db_name is None:
+        db_name = DEFAULT_DB_NAME  # Use default if not specified
+
+    if db_name not in _engines:
         try:
-            _engine = _connect_with_retry()
+            _engines[db_name] = _connect_with_retry(db_name)
         except RetryError as e:
             logger.critical(
-                "Database connection failed after multiple retries. Application cannot start.",
+                f"Database connection to {db_name} failed after multiple retries. Application cannot start.",
                 error=e,
                 exc_info=True,
             )
-            raise RuntimeError("Database connection failed. Please check the database service.") from e
+            raise RuntimeError(f"Database connection to {db_name} failed. Please check the database service.") from e
         except Exception as e:
             logger.critical(
-                "An unexpected error occurred while creating the database engine.",
+                f"An unexpected error occurred while creating the database engine for {db_name}.",
                 error=e,
                 exc_info=True,
             )
-            raise RuntimeError("Fatal error creating the database engine.") from e
-    return _engine
+            raise RuntimeError(f"Fatal error creating the database engine for {db_name}.") from e
+    return _engines[db_name]
 
 
 @retry(
@@ -84,11 +75,7 @@ def get_engine():
     before=before_log(logger, logging.INFO),
     reraise=True,
 )
-def _connect_with_retry() -> create_engine:
-    """
-    (Internal) Performs the actual database connection with retry logic.
-    """
-    db_name = get_db_name()
+def _connect_with_retry(db_name: str) -> create_engine:
     logger.info(f"Attempting to connect to database: {db_name}@{MYSQL_HOST}:{MYSQL_PORT}")
 
     db_url = (
@@ -112,13 +99,15 @@ def _connect_with_retry() -> create_engine:
     return engine
 
 
-def initialize_database():
+def initialize_database(db_name: str = None):
     """
     Initializes the database. If the target is 'test_db', it ensures
     the database exists before creating tables. For other databases,
     it simply creates tables based on the models.
     """
-    db_name = get_db_name()
+    if db_name is None:
+        db_name = DEFAULT_DB_NAME
+
     logger.info(f"Initializing database: {db_name}")
 
     # If using the test database, ensure it exists first.
@@ -138,7 +127,7 @@ def initialize_database():
 
     # Now, connect to the specific database and create all tables
     try:
-        engine = get_engine()
+        engine = get_engine(db_name)
         metadata.create_all(engine)
         logger.info(f"Database tables for '{db_name}' initialized successfully.")
     except Exception as e:

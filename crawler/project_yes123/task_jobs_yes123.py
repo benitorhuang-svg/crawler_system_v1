@@ -23,14 +23,13 @@ from crawler.database.schemas import (
     JobPydantic,
     JobType,
 )
-from crawler.database.connection import initialize_database
 from crawler.database.repository import (
-    get_urls_by_crawl_status,
     upsert_jobs,
     mark_urls_as_crawled,
 )
 from crawler.utils.salary_parser import parse_salary_text
 from crawler.project_yes123.config_yes123 import HEADERS_YES123
+from crawler.config import get_db_name_for_platform
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -172,6 +171,7 @@ def fetch_url_data_yes123(url: str) -> Optional[dict]:
     """
     Celery task: Fetches detailed job info from a URL, parses, stores it, and marks the URL status.
     """
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_YES123.value)
     job_id = None
     try:
         if "job_id=" in url:
@@ -179,47 +179,61 @@ def fetch_url_data_yes123(url: str) -> Optional[dict]:
         elif "p_id=" in url:
             job_id = url.split("p_id=")[-1].split("&")[0]
 
+        if not job_id:
+            logger.error(
+                "Failed to extract job_id from URL.",
+                event="job_id_extraction_failed",
+                url=url,
+                platform=SourcePlatform.PLATFORM_YES123,
+                component="task",
+            )
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
+            return None
+
         job_data = fetch_yes123_job_data(url, HEADERS_YES123)
         if not job_data:
-            logger.warning("Failed to fetch job data or job is closed.", job_id=job_id, url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            logger.warning("Failed to fetch job data or job is closed.",
+                event="fetch_job_data_failed",
+                job_id=job_id,
+                url=url,
+                platform=SourcePlatform.PLATFORM_YES123,
+                component="task",
+            )
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
         job_pydantic_data = parse_job_details_to_pydantic(job_data, url)
         if not job_pydantic_data:
-            logger.error("Failed to parse job data.", job_id=job_id, url=url)
-            mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+            logger.error("Failed to parse job data.",
+                event="job_data_parsing_failed",
+                job_id=job_id,
+                url=url,
+                platform=SourcePlatform.PLATFORM_YES123,
+                component="task",
+            )
+            mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
             return None
 
-        upsert_jobs([job_pydantic_data])
-        logger.info("Job parsed and upserted successfully.", job_id=job_id, url=url)
-        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]})
+        upsert_jobs([job_pydantic_data], db_name=db_name)
+        logger.info("Job parsed and upserted successfully.",
+            event="job_upsert_success",
+            job_id=job_id,
+            url=url,
+            platform=SourcePlatform.PLATFORM_YES123,
+            component="task",
+        )
+        mark_urls_as_crawled({CrawlStatus.SUCCESS: [url]}, db_name=db_name)
         return job_pydantic_data.model_dump()
 
     except Exception as e:
-        logger.error("Unexpected error processing URL.", error=e, job_id=job_id, url=url, exc_info=True)
-        mark_urls_as_crawled({CrawlStatus.FAILED: [url]})
+        logger.error("Unexpected error processing URL.",
+            event="unexpected_url_processing_error",
+            error=str(e),
+            job_id=job_id,
+            url=url,
+            platform=SourcePlatform.PLATFORM_YES123,
+            component="task",
+            exc_info=True,
+        )
+        mark_urls_as_crawled({CrawlStatus.FAILED: [url]}, db_name=db_name)
         return None
-
-
-if __name__ == "__main__":
-    initialize_database()
-
-    PRODUCER_BATCH_SIZE = 20000000000000
-    statuses_to_fetch = [CrawlStatus.FAILED, CrawlStatus.PENDING, CrawlStatus.QUEUED]
-
-    logger.info("Fetching URLs to process for local testing.", statuses=statuses_to_fetch, limit=PRODUCER_BATCH_SIZE)
-
-    urls_to_process = get_urls_by_crawl_status(
-        platform=SourcePlatform.PLATFORM_YES123,
-        statuses=statuses_to_fetch,
-        limit=PRODUCER_BATCH_SIZE,
-    )
-
-    if urls_to_process:
-        logger.info("Found URLs to process.", count=len(urls_to_process))
-        for url in urls_to_process:
-            logger.info("Processing URL.", url=url)
-            fetch_url_data_yes123(url)
-    else:
-        logger.info("No URLs found to process for testing.")

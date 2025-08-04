@@ -43,61 +43,6 @@ EDUCATION_MAPPING_1111 = {
     64: "博士",
 }
 
-# Removed the old parse_salary function
-
-# This function is no longer needed as the logic is now in salary_parser.py
-# def derive_salary_type(salary_text: str, salary_min: Optional[int], job_type: Optional[JobType]) -> Optional[SalaryType]:
-#     logger.debug("Deriving salary type", salary_text=salary_text, salary_min=salary_min, job_type=job_type)
-#     text = salary_text.replace(",", "").replace(" ", "").lower()
-#
-#     # Priority 1: Explicit keywords
-#     if "月薪" in text:
-#         logger.debug("Derived: MONTHLY (keyword)")
-#         return SalaryType.MONTHLY
-#     elif "時薪" in text:
-#         logger.debug("Derived: HOURLY (keyword)")
-#         return SalaryType.HOURLY
-#     elif "年薪" in text:
-#         logger.debug("Derived: YEARLY (keyword)")
-#         return SalaryType.YEARLY
-#     elif "日薪" in text:
-#         logger.debug("Derived: DAILY (keyword)")
-#         return SalaryType.DAILY
-#     elif "論件計酬" in text:
-#         logger.debug("Derived: BY_CASE (keyword)")
-#         return SalaryType.BY_CASE
-#     
-#     # Priority 2: "面議" combined with "萬" (implying monthly)
-#     # This handles "面議（經常性薪資達4萬元或以上）" -> 月薪
-#     if "面議" in text and "萬" in text:
-#         logger.debug("Derived: MONTHLY (negotiable + wan)")
-#         return SalaryType.MONTHLY # Assuming "萬" in "面議" context implies monthly
-#
-#     # Priority 3: If job_type is FULL_TIME, assume MONTHLY
-#     if job_type == JobType.FULL_TIME:
-#         logger.debug("Derived: MONTHLY (full-time job type)")
-#         return SalaryType.MONTHLY
-#
-#     # Priority 4: General "面議"
-#     if "面議" in text:
-#         logger.debug("Derived: NEGOTIABLE (general negotiable)")
-#         return SalaryType.NEGOTIABLE
-#     
-#     # Priority 5: Numerical inference based on salary_min (if no keyword found)
-#     if salary_min is not None:
-#         if salary_min < 2000: # Adjusted threshold for hourly
-#             logger.debug("Derived: HOURLY (numerical)")
-#             return SalaryType.HOURLY
-#         elif salary_min > 200000:
-#             logger.debug("Derived: YEARLY (numerical)")
-#             return SalaryType.YEARLY
-#         else:
-#             logger.debug("Derived: MONTHLY (numerical)")
-#             return SalaryType.MONTHLY # Default to monthly for typical ranges
-#
-#     logger.debug("Derived: None (no match)")
-#     return None
-
 def parse_job_list_json_to_pydantic(job_item: dict) -> Optional[JobPydantic]:
     """
     從 1111 列表頁 API 的 JSON 數據解析並轉換為 JobPydantic 物件。
@@ -134,10 +79,6 @@ def parse_job_list_json_to_pydantic(job_item: dict) -> Optional[JobPydantic]:
 
         # Use the new parse_salary_text from salary_parser.py
         salary_min, salary_max, salary_type = parse_salary_text(salary_text)
-        # The following logic is now handled by the new salary_parser.py
-        # salary_min, salary_max = parse_salary_text(salary_text)
-        # # Derive salary_type using the new function, passing job_type
-        # salary_type = derive_salary_type(salary_text, salary_min, job_type)
 
         experience_required_text = job_item.get("require", {}).get("experience")
         if experience_required_text == "0":
@@ -192,7 +133,8 @@ def parse_job_list_json_to_pydantic(job_item: dict) -> Optional[JobPydantic]:
 
 
 def parse_job_detail_html_to_pydantic(
-    html_content: str, url: str
+    html_content: str,
+    url: str
 ) -> Optional[JobPydantic]:
     """
     從 1111 職缺頁面的 HTML 內容解析並轉換為 JobPydantic 物件。
@@ -206,7 +148,7 @@ def parse_job_detail_html_to_pydantic(
             "section[data-v-e57f1019] > div.container > div.text-gray-600"
         )
 
-        title = None
+        title = "" # Initialize with empty string
         company_name = None
         job_type_str = None
         salary_text = None
@@ -219,10 +161,15 @@ def parse_job_detail_html_to_pydantic(
         company_source_id = None
 
         if header_section:
-            title = header_section.select_one("h1").get_text(strip=True) or None
-            company_name = (
-                header_section.select_one("h2.inline").get_text(strip=True) or None
-            )
+            # Ensure title is always a string
+            title_tag = header_section.select_one("h1")
+            if title_tag:
+                title = title_tag.get_text(strip=True)
+            
+            company_name_tag = header_section.select_one("h2.inline")
+            if company_name_tag:
+                company_name = company_name_tag.get_text(strip=True)
+
             # Extract company_url from company_name's parent a tag
             company_link_tag = header_section.select_one("h2.inline a")
             if company_link_tag and "href" in company_link_tag.attrs:
@@ -289,10 +236,6 @@ def parse_job_detail_html_to_pydantic(
 
         # Use the new parse_salary_text from salary_parser.py
         salary_min, salary_max, salary_type = parse_salary_text(salary_text or "")
-        # The following logic is now handled by the new salary_parser.py
-        # salary_min, salary_max = parse_salary_text(salary_text or "")
-        # # Derive salary_type using the new function, passing job_type
-        # salary_type = derive_salary_type(salary_text or "", salary_min, job_type)
 
         if experience_required_text is None:
             experience_required_text = "不拘"

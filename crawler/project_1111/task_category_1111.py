@@ -6,6 +6,8 @@
 # # --- End Local Test Environment Setup ---
 
 
+import os
+from typing import Optional
 import structlog
 
 from crawler.database import connection as db_connection
@@ -15,6 +17,7 @@ from crawler.database.schemas import SourcePlatform
 from crawler.project_1111.client_1111 import fetch_category_data_from_1111_api
 from crawler.project_1111.config_1111 import HEADERS_1111, JOB_CAT_URL_1111
 from crawler.worker import app
+from crawler.config import MYSQL_DATABASE, get_db_name_for_platform
 
 # Import MAPPING from apply_classification.py
 from crawler.database.category_classification_data.apply_classification import MAPPING
@@ -45,12 +48,13 @@ def flatten_jobcat_recursive(node_list):
 
 
 @app.task()
-def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
-    logger.info("Current database connection", db_url=str(db_connection.get_engine().url))
+def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111, db_name_override: Optional[str] = None):
+    db_name = db_name_override if db_name_override else get_db_name_for_platform(SourcePlatform.PLATFORM_1111.value)
+    logger.info("Current database connection", db_url=str(db_connection.get_engine(db_name=db_name).url))
     logger.info("Starting 1111 category data fetch and sync.", url=url_JobCat)
 
     try:
-        existing_categories = repository.get_source_categories(SourcePlatform.PLATFORM_1111)
+        existing_categories = repository.get_source_categories(SourcePlatform.PLATFORM_1111, db_name=db_name)
 
         jobcat_data = fetch_category_data_from_1111_api(url_JobCat, HEADERS_1111)
         if jobcat_data is None:
@@ -63,10 +67,12 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
             return
 
         flattened_data = list(flatten_jobcat_recursive(job_position_data))
+        # Sort flattened_data by source_category_id before initial sync
+        flattened_data.sort(key=lambda x: x['source_category_id'])
 
         if not existing_categories:
             logger.info("1111 category database is empty. Performing initial bulk sync.", total_api_categories=len(flattened_data))
-            repository.sync_source_categories(SourcePlatform.PLATFORM_1111, flattened_data)
+            repository.sync_source_categories(SourcePlatform.PLATFORM_1111, flattened_data, db_name=db_name)
             return
 
         api_categories_set = {
@@ -98,7 +104,7 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
                 "Found new or updated 1111 categories to sync.",
                 count=len(categories_to_sync),
             )
-            repository.sync_source_categories(SourcePlatform.PLATFORM_1111, categories_to_sync)
+            repository.sync_source_categories(SourcePlatform.PLATFORM_1111, categories_to_sync, db_name=db_name)
         else:
             logger.info("No new or updated 1111 categories to sync.", existing_categories_count=len(existing_categories), api_categories_count=len(flattened_data))
 
@@ -106,7 +112,11 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111):
         logger.error("An unexpected error occurred during 1111 category sync.", error=e, exc_info=True, url=url_JobCat)
 
 
+
+
+
 if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
     initialize_database()
     logger.info("Dispatching fetch_and_sync_1111_categories task for local testing.", url=JOB_CAT_URL_1111)
     fetch_and_sync_1111_categories(JOB_CAT_URL_1111)

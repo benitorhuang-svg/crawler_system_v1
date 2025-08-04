@@ -13,14 +13,14 @@ beautifulsoup4==4.13.4
     # via crawler-jobs (pyproject.toml)
 billiard==4.2.1
     # via celery
-celery==5.5.3
-    # via crawler-jobs (pyproject.toml)
 certifi==2025.7.14
     # via
     #   httpcore
     #   httpx
     #   requests
     #   sentry-sdk
+celery==5.5.3
+    # via crawler-jobs (pyproject.toml)
 charset-normalizer==3.4.2
     # via requests
 click==8.2.1
@@ -79,6 +79,7 @@ iniconfig==2.1.0
     # via pytest
 jinja2==3.1.6
     # via fastapi
+jieba
 kombu==5.5.4
     # via celery
 limits==5.4.0
@@ -91,6 +92,7 @@ markupsafe==3.0.2
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
+matplotlib
 numpy==2.3.2
     # via pandas
 packaging==25.0
@@ -155,8 +157,10 @@ rignore==0.6.4
     # via fastapi-cloud-cli
 ruff==0.12.5
     # via crawler-jobs (pyproject.toml)
+scikit-learn
 sentry-sdk==2.33.2
     # via fastapi-cloud-cli
+seaborn
 shellingham==1.5.4
     # via typer
 six==1.17.0

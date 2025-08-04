@@ -1,5 +1,5 @@
 # import os
-# # python -m crawler.project_1111.task_urls_1111
+# # # python -m crawler.project_1111.task_urls_1111
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -7,7 +7,6 @@
 
 
 import structlog
-
 from typing import Set, List, Optional, Dict
 import concurrent.futures
 
@@ -30,6 +29,7 @@ from crawler.project_1111.client_1111 import fetch_job_urls_from_1111_api
 from crawler.project_1111.parser_apidata_1111 import parse_job_list_json_to_pydantic
 from crawler.config import (
     URL_CRAWLER_UPLOAD_BATCH_SIZE,
+    get_db_name_for_platform,
 )
 from crawler.project_1111.config_1111 import (
     URL_CRAWLER_ORDER_BY_1111,
@@ -46,18 +46,23 @@ def _fetch_and_parse_single_page(job_category_code: str, page_num: int) -> Optio
     Fetches job items for a single page from the 1111 API and parses them.
     Returns a list of job item dictionaries or None if an error occurs or no items are found.
     """
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_1111.value)
     api_response = fetch_job_urls_from_1111_api(
         KEYWORDS="",
         CATEGORY=job_category_code,
         ORDER=URL_CRAWLER_ORDER_BY_1111,
         PAGE_NUM=page_num,
+        db_name=db_name,
     )
 
     if api_response is None:
         logger.error(
             "Failed to retrieve data from 1111 API for single page.",
+            event="fetch_single_page_failed",
             page=page_num,
             job_category_code=job_category_code,
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
         return None
 
@@ -65,17 +70,23 @@ def _fetch_and_parse_single_page(job_category_code: str, page_num: int) -> Optio
     if not isinstance(job_items, list):
         logger.error(
             "API response 'result.hits' format is incorrect or missing for single page.",
+            event="api_response_format_error",
             page=page_num,
             job_category_code=job_category_code,
             api_data_type=type(job_items),
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
         return None
 
     if not job_items:
         logger.debug(
             "No job items found on single page.",
+            event="no_job_items_on_page",
             page=page_num,
             job_category_code=job_category_code,
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
         return None
     
@@ -90,6 +101,7 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
     """
     job_category = CategorySourcePydantic.model_validate(job_category)
     job_category_code = job_category.source_category_id
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_1111.value)
     
     global_job_url_set = set()
     current_batch_jobs = []
@@ -100,6 +112,8 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
         "Task started: crawling 1111 job category URLs and data.",
         job_category_code=job_category_code,
         url_limit=url_limit,
+        platform=SourcePlatform.PLATFORM_1111,
+        component="task",
     )
 
     # Step 1: Fetch the first page synchronously to get totalPage
@@ -108,7 +122,10 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
     if first_page_job_items is None:
         logger.error(
             "Failed to fetch first page, cannot proceed with crawling.",
+            event="fetch_first_page_failed",
             job_category_code=job_category_code,
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
         return 0
 
@@ -129,6 +146,8 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
                 "Total pages discovered from API.",
                 job_category_code=job_category_code,
                 total_pages=total_pages,
+                platform=SourcePlatform.PLATFORM_1111,
+                component="task",
             )
     
     # Process first page items
@@ -159,6 +178,8 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
             job_category_code=job_category_code,
             url_limit=url_limit,
             estimated_pages=len(pages_to_fetch),
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=CONCURRENCY_LEVEL) as executor:
@@ -178,6 +199,8 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
                         page=page_num,
                         job_category_code=job_category_code,
                         items_count=len(job_items_on_page),
+                        platform=SourcePlatform.PLATFORM_1111,
+                        component="task",
                     )
                     for job_item in job_items_on_page:
                         job_pydantic = parse_job_list_json_to_pydantic(job_item)
@@ -200,10 +223,12 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
                         "Batch upload size reached. Starting data upload.",
                         count=len(current_batch_urls),
                         job_category_code=job_category_code,
+                        platform=SourcePlatform.PLATFORM_1111,
+                        component="task",
                     )
-                    upsert_jobs(current_batch_jobs)
-                    upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
-                    upsert_url_categories(current_batch_url_categories)
+                    upsert_jobs(current_batch_jobs, db_name=db_name)
+                    upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls, db_name=db_name)
+                    upsert_url_categories(current_batch_url_categories, db_name=db_name)
                     
                     current_batch_jobs.clear()
                     current_batch_urls.clear()
@@ -216,6 +241,8 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
                         job_category_code=job_category_code,
                         url_limit=url_limit,
                         collected_urls=len(global_job_url_set),
+                        platform=SourcePlatform.PLATFORM_1111,
+                        component="task",
                     )
                     # Cancel remaining futures if limit is reached
                     for remaining_future in future_to_page:
@@ -224,13 +251,19 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
                     break # Break from the as_completed loop
 
             except concurrent.futures.CancelledError:
-                logger.info("Future was cancelled due to URL limit being reached.", page=page_num)
+                logger.info("Future was cancelled due to URL limit being reached.",
+                    page=page_num,
+                    platform=SourcePlatform.PLATFORM_1111,
+                    component="task",
+                )
             except Exception as exc:
                 logger.error(
                     "Page generation failed.",
                     page=page_num,
                     job_category_code=job_category_code,
-                    error=exc,
+                    error=str(exc),
+                    platform=SourcePlatform.PLATFORM_1111,
+                    component="task",
                     exc_info=True,
                 )
 
@@ -239,35 +272,46 @@ def crawl_and_store_1111_category_urls(job_category: dict, url_limit: int = 0) -
             "Task completed. Storing remaining data to database.",
             count=len(current_batch_urls),
             job_category_code=job_category_code,
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
-        upsert_jobs(current_batch_jobs)
-        upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls)
-        upsert_url_categories(current_batch_url_categories)
+        upsert_jobs(current_batch_jobs, db_name=db_name)
+        upsert_urls(SourcePlatform.PLATFORM_1111, current_batch_urls, db_name=db_name)
+        upsert_url_categories(current_batch_url_categories, db_name=db_name)
     else:
         logger.info(
             "Task completed. No new data collected, skipping database storage.",
             job_category_code=job_category_code,
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
         )
 
-    logger.info("Task execution finished.", job_category_code=job_category_code, total_collected=len(global_job_url_set))
+    logger.info("Task execution finished.",
+        job_category_code=job_category_code,
+        total_collected=len(global_job_url_set),
+        platform=SourcePlatform.PLATFORM_1111,
+        component="task",
+    )
     return len(global_job_url_set)
 
 
 if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
     initialize_database()
 
     n_days = 7  # Define n_days for local testing
     url_limit = 100000
 
-    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_1111)
+    all_categories_pydantic: List[CategorySourcePydantic] = get_all_categories_for_platform(SourcePlatform.PLATFORM_1111, db_name=None)
     all_category_ids: Set[str] = {cat.source_category_id for cat in all_categories_pydantic}
-    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111)
-    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111, n_days)
+    all_crawled_category_ids: Set[str] = get_all_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111, db_name=None)
+    stale_crawled_category_ids: Set[str] = get_stale_crawled_category_ids_pandas(SourcePlatform.PLATFORM_1111, n_days, db_name=None)
     categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
     categories_to_dispatch = [
         cat for cat in all_categories_pydantic 
         if cat.source_category_id in categories_to_dispatch_ids
     ]
+    categories_to_dispatch.sort(key=lambda x: x.source_category_id)
 
 
     if categories_to_dispatch:
@@ -278,7 +322,13 @@ if __name__ == "__main__":
                 "Dispatching crawl_and_store_1111_category_urls task for local testing.",
                 job_category_code=job_category.source_category_id,
                 url_limit=url_limit,
+                platform=SourcePlatform.PLATFORM_1111,
+                component="task",
             )
             crawl_and_store_1111_category_urls(job_category.model_dump(), url_limit=url_limit)
     else:
-        logger.info("No categories found to dispatch for testing.")
+        logger.info(
+            "No categories found to dispatch for testing.",
+            platform=SourcePlatform.PLATFORM_1111,
+            component="task",
+        )

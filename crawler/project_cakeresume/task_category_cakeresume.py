@@ -6,9 +6,10 @@
 # # --- End Local Test Environment Setup ---
 
 
+import os
 import structlog
 import json
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from bs4 import BeautifulSoup
 
 from crawler.database import connection as db_connection
@@ -21,6 +22,7 @@ from crawler.project_cakeresume.client_cakeresume import (
 from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
 from crawler.worker import app
 from crawler.database.category_classification_data.apply_classification import apply_category_classification
+from crawler.config import MYSQL_DATABASE, get_db_name_for_platform
 
 logger = structlog.get_logger(__name__)
 
@@ -86,8 +88,9 @@ def parse_next_data_for_i18n_categories(html_content: str) -> List[Dict[str, Any
 
 
 @app.task()
-def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
-    logger.info("Current database connection", db_url=str(db_connection.get_engine().url))
+def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME, db_name_override: Optional[str] = None):
+    db_name = db_name_override if db_name_override else get_db_name_for_platform(SourcePlatform.PLATFORM_CAKERESUME.value)
+    logger.info("Current database connection", db_url=str(db_connection.get_engine(db_name=db_name).url))
     logger.info("Starting CakeResume profession category data fetch and sync.", url=url_JobCat)
 
     try:
@@ -98,10 +101,12 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
         else:
             try:
                 profession_data = parse_next_data_for_i18n_categories(html_content)
+                # Sort profession_data by source_category_id before initial sync
+                profession_data.sort(key=lambda x: x['source_category_id'])
             except ValueError as e:
                 logger.error("Failed to parse CakeResume profession category data from HTML.", error=e, exc_info=True, url=url_JobCat)
         
-        existing_categories = repository.get_source_categories(SourcePlatform.PLATFORM_CAKERESUME)
+        existing_categories = repository.get_source_categories(SourcePlatform.PLATFORM_CAKERESUME, db_name=db_name)
 
         api_categories_set = {
             (d["source_category_id"], d["source_category_name"], d["parent_source_id"])
@@ -133,19 +138,20 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME):
                 "Found new or updated CakeResume profession categories to sync.",
                 count=len(categories_to_sync),
             )
-            repository.sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, categories_to_sync)
+            repository.sync_source_categories(SourcePlatform.PLATFORM_CAKERESUME, categories_to_sync, db_name=db_name)
         else:
             logger.info("No new or updated CakeResume profession categories to sync.", existing_categories_count=len(existing_categories), api_categories_count=len(profession_data))
 
         # Apply classification to update parent_source_id for profession categories
         logger.info("Applying category classification for CakeResume profession categories.")
-        apply_category_classification(SourcePlatform.PLATFORM_CAKERESUME)
+        apply_category_classification(SourcePlatform.PLATFORM_CAKERESUME, db_name=db_name)
 
     except Exception as e:
         logger.error("An unexpected error occurred during CakeResume category sync.", error=e, exc_info=True, url=url_JobCat)
 
 
 if __name__ == "__main__":
+    os.environ['CRAWLER_DB_NAME'] = 'test_db'
     initialize_database()
-    logger.info("Dispatching fetch_url_data_cakeresume task for local testing.", url=JOB_CAT_URL_CAKERESUME)
+    logger.info("Dispatching fetch_url_data_cakeresume task for local testing.", url=JOB_CAT_URL_CAKERESUME, db_name=MYSQL_DATABASE)
     fetch_url_data_cakeresume(JOB_CAT_URL_CAKERESUME)

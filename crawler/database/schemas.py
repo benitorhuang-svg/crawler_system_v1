@@ -12,6 +12,7 @@ class SourcePlatform(str, enum.Enum):
     PLATFORM_1111 = "platform_1111"
     PLATFORM_CAKERESUME = "platform_cakeresume"
     PLATFORM_YES123 = "platform_yes123"
+    PLATFORM_YOURATOR = "platform_yourator"
 
 
 class JobStatus(str, enum.Enum):

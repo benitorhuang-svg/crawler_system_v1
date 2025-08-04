@@ -13,6 +13,7 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
     URL_CRAWLER_SLEEP_MIN_SECONDS,
 )
 from crawler.logging_config import configure_logging
+from crawler.database.schemas import SourcePlatform
 from crawler.project_yourator.config_yourator import (
     HEADERS_YOURATOR,
     JOB_API_BASE_URL_YOURATOR,
@@ -52,7 +53,14 @@ def _make_api_request(
     sleep_time = random.uniform(
         URL_CRAWLER_SLEEP_MIN_SECONDS, URL_CRAWLER_SLEEP_MAX_SECONDS
     )
-    logger.debug("Sleeping before API request.", duration=sleep_time, **log_context)
+    logger.debug(
+        "Sleeping before API request.",
+        event="sleeping_before_api_request",
+        duration=sleep_time,
+        platform=SourcePlatform.PLATFORM_YOURATOR,
+        component="client",
+        **log_context
+    )
     time.sleep(sleep_time)
 
     try:
@@ -70,8 +78,11 @@ def _make_api_request(
     except requests.exceptions.RequestException as e:
         logger.error(
             "Network error during API request.",
+            event="network_error_api_request",
             url=url,
-            error=e,
+            error=str(e),
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="client",
             exc_info=True,
             **log_context,
         )
@@ -79,7 +90,10 @@ def _make_api_request(
     except json.JSONDecodeError:
         logger.error(
             "Failed to parse JSON response from API.",
+            event="json_decode_error_api_response",
             url=url,
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="client",
             exc_info=True,
             **log_context,
         )
@@ -87,8 +101,11 @@ def _make_api_request(
     except Exception as e:
         logger.error(
             "Unexpected error during API request.",
+            event="unexpected_error_api_request",
             url=url,
-            error=e,
+            error=str(e),
+            platform=SourcePlatform.PLATFORM_YOURATOR,
+            component="client",
             exc_info=True,
             **log_context,
         )
@@ -104,7 +121,11 @@ def fetch_category_data_from_yourator_api(
         "GET",
         api_url,
         headers=headers,
-        log_context={"api_type": "yourator_category_data"},
+        log_context={
+            "api_type": "yourator_category_data",
+            "platform": SourcePlatform.PLATFORM_YOURATOR,
+            "component": "client"
+        },
     )
 
 def fetch_job_urls_from_yourator_api(
@@ -129,6 +150,8 @@ def fetch_job_urls_from_yourator_api(
             "api_type": "yourator_job_urls",
             "page": page,
             "category": category,
+            "platform": SourcePlatform.PLATFORM_YOURATOR,
+            "component": "client"
         },
     )
 
@@ -142,5 +165,10 @@ def fetch_job_data_from_yourator_api(job_id: str) -> Optional[Dict[str, Any]]:
         api_url,
         headers=HEADERS_YOURATOR,
         timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
-        log_context={"job_id": job_id, "api_type": "yourator_job_data"},
+        log_context={
+            "job_id": job_id,
+            "api_type": "yourator_job_data",
+            "platform": SourcePlatform.PLATFORM_YOURATOR,
+            "component": "client"
+        },
     )

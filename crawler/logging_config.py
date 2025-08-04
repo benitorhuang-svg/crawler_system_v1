@@ -6,6 +6,17 @@ import sys
 from crawler.config import LOG_LEVEL, LOG_FORMATTER
 
 
+class CustomLogFilter(logging.Filter):
+    """
+    自訂日誌過濾器，用於過濾特定模組的日誌。
+    """
+    def filter(self, record):
+        # 過濾掉 crawler.utils.salary_parser 模組的 INFO 和 DEBUG 級別日誌
+        if record.name == 'crawler.utils.salary_parser' and record.levelno <= logging.INFO:
+            return False
+        return True
+
+
 def configure_logging():
     """
     配置應用程式的日誌系統，整合 structlog 和標準 logging。
@@ -56,6 +67,7 @@ def configure_logging():
 
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(formatter)
+        handler.addFilter(CustomLogFilter()) # 添加自訂過濾器
 
         # 4. 配置 root logger
         root_logger.addHandler(handler)
