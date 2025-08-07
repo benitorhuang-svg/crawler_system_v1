@@ -45,3 +45,4 @@ v0_crawler_local_test.md./tb_jobs_cakeresume_geocoded.json
 ./.git/objects/pack/pack-57c91f846550e1093ff7e12b19d976e73dd2f46f.pack
 ./.git/objects/e0/00327a1107f6a1bdb11581bc496e025e1e78b0
 ./tb_jobs_cakeresume_geocoded_with_skills.json
+*.json
