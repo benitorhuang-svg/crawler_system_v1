@@ -110,24 +110,46 @@ def initialize_database(db_name: str = None):
 
     logger.info(f"Initializing database: {db_name}")
 
-    # If using the test database, ensure it exists first.
-    if db_name == 'test_db':
-        server_db_url = (
-            f"mysql+pymysql://{MYSQL_ACCOUNT}:{MYSQL_PASSWORD}@"
-            f"{MYSQL_HOST}:{MYSQL_PORT}/?charset=utf8mb4"
-        )
-        server_engine = create_engine(server_db_url)
-        try:
-            with server_engine.connect() as connection:
-                connection.execute(text(f"CREATE DATABASE IF NOT EXISTS {db_name};"))
-                connection.commit()
-            logger.info(f"Ensured database '{db_name}' exists.")
-        finally:
-            server_engine.dispose()
+    # Ensure the database exists before creating tables.
+    server_db_url = (
+        f"mysql+pymysql://{MYSQL_ACCOUNT}:{MYSQL_PASSWORD}@"
+        f"{MYSQL_HOST}:{MYSQL_PORT}/?charset=utf8mb4"
+    )
+    server_engine = create_engine(server_db_url)
+    try:
+        with server_engine.connect() as connection:
+            connection.execute(text(f"CREATE DATABASE IF NOT EXISTS {db_name};"))
+            connection.commit()
+        logger.info(f"Ensured database '{db_name}' exists.")
+    finally:
+        server_engine.dispose()
 
     # Now, connect to the specific database and create all tables
     try:
         engine = get_engine(db_name)
+        
+        with engine.connect() as connection:
+            # Temporarily disable foreign key checks
+            connection.execute(text("SET FOREIGN_KEY_CHECKS = 0;"))
+            connection.commit()
+
+            # Explicitly drop tables in reverse dependency order to ensure clean slate
+            # connection.execute(text("DROP TABLE IF EXISTS tb_job_skills;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_job_locations;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_job_category_tags;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_jobs;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_urls;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_companies;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_locations;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_skills;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_category_source;"))
+            # connection.execute(text("DROP TABLE IF EXISTS tb_job_observations;")) # Add this if it exists and causes issues
+            # connection.commit()
+
+            # Re-enable foreign key checks
+            connection.execute(text("SET FOREIGN_KEY_CHECKS = 1;"))
+            connection.commit()
+
         metadata.create_all(engine)
         logger.info(f"Database tables for '{db_name}' initialized successfully.")
     except Exception as e:

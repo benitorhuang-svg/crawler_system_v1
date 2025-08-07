@@ -230,3 +230,20 @@ def fetch_cakeresume_job_data(job_url: str) -> Optional[str]: # Returns HTML con
         },
     )
 
+
+def fetch_cakeresume_company_page_html(company_url: str) -> Optional[str]:
+    """
+    Fetches the raw HTML content of a CakeResume company page.
+    """
+    return _make_web_request(
+        "GET",
+        company_url,
+        headers=HEADERS_CAKERESUME,
+        timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
+        verify=False,
+        log_context={
+            "api_type": "cakeresume_company_page",
+            "url": company_url,
+        },
+    )
+

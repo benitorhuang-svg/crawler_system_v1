@@ -41,6 +41,7 @@ def _make_api_request(
     url: str,
     headers: Optional[Dict[str, str]] = None,
     params: Optional[Dict[str, Any]] = None,
+    session: Optional[requests.Session] = None,  # Add session parameter
     timeout: int = 10,
     verify: bool = False,
     log_context: Optional[Dict[str, Any]] = None,
@@ -58,8 +59,11 @@ def _make_api_request(
     logger.debug("Sleeping before API request.", duration=sleep_time, **log_context)
     time.sleep(sleep_time)
 
+    # Use the provided session or default to requests
+    requester = session if session else requests
+
     try:
-        response = requests.request(
+        response = requester.request(
             method,
             url,
             headers=headers,
@@ -134,19 +138,37 @@ def catch_1111_url(KEYWORDS: str, CATEGORY: Union[str, List[str]], ORDER: str = 
     safe_page_num = max(1, PAGE_NUM)
 
     if USE_API:
+        # 構建前端搜尋 URL，用於 searchUrl 參數
+        frontend_params = {
+            "page": safe_page_num,
+            "col": "ab" if ORDER == "relevance" else "da",
+            "sort": "desc",
+        }
+        if KEYWORDS and KEYWORDS != "":
+            frontend_params["ks"] = KEYWORDS
+        if CATEGORY:
+            frontend_params["d0"] = ",".join(CATEGORY) if isinstance(CATEGORY, list) else CATEGORY
+        
+        frontend_query_string = urllib.parse.urlencode(frontend_params)
+        # 對路徑和查詢字串進行 URL 編碼
+        search_url_param = urllib.parse.quote(f"/search/job?{frontend_query_string}", safe='')
+
         params = {
             "page": safe_page_num,
-            "fromOffset": 0,
+            "fromOffset": 0, 
             "sortBy": "ab" if ORDER == "relevance" else "da",
             "sortOrder": "desc",
+            "conditionsText": "d0", # 新增此參數
+            "searchUrl": search_url_param, # 新增此參數
+            "isSyncedRecommendJobs": "true", # 新增此參數
         }
 
-        # 如果有提供職務類別，加入到參數中
+        # 調整類別參數名稱從 d0 到 jobPositions
         if CATEGORY:
             if isinstance(CATEGORY, list):
-                params["d0"] = ",".join(CATEGORY)
+                params["jobPositions"] = ",".join(CATEGORY)
             else:
-                params["d0"] = CATEGORY
+                params["jobPositions"] = CATEGORY
         
         if KEYWORDS and KEYWORDS != "":
             params["keyword"] = KEYWORDS
@@ -167,9 +189,10 @@ def catch_1111_url(KEYWORDS: str, CATEGORY: Union[str, List[str]], ORDER: str = 
 
 def fetch_job_urls_from_1111_api(
     KEYWORDS: str,
-    CATEGORY: Union[str, List[str]],
-    ORDER: str = "date",
-    PAGE_NUM: int = 1,
+    CATEGORY: str,
+    ORDER: str,
+    PAGE_NUM: int,
+    session: Optional[requests.Session] = None,
 ) -> Optional[Dict[str, Any]]:
     """
     從 1111 API 獲取職缺 URL 列表的原始數據。
@@ -179,6 +202,7 @@ def fetch_job_urls_from_1111_api(
         "GET",
         api_url,
         headers=HEADERS_1111_JOB_API,
+        session=session,  # Pass session down
         timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,
         verify=False,
         log_context={
@@ -189,17 +213,18 @@ def fetch_job_urls_from_1111_api(
         },
     )
 
-def fetch_job_data_from_1111_web(job_url: str) -> Optional[Dict[str, Any]]:
+def fetch_job_detail_html_from_1111(job_url: str, session: Optional[requests.Session] = None) -> Optional[str]:
     """
-    從 1111 職缺頁面抓取單一 URL 的資料。
+    從 1111 職缺頁面抓取單一 URL 的 HTML 內容。
     """
+    requester = session if session else requests
     try:
-        response = requests.get(job_url, verify=False, timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS)
+        response = requester.get(job_url, verify=False, timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS)
         response.raise_for_status()
-        return {"content": response.text} # Return content for BeautifulSoup parsing
+        return response.text
     except requests.exceptions.RequestException as e:
         logger.error(
-            "Network error during 1111 job detail request.",
+            "Network error during 1111 job detail HTML request.",
             url=job_url,
             error=e,
             exc_info=True,
@@ -207,7 +232,7 @@ def fetch_job_data_from_1111_web(job_url: str) -> Optional[Dict[str, Any]]:
         raise # Re-raise to trigger tenacity retry if applied to this function
     except Exception as e:
         logger.error(
-            "Unexpected error during 1111 job detail request.",
+            "Unexpected error during 1111 job detail HTML request.",
             url=job_url,
             error=e,
             exc_info=True,

@@ -9,6 +9,7 @@ from crawler.database.connection import initialize_database
 from crawler.database.repository import get_root_categories, update_category_parent_id
 import structlog
 import json
+from typing import Optional
 
 # Configure logging for the script
 structlog.configure(
@@ -25,7 +26,7 @@ logger = structlog.get_logger(__name__)
 
 # 15 項大項目歸類定義
 # 從 JSON 檔案載入 MAJOR_CATEGORIES
-_major_categories_file_path = os.path.join(os.path.dirname(__file__), "..", "..", "utils", "major_categories.json")
+_major_categories_file_path = os.path.join(os.path.dirname(__file__), "major_categories.json")
 with open(_major_categories_file_path, 'r', encoding='utf-8') as f:
     MAJOR_CATEGORIES = json.load(f)
 
@@ -40,12 +41,12 @@ MAPPING = {
     for platform_name, platform_map in _raw_mapping.items()
 }
 
-def apply_category_classification(platform: SourcePlatform):
+def apply_category_classification(platform: SourcePlatform, db_name: Optional[str] = None):
     logger.info(f"Applying classification for platform: {platform.value}")
 
     major_category_ids = {cat["source_category_id"] for cat in MAJOR_CATEGORIES}
 
-    root_categories = get_root_categories(platform)
+    root_categories = get_root_categories(platform, db_name=db_name)
     
     for category in root_categories:
         # Skip updating the major categories themselves
@@ -62,7 +63,8 @@ def apply_category_classification(platform: SourcePlatform):
             update_category_parent_id(
                 platform,
                 category.source_category_id,
-                new_parent_id
+                new_parent_id,
+                db_name=db_name
             )
         else:
             logger.warning(

@@ -35,3 +35,6 @@ URL_CRAWLER_PAGE_SIZE_104 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_104", 
 URL_CRAWLER_ORDER_BY_104 = int(
     config_section.get("URL_CRAWLER_ORDER_BY_104", "16")
 )  # 16 (最近更新)
+
+CONCURRENCY_LEVEL_104 = int(config_section.get("CONCURRENCY_LEVEL_104", "20"))
+URL_CRAWLER_DEFAULT_URL_LIMIT_104 = int(config_section.get("URL_CRAWLER_DEFAULT_URL_LIMIT_104", "0"))

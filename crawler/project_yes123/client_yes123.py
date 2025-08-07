@@ -66,10 +66,7 @@ def _make_web_request(
     )
     logger.debug(
         "Sleeping before web request.",
-        event="sleeping_before_web_request",
         duration=sleep_time,
-        platform=SourcePlatform.PLATFORM_YES123,
-        component="client",
         **log_context,
     )
     time.sleep(sleep_time)

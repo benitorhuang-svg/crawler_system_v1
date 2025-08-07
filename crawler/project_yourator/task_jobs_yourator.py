@@ -12,8 +12,8 @@ if __name__ == "__main__":
 import structlog
 from typing import Optional
 from crawler.worker import app
-from crawler.database.schemas import CrawlStatus
-from crawler.database.repository import upsert_jobs, mark_urls_as_crawled
+from crawler.database.schemas import CrawlStatus, JobObservationPydantic
+from crawler.database.repository import upsert_jobs, mark_urls_as_crawled, insert_job_observations
 from crawler.project_yourator.client_yourator import fetch_job_data_from_yourator_api
 from crawler.project_yourator.parser_apidata_yourator import parse_job_detail_to_pydantic
 from crawler.config import get_db_name_for_platform
@@ -81,6 +81,36 @@ def fetch_url_data_yourator(url: str) -> Optional[dict]:
 
     try:
         upsert_jobs([job_pydantic_data], db_name=db_name)
+
+        # Insert into tb_job_observations
+        job_observations = []
+        job_observations.append(JobObservationPydantic(
+            source_job_id=job_pydantic_data.source_job_id,
+            source_platform=job_pydantic_data.source_platform,
+            url=job_pydantic_data.url,
+            title=job_pydantic_data.title,
+            description=job_pydantic_data.description,
+            job_type=job_pydantic_data.job_type,
+            posted_at=job_pydantic_data.posted_at,
+            status=job_pydantic_data.status,
+            salary_text=job_pydantic_data.salary_text,
+            salary_min=job_pydantic_data.salary_min,
+            salary_max=job_pydantic_data.salary_max,
+            salary_type=job_pydantic_data.salary_type,
+            experience_required_text=job_pydantic_data.experience_required_text,
+            education_required_text=job_pydantic_data.education_required_text,
+            company_id=job_pydantic_data.company.source_company_id if job_pydantic_data.company else None,
+            company_name=job_pydantic_data.company.name if job_pydantic_data.company else None,
+            company_url=job_pydantic_data.company.url if job_pydantic_data.company else None,
+            location_text=job_pydantic_data.locations[0].address_detail if job_pydantic_data.locations else None,
+            region=job_pydantic_data.locations[0].region if job_pydantic_data.locations else None,
+            district=job_pydantic_data.locations[0].district if job_pydantic_data.locations else None,
+            latitude=job_pydantic_data.locations[0].latitude if job_pydantic_data.locations else None,
+            longitude=job_pydantic_data.locations[0].longitude if job_pydantic_data.locations else None,
+            skills="****".join([skill.name for skill in job_pydantic_data.skills]) if job_pydantic_data.skills else None,
+        ))
+        insert_job_observations(job_observations, db_name=db_name)
+
         logger.info(
             "Job parsed and upserted successfully.",
             event="job_upsert_success",

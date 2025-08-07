@@ -41,6 +41,7 @@ def _make_api_request(
     timeout: int = 10,
     verify: bool = True,
     log_context: Optional[Dict[str, Any]] = None,
+    session: Optional[requests.Session] = None, # Add session parameter
 ) -> Optional[Dict[str, Any]]:
     """
     通用的 API 請求函式，處理隨機延遲、請求發送、JSON 解析和錯誤處理。
@@ -56,7 +57,8 @@ def _make_api_request(
     time.sleep(sleep_time)
 
     try:
-        response = requests.request(
+        requester = session if session else requests # Use session if provided
+        response = requester.request(
             method,
             url,
             headers=headers,
@@ -95,7 +97,7 @@ def _make_api_request(
         return None
 
 
-def fetch_job_data_from_104_api(job_id: str) -> Optional[Dict[str, Any]]:
+def fetch_job_data_from_104_api(job_id: str, session: Optional[requests.Session] = None) -> Optional[Dict[str, Any]]:
     """
     從 104 API 獲取單一職缺的原始數據。
     """
@@ -106,11 +108,12 @@ def fetch_job_data_from_104_api(job_id: str) -> Optional[Dict[str, Any]]:
         headers=HEADERS_104_JOB_API,
         timeout=URL_CRAWLER_REQUEST_TIMEOUT_SECONDS,  # 加上這行
         log_context={"job_id": job_id, "api_type": "job_data"},
+        session=session, # Pass session
     )
 
 
 def fetch_category_data_from_104_api(
-    api_url: str, headers: Dict[str, str]
+    api_url: str, headers: Dict[str, str], session: Optional[requests.Session] = None
 ) -> Optional[Dict[str, Any]]:
     """
     從 104 API 獲取職務分類的原始數據。
@@ -120,6 +123,7 @@ def fetch_category_data_from_104_api(
         api_url,
         headers=headers,
         log_context={"api_type": "category_data"},
+        session=session, # Pass session
     )
 
 
@@ -129,6 +133,7 @@ def fetch_job_urls_from_104_api(
     params: Dict[str, Any],
     timeout: int,
     verify: bool = True,
+    session: Optional[requests.Session] = None, # Add session parameter
 ) -> Optional[Dict[str, Any]]:
     """
     從 104 API 獲取職缺 URL 列表的原始數據。
@@ -141,4 +146,5 @@ def fetch_job_urls_from_104_api(
         timeout=timeout,
         verify=verify,
         log_context={"api_type": "job_urls"},
+        session=session, # Pass session
     )

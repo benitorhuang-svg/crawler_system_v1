@@ -1,4 +1,5 @@
 # import os
+
 # # python -m crawler.project_1111.task_category_1111
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
@@ -17,7 +18,7 @@ from crawler.database.schemas import SourcePlatform
 from crawler.project_1111.client_1111 import fetch_category_data_from_1111_api
 from crawler.project_1111.config_1111 import HEADERS_1111, JOB_CAT_URL_1111
 from crawler.worker import app
-from crawler.config import MYSQL_DATABASE, get_db_name_for_platform
+from crawler.config import get_db_name_for_platform
 
 # Import MAPPING from apply_classification.py
 from crawler.database.category_classification_data.apply_classification import MAPPING
@@ -116,7 +117,20 @@ def fetch_and_sync_1111_categories(url_JobCat: str = JOB_CAT_URL_1111, db_name_o
 
 
 if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-    initialize_database()
-    logger.info("Dispatching fetch_and_sync_1111_categories task for local testing.", url=JOB_CAT_URL_1111)
-    fetch_and_sync_1111_categories(JOB_CAT_URL_1111)
+    # This logic allows the script to use 'test_db' when the local setup code at the top
+    # is active, and fall back to the default 'db_1111' when it is commented out.
+    db_name_for_local_run = os.environ.get('CRAWLER_DB_NAME') or get_db_name_for_platform(SourcePlatform.PLATFORM_1111.value)
+
+    # Ensure the target database and its tables are created before running the task.
+    initialize_database(db_name=db_name_for_local_run)
+
+    logger.info(
+        "Dispatching fetch_and_sync_1111_categories task for local run.",
+        url=JOB_CAT_URL_1111,
+        db_name=db_name_for_local_run
+    )
+    
+    # Execute the main task function with the determined database name.
+    fetch_and_sync_1111_categories(
+        url_JobCat=JOB_CAT_URL_1111, db_name_override=db_name_for_local_run
+    )

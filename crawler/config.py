@@ -37,7 +37,7 @@ MYSQL_ROOT_PASSWORD = config_section.get("MYSQL_ROOT_PASSWORD", "root_password")
 MYSQL_PASSWORD = config_section.get("MYSQL_PASSWORD", "root_password")
 MYSQL_DATABASE = os.environ.get('CRAWLER_DB_NAME') or config_section.get("MYSQL_DATABASE", "crawler_db")
 LOG_LEVEL = config_section.get("LOG_LEVEL", "DEBUG").upper()
-LOG_FORMATTER = config_section.get("LOG_FORMATTER", "json").lower()
+LOG_FORMATTER = config_section.get("LOG_FORMATTER", "console").lower()
 
 PRODUCER_BATCH_SIZE = int(config_section.get("PRODUCER_BATCH_SIZE", "100"))
 PRODUCER_DISPATCH_INTERVAL_SECONDS = float(
@@ -55,6 +55,12 @@ URL_CRAWLER_SLEEP_MIN_SECONDS = float(
 )
 URL_CRAWLER_SLEEP_MAX_SECONDS = float(
     config_section.get("URL_CRAWLER_SLEEP_MAX_SECONDS", "1.5")
+)
+URL_CRAWLER_API_RETRIES = int(
+    config_section.get("URL_CRAWLER_API_RETRIES", "3")
+)
+URL_CRAWLER_API_BACKOFF_FACTOR = float(
+    config_section.get("URL_CRAWLER_API_BACKOFF_FACTOR", "0.5")
 )
 
 def get_db_name_for_platform(platform_enum_value: str) -> str:

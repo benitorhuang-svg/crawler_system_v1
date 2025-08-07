@@ -1,17 +1,42 @@
+import os
 from datetime import datetime
 from typing import Optional, Dict, Any
 
 import structlog
+import pandas as pd
 
 from crawler.database.schemas import (
     JobPydantic,
     SourcePlatform,
     JobStatus,
     JobType,
+    LocationPydantic,
+    SkillPydantic,
+    CompanyPydantic,
 )
 from crawler.utils.salary_parser import parse_salary_text
+from crawler.utils.run_skill_extraction import extract_skills_precise
 
 logger = structlog.get_logger(__name__)
+
+SKILL_MASTER_PATH = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    '..',
+    'utils',
+    'skill_data',
+    'generated_data',
+    'skill_master.json'
+)
+
+try:
+    SKILL_MASTER_DF = pd.read_json(SKILL_MASTER_PATH)
+    logger.info(f"已載入技能主檔: {SKILL_MASTER_PATH}")
+except FileNotFoundError:
+    logger.error(f"錯誤：找不到技能主檔。請先執行 `python3 -m skill_tool.run_skill_extraction --generate-kb` 來生成 {SKILL_MASTER_PATH}")
+    SKILL_MASTER_DF = pd.DataFrame() # Provide an empty DataFrame to avoid errors later
+except Exception as e:
+    logger.error(f"載入技能主檔失敗: {e}")
+    SKILL_MASTER_DF = pd.DataFrame() # Provide an empty DataFrame to avoid errors later
 
 JOB_TYPE_MAPPING_YOURATOR = {
     "full_time": JobType.FULL_TIME,
@@ -61,6 +86,19 @@ def parse_job_detail_to_pydantic(job_data: Dict[str, Any]) -> Optional[JobPydant
         experience_required_text = job_data.get("year_of_experience")
         education_required_text = "不拘"
 
+        # Derive region and district from location_text
+        region = None
+        district = None
+        if location_text:
+            # Yourator locations are often just city names, e.g., "台北市"
+            region = location_text
+            district = location_text
+
+        # Extract skills from description
+        extracted_skills = []
+        if description and SKILL_MASTER_DF is not None and not SKILL_MASTER_DF.empty:
+            extracted_skills = extract_skills_precise(description, SKILL_MASTER_DF)
+
         return JobPydantic(
             source_platform=SourcePlatform.PLATFORM_YOURATOR,
             source_job_id=source_job_id,
@@ -69,7 +107,6 @@ def parse_job_detail_to_pydantic(job_data: Dict[str, Any]) -> Optional[JobPydant
             title=title,
             description=description,
             job_type=job_type,
-            location_text=location_text,
             posted_at=posted_at,
             salary_text=salary_text,
             salary_min=salary_min,
@@ -77,9 +114,20 @@ def parse_job_detail_to_pydantic(job_data: Dict[str, Any]) -> Optional[JobPydant
             salary_type=salary_type,
             experience_required_text=experience_required_text,
             education_required_text=education_required_text,
-            company_source_id=company_source_id,
-            company_name=company_name,
-            company_url=company_url,
+            company=CompanyPydantic(
+                source_platform=SourcePlatform.PLATFORM_YOURATOR,
+                source_company_id=company_source_id,
+                name=company_name,
+                url=company_url,
+            ),
+            locations=[LocationPydantic(
+                region=region,
+                district=district,
+                address_detail=location_text,
+                latitude=None, # Yourator does not provide lat/lon
+                longitude=None, # Yourator does not provide lat/lon
+            )],
+            skills=[SkillPydantic(name=skill_name) for skill_name in extracted_skills],
         )
 
     except Exception as e:
@@ -134,6 +182,19 @@ def parse_job_list_to_pydantic(job_item: Dict[str, Any]) -> Optional[JobPydantic
         experience_required_text = job_item.get("year_of_experience")
         education_required_text = "不拘"
 
+        # Derive region and district from location_text
+        region = None
+        district = None
+        if location_text:
+            # Yourator locations are often just city names, e.g., "台北市"
+            region = location_text
+            district = location_text
+
+        # Extract skills from description
+        extracted_skills = []
+        if description and SKILL_MASTER_DF is not None and not SKILL_MASTER_DF.empty:
+            extracted_skills = extract_skills_precise(description, SKILL_MASTER_DF)
+
         return JobPydantic(
             source_platform=SourcePlatform.PLATFORM_YOURATOR,
             source_job_id=source_job_id,
@@ -142,7 +203,6 @@ def parse_job_list_to_pydantic(job_item: Dict[str, Any]) -> Optional[JobPydantic
             title=title,
             description=description,
             job_type=job_type,
-            location_text=location_text,
             posted_at=posted_at,
             salary_text=salary_text,
             salary_min=salary_min,
@@ -150,9 +210,20 @@ def parse_job_list_to_pydantic(job_item: Dict[str, Any]) -> Optional[JobPydantic
             salary_type=salary_type,
             experience_required_text=experience_required_text,
             education_required_text=education_required_text,
-            company_source_id=company_source_id,
-            company_name=company_name,
-            company_url=company_url,
+            company=CompanyPydantic(
+                source_platform=SourcePlatform.PLATFORM_YOURATOR,
+                source_company_id=company_source_id,
+                name=company_name,
+                url=company_url,
+            ),
+            locations=[LocationPydantic(
+                region=region,
+                district=district,
+                address_detail=location_text,
+                latitude=None, # Yourator does not provide lat/lon
+                longitude=None, # Yourator does not provide lat/lon
+            )],
+            skills=[SkillPydantic(name=skill_name) for skill_name in extracted_skills],
         )
 
     except Exception as e:

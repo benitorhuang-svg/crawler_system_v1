@@ -9,10 +9,14 @@ from urllib.parse import urljoin
 import re
 from bs4 import BeautifulSoup
 
-from crawler.database.schemas import JobPydantic, SourcePlatform, JobStatus, SalaryType, JobType
+from crawler.database.schemas import JobPydantic, SourcePlatform, JobStatus, SalaryType, JobType, LocationPydantic, SkillPydantic, CompanyPydantic
 from crawler.utils.clean_text import clean_text
+from crawler.utils.run_skill_extraction import extract_skills_precise, get_compiled_skill_patterns
+from crawler.project_cakeresume.client_cakeresume import fetch_cakeresume_company_page_html
 
 logger = structlog.get_logger(__name__)
+
+COMPILED_SKILL_PATTERNS = get_compiled_skill_patterns()
 
 def _parse_cakeresume_salary(
     job_details: Dict[str, Any]
@@ -72,7 +76,7 @@ def _parse_job_type(job_details: Dict[str, Any]) -> JobType:
     }
     return job_type_map.get(str(job_type_raw), JobType.OTHER)
 
-def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str, url: str) -> Optional[JobPydantic]:
+def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str, url: str, source_category_id: str) -> Optional[JobPydantic]:
     """
     Parses the job data extracted from the __NEXT_DATA__ script tag into a JobPydantic object.
     """
@@ -115,6 +119,16 @@ def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str
         location_tags = soup.select("div.JobDescriptionRightColumn_locationsWrapper__N_fz_ a")
         location_text = ", ".join([clean_text(tag.get_text()) for tag in location_tags]) if location_tags else None
 
+        if not location_text and company_url:
+            logger.info("Location not found in job details, attempting to fetch from company page.", company_url=company_url)
+            company_html = fetch_cakeresume_company_page_html(company_url)
+            if company_html:
+                company_soup = BeautifulSoup(company_html, 'html.parser')
+                location_link = company_soup.select_one('a.CompanySidebar_link__Xveph[href*="maps.google.com"]')
+                if location_link:
+                    location_text = clean_text(location_link.get_text())
+                    logger.info("Successfully extracted location from company page.", location_text=location_text)
+
         posted_at_raw = job_details.get("content_updated_at")
         posted_at = None
         if posted_at_raw:
@@ -145,6 +159,26 @@ def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str
         edu_match = re.search(r'(高中|專科|大學|碩士|博士)', requirements_text)
         education_required_text = edu_match.group(1) if edu_match else "不拘"
 
+        # Derive region and district from location_text
+        region = None
+        district = None
+        if location_text:
+            parts = [p.strip() for p in location_text.split(',')]
+            if len(parts) == 3:
+                district = parts[1] + parts[0]  # e.g., "新竹市東區"
+                region = parts[1]               # e.g., "新竹市"
+            elif len(parts) == 2:
+                district = parts[0]             # e.g., "新竹市"
+                region = parts[0]               # e.g., "新竹市"
+            elif len(parts) == 1:
+                district = parts[0]             # e.g., "新竹市"
+                region = parts[0]               # e.g., "新竹市"
+
+        # Extract skills from description
+        extracted_skills = []
+        if description and COMPILED_SKILL_PATTERNS:
+            extracted_skills = extract_skills_precise(description, COMPILED_SKILL_PATTERNS)
+
         return JobPydantic(
             source_platform=SourcePlatform.PLATFORM_CAKERESUME,
             source_job_id=source_job_id,
@@ -153,7 +187,6 @@ def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str
             title=clean_text(job_details.get("title")),
             description=description,
             job_type=_parse_job_type(job_details),
-            location_text=location_text,
             posted_at=posted_at,
             salary_text=salary_text,
             salary_min=salary_min,
@@ -161,9 +194,21 @@ def parse_job_details_to_pydantic(job_details: Dict[str, Any], html_content: str
             salary_type=salary_type,
             experience_required_text=experience_required_text,
             education_required_text=education_required_text,
-            company_source_id=company_path,
-            company_name=clean_text(company_name),
-            company_url=company_url,
+            company=CompanyPydantic(
+                source_platform=SourcePlatform.PLATFORM_CAKERESUME,
+                source_company_id=company_path,
+                name=clean_text(company_name),
+                url=company_url,
+            ),
+            locations=[LocationPydantic(
+                region=region,
+                district=district,
+                address_detail=location_text,
+                latitude=None, # Cakeresume does not provide lat/lon
+                longitude=None, # Cakeresume does not provide lat/lon
+            )],
+            skills=[SkillPydantic(name=skill_name) for skill_name in extracted_skills],
+            category_tags=[source_category_id],
         )
 
     except Exception as e:

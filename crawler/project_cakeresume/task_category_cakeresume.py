@@ -1,4 +1,5 @@
-# import os
+import os
+
 # # python -m crawler.project_cakeresume.task_category_cakeresume
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
@@ -6,7 +7,6 @@
 # # --- End Local Test Environment Setup ---
 
 
-import os
 import structlog
 import json
 from typing import List, Dict, Any, Optional
@@ -21,7 +21,7 @@ from crawler.project_cakeresume.client_cakeresume import (
 )
 from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
 from crawler.worker import app
-from crawler.database.category_classification_data.apply_classification import apply_category_classification
+from crawler.database.category_classification_data.apply_classification import apply_category_classification, MAJOR_CATEGORIES, MAPPING
 from crawler.config import MYSQL_DATABASE, get_db_name_for_platform
 
 logger = structlog.get_logger(__name__)
@@ -94,8 +94,12 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME, db_name_
     logger.info("Starting CakeResume profession category data fetch and sync.", url=url_JobCat)
 
     try:
+        # Sync MAJOR_CATEGORIES first
+        logger.info("Syncing major categories.")
+        repository.sync_source_categories(SourcePlatform.PLATFORM_104, MAJOR_CATEGORIES, db_name=db_name)
+
         html_content = fetch_cakeresume_category_page_html(url_JobCat)
-        profession_data = []
+        profession_data: List[Dict[str, Any]] = [] # Initialize profession_data here
         if html_content is None:
             logger.error("Failed to fetch CakeResume category page HTML for profession data.", url=url_JobCat)
         else:
@@ -142,16 +146,23 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME, db_name_
         else:
             logger.info("No new or updated CakeResume profession categories to sync.", existing_categories_count=len(existing_categories), api_categories_count=len(profession_data))
 
-        # Apply classification to update parent_source_id for profession categories
-        logger.info("Applying category classification for CakeResume profession categories.")
-        apply_category_classification(SourcePlatform.PLATFORM_CAKERESUME, db_name=db_name)
-
     except Exception as e:
         logger.error("An unexpected error occurred during CakeResume category sync.", error=e, exc_info=True, url=url_JobCat)
 
 
 if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-    initialize_database()
-    logger.info("Dispatching fetch_url_data_cakeresume task for local testing.", url=JOB_CAT_URL_CAKERESUME, db_name=MYSQL_DATABASE)
-    fetch_url_data_cakeresume(JOB_CAT_URL_CAKERESUME)
+    db_name_for_local_run = "db_cakeresume" # Explicitly set for local testing
+
+    # Ensure the target database and its tables are created before running the task.
+    initialize_database(db_name=db_name_for_local_run)
+
+    logger.info(
+        "Dispatching fetch_url_data_cakeresume task for local testing.",
+        url=JOB_CAT_URL_CAKERESUME,
+        db_name=db_name_for_local_run
+    )
+    
+    # Execute the main task function with the determined database name.
+    fetch_url_data_cakeresume(
+        url_JobCat=JOB_CAT_URL_CAKERESUME, db_name_override=db_name_for_local_run
+    )

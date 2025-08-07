@@ -1,0 +1,153 @@
+{
+  "payload": {
+    "hasMore": false,
+    "currentPage": 3,
+    "nextPage": null,
+    "recommendedJobs": [],
+    "trendingKeywords": [
+      "接案",
+      "大數據",
+      "PM"
+    ],
+    "jobs": [
+      {
+        "id": 40741,
+        "name": "《天下雜誌》前端工程師",
+        "thirdPartyUrl": null,
+        "path": "/companies/COMMONWEALTH/jobs/40741",
+        "tags": [
+          "前端開發",
+          "前端工程師",
+          "軟體工程師",
+          "網頁設計",
+          "前端網頁工程師",
+          "資深前端工程師"
+        ],
+        "follow": false,
+        "salary": "面議（經常性薪資達4萬元）",
+        "lastActiveAt": "一個月前更新",
+        "location": "臺北市",
+        "externalSource": null,
+        "companyId": 1727,
+        "company": {
+          "path": "/companies/COMMONWEALTH",
+          "brand": "天下雜誌股份有限公司 ",
+          "banner": "https://s3cdn.yourator.co/banners/banners/000/001/868/medium/680df74e524b7bd6884941fd8e2046780fedb90b.png",
+          "bannerUrl": "https://s3cdn.yourator.co/banners/banners/000/001/868/medium/680df74e524b7bd6884941fd8e2046780fedb90b.png",
+          "logo": "https://s3cdn.yourator.co/companies/logos/000/001/727/default/ae3de9e44553a72199471995407fd1e07ce879e5.png",
+          "badges": [
+            "verified"
+          ],
+          "canThirdPartyUrl": false,
+          "enName": "COMMONWEALTH"
+        }
+      },
+      {
+        "id": 10353,
+        "name": "【ACCUPASS】資深前端工程師 (Sr. Front-end Engineer)",
+        "thirdPartyUrl": null,
+        "path": "/companies/Accupass/jobs/10353",
+        "tags": [
+          "JavaScript",
+          "軟體開發",
+          "ReactJS",
+          "jQuery",
+          "CI/CD",
+          "React"
+        ],
+        "follow": false,
+        "salary": "NT$ 70,000 - 100,000 (月薪)",
+        "lastActiveAt": "一個月前更新",
+        "location": "臺北市",
+        "externalSource": null,
+        "companyId": 397,
+        "company": {
+          "path": "/companies/Accupass",
+          "brand": "ACCUPASS 活動通",
+          "banner": "https://s3cdn.yourator.co/banners/banners/000/000/526/medium/a30833fb2c6c81fc1e5b88007376383ec2772823.jpg",
+          "bannerUrl": "https://s3cdn.yourator.co/banners/banners/000/000/526/medium/a30833fb2c6c81fc1e5b88007376383ec2772823.jpg",
+          "logo": "https://s3cdn.yourator.co/companies/logos/000/000/397/default/b6d319f03d0edd7c5d11ccbc7a4eccd1d054693e.png",
+          "badges": [
+            "verified"
+          ],
+          "canThirdPartyUrl": true,
+          "enName": "Accupass"
+        }
+      },
+      {
+        "id": 40513,
+        "name": "技術部-Web Frontend Engineer",
+        "thirdPartyUrl": "https://pchome24h.teamdoor.io/s/bawQzZIb",
+        "path": "/companies/PChome/jobs/40513",
+        "tags": [],
+        "follow": false,
+        "salary": "面議（經常性薪資達4萬元）",
+        "lastActiveAt": "一個月前更新",
+        "location": "臺北市",
+        "externalSource": "teamdoor",
+        "companyId": 1956,
+        "company": {
+          "path": "/companies/PChome",
+          "brand": "PChome Online 網路家庭",
+          "banner": "https://s3cdn.yourator.co/banners/banners/000/002/087/medium/b95ad677ed9f209d5476d80bbc4ff20b5143dc7f.png",
+          "bannerUrl": "https://s3cdn.yourator.co/banners/banners/000/002/087/medium/b95ad677ed9f209d5476d80bbc4ff20b5143dc7f.png",
+          "logo": "https://s3cdn.yourator.co/companies/logos/000/001/956/default/d269869546bdd6e4a805fd8631ec86d52c9ea462.png",
+          "badges": [
+            "aama",
+            "verified"
+          ],
+          "canThirdPartyUrl": true,
+          "enName": "PChome"
+        }
+      },
+      {
+        "id": 37885,
+        "name": "［UPD］前端開發工程師 / Frontend Engineer (F2E, React.jS)",
+        "thirdPartyUrl": "https://91APP.teamdoor.io/s/ept0ob9C",
+        "path": "/companies/91APP/jobs/37885",
+        "tags": [],
+        "follow": false,
+        "salary": "面議（經常性薪資達4萬元）",
+        "lastActiveAt": "一個月前更新",
+        "location": "臺北市",
+        "externalSource": "teamdoor",
+        "companyId": 263,
+        "company": {
+          "path": "/companies/91APP",
+          "brand": "91APP",
+          "banner": "https://s3cdn.yourator.co/banners/banners/000/000/328/medium/ff0aec75d10a13897aeec879d7da9fc5509d76c6.png",
+          "bannerUrl": "https://s3cdn.yourator.co/banners/banners/000/000/328/medium/ff0aec75d10a13897aeec879d7da9fc5509d76c6.png",
+          "logo": "https://s3cdn.yourator.co/companies/logos/000/000/263/default/18c541a83353ebad0004dcf745cda0cbe12a7831.png",
+          "badges": [
+            "verified"
+          ],
+          "canThirdPartyUrl": true,
+          "enName": "91APP"
+        }
+      },
+      {
+        "id": 40876,
+        "name": "E-Commerce Frontend Developer",
+        "thirdPartyUrl": "https://WONDERLAND.teamdoor.io/s/c3qG4t2E",
+        "path": "/companies/WONDERLAND/jobs/40876",
+        "tags": [],
+        "follow": false,
+        "salary": "面議（經常性薪資達4萬元）",
+        "lastActiveAt": "一個月前更新",
+        "location": "臺北市",
+        "externalSource": "teamdoor",
+        "companyId": 3229,
+        "company": {
+          "path": "/companies/WONDERLAND",
+          "brand": "WONDERLAND",
+          "banner": "https://s3cdn.yourator.co/banners/banners/000/002/670/medium/987ee3683af51f6446fe2e415ee774fc636bb8b8.png",
+          "bannerUrl": "https://s3cdn.yourator.co/banners/banners/000/002/670/medium/987ee3683af51f6446fe2e415ee774fc636bb8b8.png",
+          "logo": "https://s3cdn.yourator.co/companies/logos/000/003/229/default/ff6c51d19f126cfd999d6b3b69663dfff7c56b3c.png",
+          "badges": [],
+          "canThirdPartyUrl": true,
+          "enName": "WONDERLAND"
+        }
+      }
+    ]
+  }
+}

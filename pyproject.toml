@@ -26,3 +26,6 @@ exclude = ["*.ipynb"]
 
 [tool.pytest.ini_options]
 python_files = "pytest_*.py"
+
+[tool.setuptools]
+packages = ["crawler", "skill_tool"]

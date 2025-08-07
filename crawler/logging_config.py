@@ -6,17 +6,6 @@ import sys
 from crawler.config import LOG_LEVEL, LOG_FORMATTER
 
 
-class CustomLogFilter(logging.Filter):
-    """
-    自訂日誌過濾器，用於過濾特定模組的日誌。
-    """
-    def filter(self, record):
-        # 過濾掉 crawler.utils.salary_parser 模組的 INFO 和 DEBUG 級別日誌
-        if record.name == 'crawler.utils.salary_parser' and record.levelno <= logging.INFO:
-            return False
-        return True
-
-
 def configure_logging():
     """
     配置應用程式的日誌系統，整合 structlog 和標準 logging。
@@ -24,8 +13,11 @@ def configure_logging():
     """
     numeric_log_level = getattr(logging, LOG_LEVEL, logging.INFO)
 
-    # 檢查是否已經配置過，避免重複添加 handler
     root_logger = logging.getLogger()
+    # 確保 root logger 的級別總是正確設定
+    root_logger.setLevel(numeric_log_level)
+
+    # 檢查是否已經配置過，避免重複添加 handler
     if not root_logger.handlers:
         # 1. 配置 structlog 的處理器鏈
         #    - TimeStamper: 添加時間戳
@@ -67,11 +59,11 @@ def configure_logging():
 
         handler = logging.StreamHandler(sys.stdout)
         handler.setFormatter(formatter)
-        handler.addFilter(CustomLogFilter()) # 添加自訂過濾器
+        handler.setLevel(numeric_log_level) # Explicitly set handler level
+        # 移除 CustomLogFilter
 
         # 4. 配置 root logger
         root_logger.addHandler(handler)
-        root_logger.setLevel(numeric_log_level)
 
         logger = structlog.get_logger(__name__)
         logger.info(

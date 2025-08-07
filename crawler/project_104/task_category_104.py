@@ -1,12 +1,12 @@
 import os
-#  python -m crawler.project_104.task_category_104
-# --- Local Test Environment Setup ---
-if __name__ == "__main__":
-    os.environ['CRAWLER_DB_NAME'] = 'test_db'
-# --- End Local Test Environment Setup ---
+
+# # python -m crawler.project_104.task_category_104
+# # --- Local Test Environment Setup ---
+# if __name__ == "__main__":
+#     os.environ['CRAWLER_DB_NAME'] = 'test_db'
+# # --- End Local Test Environment Setup ---
 
 
-import os
 from typing import Optional
 import structlog
 
@@ -53,7 +53,14 @@ def flatten_jobcat_recursive(node_list, parent_no=None):
 
 @app.task()
 def fetch_url_data_104(url_JobCat, db_name_override: Optional[str] = None):
-    db_name = db_name_override if db_name_override else get_db_name_for_platform(SourcePlatform.PLATFORM_104.value)
+    db_name = get_db_name_for_platform(SourcePlatform.PLATFORM_104.value)
+    if db_name_override:
+        db_name = db_name_override
+    elif os.environ.get('CRAWLER_DB_NAME'):
+        db_name = MYSQL_DATABASE
+    
+    initialize_database(db_name=db_name) # Ensure database is initialized before any operations
+
     logger.info("Current database connection", db_url=str(db_connection.get_engine(db_name=db_name).url))
     logger.info("Starting category data fetch and sync.", url=url_JobCat)
 
@@ -114,5 +121,6 @@ def fetch_url_data_104(url_JobCat, db_name_override: Optional[str] = None):
 
 if __name__ == "__main__":
     initialize_database()
-    logger.info("Dispatching fetch_url_data_104 task for local testing.", url=JOB_CAT_URL_104, db_name=MYSQL_DATABASE)
+    actual_db_name_for_logging = MYSQL_DATABASE if os.environ.get('CRAWLER_DB_NAME') else get_db_name_for_platform(SourcePlatform.PLATFORM_104.value)
+    logger.info("Dispatching fetch_url_data_104 task for local testing.", url=JOB_CAT_URL_104, db_name=actual_db_name_for_logging)
     fetch_url_data_104(JOB_CAT_URL_104)

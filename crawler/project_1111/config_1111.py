@@ -20,5 +20,5 @@ HEADERS_1111_JOB_API = {
     "Referer": "https://www.1111.com.tw/search/job",
 }
 
-URL_CRAWLER_PAGE_SIZE_1111 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_1111", "20"))
+URL_CRAWLER_PAGE_SIZE_1111 = int(config_section.get("URL_CRAWLER_PAGE_SIZE_1111", "40"))
 URL_CRAWLER_ORDER_BY_1111 = config_section.get("URL_CRAWLER_ORDER_BY_1111", "date") # "date" or "relevance"
