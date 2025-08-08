@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
 
 from crawler.database.schemas import SourcePlatform
 from crawler.database.connection import initialize_database
-from crawler.database.repository import get_root_categories, update_category_parent_id
+from crawler.database.repository import get_root_categories, update_category_parent_id, get_source_categories
 import structlog
 import json
 from typing import Optional
@@ -41,15 +41,24 @@ MAPPING = {
     for platform_name, platform_map in _raw_mapping.items()
 }
 
+# 從 JSON 檔案載入標準化子類別映射
+_standardized_sub_category_mapping_file_path = os.path.join(os.path.dirname(__file__), "platform_to_standardized_sub_category_mapping.json")
+with open(_standardized_sub_category_mapping_file_path, 'r', encoding='utf-8') as f:
+    _raw_standardized_sub_category_mapping = json.load(f)
+
+STANDARDIZED_SUB_CATEGORY_MAPPING = {
+    SourcePlatform(platform_name): platform_map
+    for platform_name, platform_map in _raw_standardized_sub_category_mapping.items()
+}
+
 def apply_category_classification(platform: SourcePlatform, db_name: Optional[str] = None):
     logger.info(f"Applying classification for platform: {platform.value}")
 
     major_category_ids = {cat["source_category_id"] for cat in MAJOR_CATEGORIES}
 
+    # First pass: Apply Major Category mapping
     root_categories = get_root_categories(platform, db_name=db_name)
-    
     for category in root_categories:
-        # Skip updating the major categories themselves
         if category.source_category_id in major_category_ids:
             continue
 
@@ -58,7 +67,7 @@ def apply_category_classification(platform: SourcePlatform, db_name: Optional[st
 
         if new_parent_id:
             logger.info(
-                f"Updating parent_source_id for {platform.value} - {original_category_name} to {new_parent_id}"
+                f"Updating parent_source_id for {platform.value} - {original_category_name} to {new_parent_id} (Major Category)"
             )
             update_category_parent_id(
                 platform,
@@ -68,8 +77,38 @@ def apply_category_classification(platform: SourcePlatform, db_name: Optional[st
             )
         else:
             logger.warning(
-                f"No mapping found for {platform.value} - {original_category_name}. Skipping update."
+                f"No Major Category mapping found for {platform.value} - {original_category_name}. Skipping Major Category update."
             )
+
+    # Second pass: Apply Standardized Sub-Category mapping
+    # We need to re-fetch categories as some parent_source_id might have been updated in the first pass
+    all_categories = get_source_categories(platform, db_name=db_name) # Get all categories, not just roots
+    
+    platform_standardized_mapping = STANDARDIZED_SUB_CATEGORY_MAPPING.get(platform, {})
+
+    for category in all_categories:
+        # Skip if it's a Major Category itself or already has a mapped parent from Major Category
+        if category.source_category_id in major_category_ids or (category.parent_source_id and category.parent_source_id.startswith("MAJOR_")):
+            continue
+
+        original_category_name = category.source_category_name.strip()
+        new_parent_id = platform_standardized_mapping.get(original_category_name)
+
+        if new_parent_id:
+            logger.info(
+                f"Updating parent_source_id for {platform.value} - {original_category_name} to {new_parent_id} (Standardized Sub-Category)"
+            )
+            update_category_parent_id(
+                platform,
+                category.source_category_id,
+                new_parent_id,
+                db_name=db_name
+            )
+        else:
+            logger.warning(
+                f"No Standardized Sub-Category mapping found for {platform.value} - {original_category_name}. Skipping Standardized Sub-Category update."
+            )
+
     logger.info(f"Classification application complete for {platform.value}.")
 
 

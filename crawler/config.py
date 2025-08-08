@@ -63,6 +63,8 @@ URL_CRAWLER_API_BACKOFF_FACTOR = float(
     config_section.get("URL_CRAWLER_API_BACKOFF_FACTOR", "0.5")
 )
 
+GEOCODING_RETRY_FAILED_DURATION_HOURS = int(config_section.get("GEOCODING_RETRY_FAILED_DURATION_HOURS", "2"))
+
 def get_db_name_for_platform(platform_enum_value: str) -> str:
     """
     Derives the database name from a SourcePlatform enum value.

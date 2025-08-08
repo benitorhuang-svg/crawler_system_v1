@@ -12,7 +12,7 @@ logger = structlog.get_logger(__name__)
 ARCGIS_GEOCODE_API_URL = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates"
 GEOCODING_CACHE_FILE = os.path.join(os.path.dirname(__file__), "geocoding_cache.json")
 
-def _load_cache() -> Dict[str, Dict[str, float]]:
+def load_geocoding_cache() -> Dict[str, Dict[str, float]]:
     if os.path.exists(GEOCODING_CACHE_FILE):
         with open(GEOCODING_CACHE_FILE, "r", encoding="utf-8") as f:
             try:
@@ -22,17 +22,20 @@ def _load_cache() -> Dict[str, Dict[str, float]]:
                 return {}
     return {}
 
-def _save_cache(cache: Dict[str, Dict[str, float]]):
+def save_geocoding_cache(cache: Dict[str, Dict[str, float]]):
     with open(GEOCODING_CACHE_FILE, "w", encoding="utf-8") as f:
         json.dump(cache, f, ensure_ascii=False, indent=4)
 
-def geocode_address(address: str) -> Optional[Dict[str, float]]:
+def geocode_address(address: str, cache: Dict[str, Dict[str, float]], force_api_call: bool = False) -> Optional[Dict[str, float]]:
     """
-    呼叫 ArcGIS 地理編碼服務，將地址轉換為經緯度，並使用檔案快取。
+    呼叫 ArcGIS 地理編碼服務，將地址轉換為經緯度，並使用傳入的快取物件。
+    如果 force_api_call 為 True，則強制呼叫 API，忽略快取。
     """
-    cache = _load_cache()
-    if address in cache:
-        logger.info("Geocoding result found in cache.", address=address)
+    if not force_api_call and address in cache:
+        if cache[address] is None:
+            logger.warning("Geocoding result (None) found in cache, skipping API call.", address=address)
+        else:
+            logger.info("Geocoding result found in cache.", address=address)
         return cache[address]
 
     logger.info("Attempting to geocode address using ArcGIS API.", address=address)
@@ -40,7 +43,9 @@ def geocode_address(address: str) -> Optional[Dict[str, float]]:
     params = {
         "SingleLine": address,
         "f": "json",
-        "outFields": "maxLocations=1"
+        "outFields": "Addr_type,Match_addr,StAddr,City",
+        "maxLocations": 6,
+        "outSR": "{\"wkid\":4326}"
     }
 
     try:
@@ -48,19 +53,20 @@ def geocode_address(address: str) -> Optional[Dict[str, float]]:
         response.raise_for_status()  # 如果請求不成功，則拋出 HTTPError
 
         data = response.json()
+        logger.debug("ArcGIS API response data.", address=address, response_data=data)
 
         if data and "candidates" in data and len(data["candidates"]) > 0:
             first_candidate = data["candidates"][0]
+            logger.debug("First candidate from ArcGIS API.", address=address, first_candidate=first_candidate)
             if "location" in first_candidate:
                 location = first_candidate["location"]
                 if "x" in location and "y" in location:
                     longitude = location["x"]
                     latitude = location["y"]
                     result = {"latitude": latitude, "longitude": longitude}
-                    cache[address] = result
-                    _save_cache(cache)
+                    cache[address] = result  # Update cache in memory
                     logger.info(
-                        "Geocoding successful and cached.",
+                        "Geocoding successful.",
                         address=address,
                         latitude=latitude,
                         longitude=longitude
@@ -68,17 +74,14 @@ def geocode_address(address: str) -> Optional[Dict[str, float]]:
                     return result
         
         logger.warning("Geocoding failed: No valid candidates found or location data missing.", address=address, response_data=data)
-        cache[address] = None # Cache None to avoid repeated failed lookups
-        _save_cache(cache)
+        cache[address] = None  # Cache None to avoid repeated failed lookups
         return None
 
     except requests.exceptions.RequestException as e:
         logger.error("Error during geocoding API request.", address=address, error=e)
-        cache[address] = None # Cache None for network errors as well
-        _save_cache(cache)
+        cache[address] = None  # Cache None for network errors as well
         return None
     except ValueError as e:
         logger.error("Error parsing geocoding API response.", address=address, error=e)
-        cache[address] = None # Cache None for parsing errors
-        _save_cache(cache)
+        cache[address] = None  # Cache None for parsing errors
         return None

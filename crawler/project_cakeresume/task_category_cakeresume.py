@@ -1,6 +1,5 @@
-import os
 
-# # python -m crawler.project_cakeresume.task_category_cakeresume
+# python -m crawler.project_cakeresume.task_category_cakeresume
 # # --- Local Test Environment Setup ---
 # if __name__ == "__main__":
 #     os.environ['CRAWLER_DB_NAME'] = 'test_db'
@@ -21,8 +20,8 @@ from crawler.project_cakeresume.client_cakeresume import (
 )
 from crawler.project_cakeresume.config_cakeresume import JOB_CAT_URL_CAKERESUME
 from crawler.worker import app
-from crawler.database.category_classification_data.apply_classification import apply_category_classification, MAJOR_CATEGORIES, MAPPING
-from crawler.config import MYSQL_DATABASE, get_db_name_for_platform
+from crawler.database.category_classification_data.apply_classification import MAPPING # Changed from MAJOR_CATEGORIES to MAPPING
+from crawler.config import get_db_name_for_platform
 
 logger = structlog.get_logger(__name__)
 
@@ -32,6 +31,7 @@ def parse_next_data_for_i18n_categories(html_content: str) -> List[Dict[str, Any
     Finds the __NEXT_DATA__ script tag, parses its JSON content,
     and extracts the hierarchical category data from the i18n (internationalization) object.
     This is the most reliable method.
+    Applies major category mapping for top-level categories.
     """
     soup = BeautifulSoup(html_content, 'html.parser')
     next_data_script = soup.find('script', id='__NEXT_DATA__')
@@ -59,11 +59,14 @@ def parse_next_data_for_i18n_categories(html_content: str) -> List[Dict[str, Any
             parent_id = key.replace("profession_groups.", "")
             parent_name = value
             parent_map[parent_id] = parent_name
+
+            mapped_parent_id = MAPPING[SourcePlatform.PLATFORM_CAKERESUME].get(parent_name) # Apply mapping here
+            
             flat_list.append({
                 "source_platform": SourcePlatform.PLATFORM_CAKERESUME.value,
                 "source_category_id": parent_id,
                 "source_category_name": parent_name,
-                "parent_source_id": None,
+                "parent_source_id": mapped_parent_id, # Use mapped_parent_id
             })
 
     # Second pass: Get all sub-categories and link them to parents
@@ -94,9 +97,8 @@ def fetch_url_data_cakeresume(url_JobCat: str = JOB_CAT_URL_CAKERESUME, db_name_
     logger.info("Starting CakeResume profession category data fetch and sync.", url=url_JobCat)
 
     try:
-        # Sync MAJOR_CATEGORIES first
-        logger.info("Syncing major categories.")
-        repository.sync_source_categories(SourcePlatform.PLATFORM_104, MAJOR_CATEGORIES, db_name=db_name)
+        # Removed: repository.sync_source_categories(SourcePlatform.PLATFORM_104, MAJOR_CATEGORIES, db_name=db_name)
+        # MAPPING is now applied within parse_next_data_for_i18n_categories
 
         html_content = fetch_cakeresume_category_page_html(url_JobCat)
         profession_data: List[Dict[str, Any]] = [] # Initialize profession_data here

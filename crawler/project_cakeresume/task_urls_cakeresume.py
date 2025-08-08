@@ -263,11 +263,13 @@ def _run_local_test():
     categories_to_dispatch_ids = (all_category_ids - all_crawled_category_ids) | stale_crawled_category_ids
     categories_to_dispatch = [
         cat for cat in all_categories_pydantic
-        if cat.source_category_id in categories_to_dispatch_ids and cat.parent_source_id and cat.parent_source_id.startswith('it')
+        if cat.source_category_id in categories_to_dispatch_ids
     ]
-    categories_to_dispatch.sort(key=lambda x: x.source_category_id)
+    # Sort to prioritize 'it' categories first, then by source_category_id
+    categories_to_dispatch.sort(key=lambda x: (not x.parent_source_id or not x.parent_source_id.startswith('it'), x.source_category_id))
 
     if categories_to_dispatch:
+        logger.info(f"Found {len(categories_to_dispatch)} categories to dispatch for testing.")
         for job_category in categories_to_dispatch:
             logger.info(
                 "Dispatching task_start_cakeresume_crawl_chain for local testing.",
@@ -275,7 +277,8 @@ def _run_local_test():
             )
             task_start_cakeresume_crawl_chain(job_category.model_dump(), db_name=db_name_for_local_run, max_page=10) # Added max_page for testing
     else:
-        logger.info("No categories found to dispatch for testing.")
+        logger.warning("No valid and dispatchable categories found for testing. Please check the database for valid categories.")
+    logger.info("All categories processed for local testing.")
 
 if __name__ == "__main__":
     _run_local_test()
